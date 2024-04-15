@@ -1,4 +1,7 @@
-## SCHEMA: State CHangEs MAtter for Procedure Planning in Instructional Videos
+
+
+
+## SCHEMA ReadMe: State CHangEs MAtter for Procedure Planning in Instructional Videos
 
 [Yulei Niu](https://yuleiniu.github.io/), [Wenliang Guo](https://wenliangguo.github.io/), [Long Chen](https://zjuchenlong.github.io/), [Xudong Lin](https://xudonglinthu.github.io/), [Shih-fu Chang](https://www.ee.columbia.edu/~sfchang/)
 
