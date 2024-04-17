@@ -84,7 +84,18 @@ def create_parser():
     parser.add_argument('--features_dir', 
                         default='/home/yulei/data/crosstask/crosstask_features_clip_336px', type=str, 
                         help='features dir')
-
+    parser.add_argument('--vid_dir', 
+                        default='/home/yulei/data/crosstask/crosstask_videos/videos/', type=str, 
+                        help='video dir')
+    parser.add_argument('--img_dir', 
+                        default='/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states', type=str, 
+                        help='state image dir')
+    parser.add_argument('--return_frames', 
+                        action='store_true',
+                        help='return frames of actions?')
+    parser.add_argument('--save_image_states', 
+                        action='store_true',
+                        help='save_image_states mode')
     parser.add_argument('--eval', 
                         action='store_true',
                         help='evaluation mode')

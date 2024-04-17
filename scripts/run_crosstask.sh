@@ -21,6 +21,10 @@ CUDA_VISIBLE_DEVICES=0 python main.py \
     --root_dir 'dataset/crosstask/crosstask_release' \
     --train_json 'dataset/crosstask/cross_task_data_False.json' \
     --valid_json 'dataset/crosstask/cross_task_data_True.json' \
-    --features_dir 'data/crosstask_features/processed_data' \
+    --features_dir '/home/yulei/data/crosstask/processed_data/' \
     --split 'base' \
-    --saved_path 'checkpoints'
+    --saved_path 'checkpoints' \
+    --return_frames \
+    --vid_dir "/home/yulei/data/crosstask/crosstask_videos/videos/" \
+    --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states" \
+    --save_image_states

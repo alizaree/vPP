@@ -8,7 +8,7 @@ from metrics import *
 from torch.utils.data import DataLoader
 from models.procedure_model import ProcedureModel
 from models.utils import AverageMeter
-from tensorboardX import SummaryWriter 
+import wandb
 from tools.parser import create_parser
 
 def eval(
@@ -160,7 +160,7 @@ def evaluate(args):
         logger.info("Loading training data...")
         train_dataset = ProcedureDataset(anot_info, args.features_dir, state_prompt_features, 
                                         args.train_json, args.max_traj_len, aug_range=args.aug_range, 
-                                        mode = "train", M=args.M)
+                                        mode = "train", M=args.M, return_frames=args.return_frames, vid_dir=args.vid_dir )
         
         logger.info("Loading valid data...")
         valid_dataset = ProcedureDataset(anot_info, args.features_dir, state_prompt_features, 
@@ -264,12 +264,16 @@ def train(args):
         logger.info("Loading training data...")
         train_dataset = ProcedureDataset(anot_info, args.features_dir, state_prompt_features, 
                                         args.train_json, args.max_traj_len, aug_range=args.aug_range, 
-                                        mode = "train", M=args.M)
+                                        mode = "train", M=args.M,
+                                        return_frames=args.return_frames, vid_dir=args.vid_dir, img_dir=args.img_dir,
+                                        save_image_states=args.save_image_states)
         
         logger.info("Loading valid data...")
         valid_dataset = ProcedureDataset(anot_info, args.features_dir, state_prompt_features, 
                                         args.valid_json, args.max_traj_len, aug_range=args.aug_range, 
-                                        mode = "valid", M=args.M)
+                                        mode = "valid", M=args.M,
+                                        return_frames=args.return_frames, vid_dir=args.vid_dir, img_dir=args.img_dir,
+                                        save_image_states=args.save_image_states)
         transition_matrix = train_dataset.transition_matrix
         
     
@@ -303,13 +307,13 @@ def train(args):
                                         aug_range=args.aug_range, mode = "valid", M=args.M)
         transition_matrix = train_dataset.transition_matrix
 
+    import pdb; pdb.set_trace()
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=4)
     valid_loader = DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=4)
 
     logger.info("Training set volumn: {} Testing set volumn: {}".format(len(train_dataset), len(valid_dataset)))
-
-    writer = SummaryWriter(logger_path)
-
+    # Initialize wandb
+    wandb.init(project='vPP', entity='your_entity')
     model = ProcedureModel(
         vis_input_dim=args.img_input_dim,
         lang_input_dim=args.text_input_dim,
@@ -410,21 +414,14 @@ def train(args):
         logger.info("\tState Pred Loss: {:.2f}".format(losses_state_pred.avg))
 
         lr = optimizer.param_groups[0]['lr']
-        writer.add_scalar('lr/lr', lr, e+1)
+        ToLog={'lr/lr': lr, 'train_loss/state': losses_state.avg, 'train_loss/action': losses_action.avg,
+                'train_loss/task': losses_task.avg, 'train_loss/state_pred': losses_state_pred.avg,
+                'train_state/acc': state_acc.avg, 'train_action/sr': action_sr.avg,
+                'train_action/miou': action_miou.avg, 'train_action/acc1': action_acc1.avg,
+                'train_action/acc5': action_acc5.avg, 'train_task/acc': task_acc.avg}
+        # Log scalars
+        wandb.log(ToLog, step=e+1)
 
-        writer.add_scalar('train_loss/state', losses_state.avg, e+1)
-        writer.add_scalar('train_loss/action', losses_action.avg, e+1)
-        writer.add_scalar('train_loss/task', losses_task.avg, e+1)
-        writer.add_scalar('train_loss/state_pred', losses_state_pred.avg, e+1)
-
-        writer.add_scalar('train_state/acc', state_acc.avg, e+1)
-
-        writer.add_scalar('train_action/sr', action_sr.avg, e+1)
-        writer.add_scalar('train_action/miou', action_miou.avg, e+1)
-        writer.add_scalar('train_action/acc1', action_acc1.avg, e+1)
-        writer.add_scalar('train_action/acc5', action_acc5.avg, e+1)
-
-        writer.add_scalar('train_task/acc', task_acc.avg, e+1)
 
         if args.last_epoch < 0 or e < args.last_epoch:
             scheduler.step()
