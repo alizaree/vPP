@@ -26,5 +26,4 @@ CUDA_VISIBLE_DEVICES=0 python main.py \
     --saved_path 'checkpoints' \
     --return_frames \
     --vid_dir "/home/yulei/data/crosstask/crosstask_videos/videos/" \
-    --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states" \
-    --save_image_states
+    --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states"
