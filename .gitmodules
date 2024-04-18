@@ -1,0 +1,3 @@
+[submodule "GenHowTo"]
+	path = GenHowTo
+	url = https://github.com/alizaree/GenHowTo.git

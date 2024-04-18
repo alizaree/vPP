@@ -10,28 +10,26 @@ from tqdm import tqdm
 class CrossTaskDataset(Dataset):
     def __init__(
         self, 
-        anot_info,
-        img_dir,
-        prompt_json, 
+        anot_info, 
+        feature_dir, 
+        prompt_features, 
         video_list, 
         horizon = 3, 
         num_action = 133, 
         aug_range = 0, 
         M = 2, 
         mode = "train",
+        return_frames=False,  # Added parameter for returning frames
         vid_dir="",
+        img_dir=None,
         save_image_states=False,
     ):
         super().__init__()
         self.anot_info = anot_info
+        self.feature_dir = feature_dir
         self.vid_dir= vid_dir
         self.img_dir = img_dir
-        #only for google cloud:
-        
-        #self.storage_client = storage.Client()
-        #self.bucket_img = self.storage_client.bucket(self.img_dir)
-        
-        self.prompt_json = prompt_json
+        self.prompt_features = prompt_features
         self.aug_range = aug_range
         self.horizon = horizon
         self.video_list = video_list
@@ -40,6 +38,7 @@ class CrossTaskDataset(Dataset):
         self.M = M
         self.num_action = num_action
         self.transition_matrix = np.zeros((num_action, num_action))
+        self.return_frames = return_frames  # Store the return_frames option
         self.task_info = {"Make Jello Shots": 23521, 
                           "Build Simple Floating Shelves": 59684, 
                           "Make Taco Salad": 71781, 
@@ -77,13 +76,6 @@ class CrossTaskDataset(Dataset):
         '''
         transition = matrix / np.sum(matrix, axis = 1, keepdims = True)
         return transition
-    def load_npy_gcloud(self, file_name):
-        
-        blob = self.bucket_img.blob(file_name)
-        with blob.open('rb') as f:
-                data = np.load(f,allow_pickle=True)
-        return data.item()
-        
 
     def SaveImageStates(self):
         with open(self.video_list, "r") as f:
@@ -139,11 +131,14 @@ class CrossTaskDataset(Dataset):
             task = video_anot[0]["task"]
             
             try:
-               
-                #frame_data=self.load_npy_gcloud("{}.npy".format(video_id))
-                frame_data= np.load(os.path.join(self.img_dir, "{}.npy".format(video_id)), allow_pickle=True).item()
-                start_frames = frame_data["start_frames"]
-                end_frames = frame_data["end_frames"]
+                saved_features = \
+                    np.load(os.path.join(self.feature_dir, "{}_{}.npy".\
+                                            format(self.task_info[task], video_id)), 
+                            allow_pickle=True)["frames_features"]
+                if self.return_frames:
+                    frame_data=np.load(os.path.join(self.img_dir, "{}.npy".format(video_id)), allow_pickle=True).item()
+                    start_frames = frame_data["start_frames"]
+                    end_frames = frame_data["end_frames"]
                 
             except:
                 continue
@@ -164,38 +159,57 @@ class CrossTaskDataset(Dataset):
 
 
             for i in range(len(video_anot)-self.horizon+1):
+                all_features = []
                 all_action_ids = []
                 all_frames = []
-                all_prompts= []
+                
                 for j in range(self.horizon):
                     cur_video_anot = video_anot[i+j]
                     cur_action_id = cur_video_anot["action_id"]-1
-                    cur_prompts=self.prompt_json[cur_video_anot["task"]][cur_video_anot["action"]]
+                    features = []
                     
-                    all_prompts.append(cur_prompts)
-                    all_action_ids.append(cur_action_id)
+                    ## Using adjacent frames for data augmentation
+                    for frame_offset in range(-self.aug_range, self.aug_range+1):
+                        s_time = cur_video_anot["start"]+frame_offset
+                        e_time = cur_video_anot["end"]+frame_offset
+
+                        if s_time < 0 or e_time >= saved_features.shape[0]:
+                            continue
                         
-                    s_frame=cv2.cvtColor(start_frames[i+j,...], cv2.COLOR_BGR2RGB)
-                    e_frame=cv2.cvtColor(end_frames[i+j,...], cv2.COLOR_BGR2RGB)
-                    all_frames.append([np.stack((s_frame, e_frame))])
+                        s_offset_start = max(0, s_time-self.M//2)
+                        s_offset_end = min(s_time+self.M//2+1,saved_features.shape[0])
+                        e_offset_start = max(0, e_time-self.M//2)
+                        e_offset_end = min(e_time+self.M//2+1,saved_features.shape[0])
+
+                        start_feature = np.mean(saved_features[s_offset_start:s_offset_end], axis = 0)
+                        end_feature = np.mean(saved_features[e_offset_start:e_offset_end], axis = 0)
+                        
+                        features.append(np.stack((start_feature, end_feature)))
+                    all_features.append(features)
+                    all_action_ids.append(cur_action_id)
+                    if self.return_frames:
+                        
+                        s_frame=start_frames[i+j,...]
+                        e_frame=end_frames[i+j,...]
+                        all_frames.append([np.stack((s_frame, e_frame))])
 
                 task_id = cur_video_anot["task_id"]
 
-                ## permutation of frames, action ids and prompts
-                frames_per = itertools.product(*all_frames)
+                ## permutation of augmented features, action ids and prompts
+                aug_features = itertools.product(*all_features)
 
-                self.data.extend([{"frames": np.stack(f),
-                                   "actions": np.array(all_action_ids),
-                                   "tasks": np.array(task_id),
-                                   "prompts":  all_prompts}
-                                  for f in frames_per])
+                self.data.extend([{"states": np.stack(f),
+                                   "actions": np.array(all_action_ids), 
+                                   "frames": np.array(all_frames),
+                                   "tasks": np.array(task_id)} 
+                                  for f in aug_features])
             
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, idx):
+        states = self.data[idx]["states"]
         actions = self.data[idx]["actions"]
         tasks = self.data[idx]["tasks"]
         frames = np.squeeze(self.data[idx]["frames"])
-        prompts = self.data[idx]["prompts"]
-        return torch.as_tensor(frames, dtype=torch.float32), prompts, torch.as_tensor(actions, dtype=torch.long), torch.as_tensor(tasks, dtype=torch.long)
+        return torch.as_tensor(states, dtype=torch.float32), torch.as_tensor(actions, dtype=torch.long), torch.as_tensor(tasks, dtype=torch.long), torch.as_tensor(frames, dtype=torch.float32)
