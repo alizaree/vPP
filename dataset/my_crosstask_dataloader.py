@@ -194,8 +194,8 @@ class CrossTaskDataset(Dataset):
                     all_prompts.append(cur_prompts)
                     all_action_ids.append(cur_action_id)
                         
-                    s_frame=cv2.cvtColor(start_frames[i+j,...], cv2.COLOR_BGR2RGB)
-                    e_frame=cv2.cvtColor(end_frames[i+j,...], cv2.COLOR_BGR2RGB)
+                    s_frame=start_frames[i+j,...]
+                    e_frame=end_frames[i+j,...]
                     all_frames.append([np.stack((s_frame, e_frame))])
 
                 task_id = cur_video_anot["task_id"]

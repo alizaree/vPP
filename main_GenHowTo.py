@@ -118,36 +118,25 @@ def run_genhowto(args):
                 f"{pipe.scheduler.timesteps[0]} to {pipe.scheduler.timesteps[-1]}.")
             
         import pdb; pdb.set_trace()
-    
-    #have a different function to go over this for simpler code.    
-    # Go Through data loader and fir each batch of images process the out state. See if it works with batches.
-    """for within batch:
-    image = Image.open(args.input_image).convert("RGB")
-    w, h = image.size
-    if w > h:
-        image = image.crop(((w - h) // 2, 0, (w + h) // 2, h))
-    elif h > w:
-        image = image.crop((0, (h - w) // 2, w, (h + w) // 2))
-    image = image.resize((512, 512))
+        """
+        # latents must be passed explicitly, otherwise the model generates incorrect shape
+        latents = torch.randn((args.batch_size, 4, 64, 64))
 
-    # latents must be passed explicitly, otherwise the model generates incorrect shape
-    latents = torch.randn((args.num_images, 4, 64, 64))
+        if args.num_inference_steps is not None:
+            z = pipe.control_image_processor.preprocess(image)
+            z = z * pipe.vae.config.scaling_factor
+            t = pipe.scheduler.timesteps[0]
+            alpha_bar = pipe.scheduler.alphas_cumprod[t].item()
+            latents = math.sqrt(alpha_bar) * z + math.sqrt(1. - alpha_bar) * latents.to(z.device)
 
-    if args.num_inference_steps is not None:
-        z = pipe.control_image_processor.preprocess(image)
-        z = z * pipe.vae.config.scaling_factor
-        t = pipe.scheduler.timesteps[0]
-        alpha_bar = pipe.scheduler.alphas_cumprod[t].item()
-        latents = math.sqrt(alpha_bar) * z + math.sqrt(1. - alpha_bar) * latents.to(z.device)
-
-    output = pipe(
-        args.prompt, image,
-        guidance_scale=args.guidance_scale,
-        num_inference_steps=args.num_inference_steps,
-        latents=latents,
-        num_images_per_prompt=args.num_images,
-    ).images
-    """
+        output = pipe(
+            args.prompt, image,
+            guidance_scale=args.guidance_scale,
+            num_inference_steps=args.num_inference_steps,
+            latents=latents,
+            num_images_per_prompt=args.num_images,
+        ).images
+        """
 
 if __name__ == "__main__":
     args = create_parser()
