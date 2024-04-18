@@ -10,7 +10,9 @@ from models.procedure_model import ProcedureModel
 from models.utils import AverageMeter
 import wandb
 from tools.parser import create_parser
+from PIL import Image
 
+from models.GenHowTo.genhowto_utils import load_genhowto_model, DDIMSkipScheduler
 
 
 
@@ -100,157 +102,52 @@ def run_genhowto(args):
 
     logger.info("Training set volumn: {} Testing set volumn: {}".format(len(train_dataset), len(valid_dataset)))
     # Initialize wandb
-    wandb_config=vars(args)
-    wandb.init(project='vPP', config=wandb_config)
+    #wandb_config=vars(args)
+    #wandb.init(project='vPP', config=wandb_config)
     
-    model = ProcedureModel(
-        vis_input_dim=args.img_input_dim,
-        lang_input_dim=args.text_input_dim,
-        embed_dim=args.embed_dim,
-        time_horz=args.max_traj_len, 
-        num_classes=args.num_action,
-        num_tasks=args.num_tasks,
-        args=args
-    ).to(device)
-
-    optimizer = torch.optim.AdamW(
-        [
-            {"params": model.parameters()},
-        ],
-        lr=args.lr
-    )
-
-    scheduler = torch.optim.lr_scheduler.StepLR(
-        optimizer, 
-        step_size=args.step_size, 
-        gamma=args.lr_decay, 
-        last_epoch=-1
-    )
-
-    state_prompt_features  = torch.tensor(state_prompt_features).to(device, dtype=torch.float32).clone().detach()
-
-    max_SR = 0
-
-    for e in range(0, args.epochs):
-        model.train()
-        # losses
-        losses_state  = AverageMeter()
-        losses_action = AverageMeter()
-        losses_task = AverageMeter()
-        losses_state_pred = AverageMeter()
-
-        # metrics for action
-        action_acc1 = AverageMeter()
-        action_acc5 = AverageMeter()
-        action_sr   = AverageMeter()
-        action_miou = AverageMeter()
-        state_acc = AverageMeter()
-        task_acc = AverageMeter()
-
-        for i, (batch_states, batch_actions, batch_tasks) in enumerate(train_loader):
-            '''
-            batch_states:  (batch_size, time_horizon, 2, embedding_dim)
-            batch_actions: (batch_size, time_horizon)
-            '''
-            batch_size, _ = batch_actions.shape
-            optimizer.zero_grad()
-
-            ## compute loss
-            batch_states = batch_states.to(device)
-            batch_actions = batch_actions.to(device)
-            batch_tasks = batch_tasks.to(device)
-            outputs, labels, losses = model(
-                visual_features=batch_states,
-                state_prompt_features=state_prompt_features,
-                actions=batch_actions,
-                tasks=batch_tasks
-            )
-
-            total_loss = losses["action"] + losses["state_encode"] + losses["task"] + losses["state_decode"] * 0.1
-            total_loss.backward()
-            optimizer.step()
+    pipe = load_genhowto_model(args.weights_path, device=args.device)
+    logger.info("the model is loaded.")
+    for data in train_loader:
+        pipe.scheduler.set_timesteps(args.num_inference_steps)
+        
+        #set the scheduler of GenHowTo (on per instance bases)
+        if args.num_steps_to_skip is not None:  # possibly do not start from complete noise
+            pipe.scheduler = DDIMSkipScheduler.from_config(pipe.scheduler.config)
+            pipe.scheduler.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
+            print(f"Skipping first {args.num_steps_to_skip} DDIM steps, i.e., running DDIM from timestep "
+                f"{pipe.scheduler.timesteps[0]} to {pipe.scheduler.timesteps[-1]}.")
             
-            losses_action.update(losses["action"].item())
-            losses_state.update(losses["state_encode"].item())
-            losses_task.update(losses["task"].item())
-            losses_state_pred.update(losses["state_decode"].item())
+        import pdb; pdb.set_trace()
+    
+    #have a different function to go over this for simpler code.    
+    # Go Through data loader and fir each batch of images process the out state. See if it works with batches.
+    """for within batch:
+    image = Image.open(args.input_image).convert("RGB")
+    w, h = image.size
+    if w > h:
+        image = image.crop(((w - h) // 2, 0, (w + h) // 2, h))
+    elif h > w:
+        image = image.crop((0, (h - w) // 2, w, (h + w) // 2))
+    image = image.resize((512, 512))
 
-            ## compute accuracy for state encoding
-            acc_state = topk_accuracy(output=outputs["state_encode"].cpu(), target=labels["state"].cpu())
-            state_acc.update(acc_state[0].item())
+    # latents must be passed explicitly, otherwise the model generates incorrect shape
+    latents = torch.randn((args.num_images, 4, 64, 64))
 
-            ## compute accuracy for action prediction
-            (acc1, acc5), sr, MIoU = \
-                accuracy(outputs["action"].contiguous().view(-1, outputs["action"].shape[-1]).cpu(), 
-                         labels["action"].contiguous().view(-1).cpu(), topk=(1, 5), max_traj_len=args.max_traj_len) 
-            action_acc1.update(acc1.item())
-            action_acc5.update(acc5.item())
-            action_sr.update(sr.item())
-            action_miou.update(MIoU)
+    if args.num_inference_steps is not None:
+        z = pipe.control_image_processor.preprocess(image)
+        z = z * pipe.vae.config.scaling_factor
+        t = pipe.scheduler.timesteps[0]
+        alpha_bar = pipe.scheduler.alphas_cumprod[t].item()
+        latents = math.sqrt(alpha_bar) * z + math.sqrt(1. - alpha_bar) * latents.to(z.device)
 
-            acc_task = topk_accuracy(output=outputs["task"].cpu(), target=labels["task"].cpu(), topk=[1])[0]
-            task_acc.update(acc_task.item())
-
-        logger.info("Epoch: {} State Loss: {:.2f} Top1 Acc: {:.2f}%"\
-                    .format(e+1, losses_state.avg, state_acc.avg))
-        logger.info("\tAction Loss: {:.2f}, SR: {:.2f}% Acc1: {:.2f}% Acc5: {:.2f}% MIoU: {:.2f}"\
-                    .format(losses_action.avg,
-                            action_sr.avg,
-                            action_acc1.avg,
-                            action_acc5.avg,
-                            action_miou.avg))
-        logger.info("\tTask Loss: {:.2f}, Acc1: {:.2f}%".format(losses_task.avg, task_acc.avg))
-        logger.info("\tState Pred Loss: {:.2f}".format(losses_state_pred.avg))
-
-        lr = optimizer.param_groups[0]['lr']
-        ToLog={'lr/lr': lr, 'train_loss/state': losses_state.avg, 'train_loss/action': losses_action.avg,
-                'train_loss/task': losses_task.avg, 'train_loss/state_pred': losses_state_pred.avg,
-                'train_state/acc': state_acc.avg, 'train_action/sr': action_sr.avg,
-                'train_action/miou': action_miou.avg, 'train_action/acc1': action_acc1.avg,
-                'train_action/acc5': action_acc5.avg, 'train_task/acc': task_acc.avg}
-        # Log scalars
-        wandb.log(ToLog, step=e+1)
-
-
-        if args.last_epoch < 0 or e < args.last_epoch:
-            scheduler.step()
-
-        ## validation
-        if (e+1)%validate_interval == 0:
-            model.eval()
-            SR = eval(args, 
-                      valid_loader, 
-                      model, 
-                      logger, 
-                      state_prompt_features, 
-                      transition_matrix, 
-                      e, 
-                      device,
-                      writer=writer, 
-                      is_train=True)
-            
-            # save the last model to logger path
-            torch.save(
-                model.state_dict(), 
-                os.path.join(
-                    logger_path,
-                    f"T{args.max_traj_len}_model_last.pth"  
-                )
-            )
-            # save the best model to checkpoints path
-            if SR > max_SR:
-                max_SR = SR
-                log_save_path = os.path.join(
-                    logger_path,
-                    f"T{args.max_traj_len}_model_best.pth"  
-                )
-                checkpoint_save_path = os.path.join(
-                        args.saved_path, 
-                        args.dataset,
-                        f"T{args.max_traj_len}_model_best.pth"
-                    )
-                torch.save(model.state_dict(), checkpoint_save_path)        
-                os.system(f"cp {checkpoint_save_path} {log_save_path}")
+    output = pipe(
+        args.prompt, image,
+        guidance_scale=args.guidance_scale,
+        num_inference_steps=args.num_inference_steps,
+        latents=latents,
+        num_images_per_prompt=args.num_images,
+    ).images
+    """
 
 if __name__ == "__main__":
     args = create_parser()

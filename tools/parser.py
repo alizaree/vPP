@@ -6,25 +6,16 @@ def create_parser():
     parser.add_argument('--model_name', 
                         default='model', type=str, 
                         help='model name')
-    parser.add_argument('--num_layers', 
-                        default=3, type=int, metavar='NUM_LAYERS',
-                        help='number of layers (default: 3)')
-    parser.add_argument('--attn_heads', 
-                        default=4, type=int, metavar='NUM_HEADS',
-                        help='number of heads (default: 4)')
-    parser.add_argument('--mlp_ratio', 
-                        default=2, type=int, metavar='MLP_RATIO',
-                        help='mlp ratio in ff (default: 2)')
-    parser.add_argument('--text_input_dim', 
-                        default=768, type=int, metavar='DIM',
-                        help='dimension (default: 768)')
-    parser.add_argument('--img_input_dim', 
-                        default=768, type=int, metavar='DIM',
-                        help='dimension (default: 512)')
-    parser.add_argument('--embed_dim', 
-                        default=128, type=int, metavar='DIM',
-                        help='dimension (default: 128)')
-    
+    parser.add_argument("--weights_path",
+                        type=str, default="./models/GenHowTo/weights/GenHowTo-STATES-96h-v1")
+    parser.add_argument("--device",
+                        type=str, default="cuda")
+    parser.add_argument("--num_inference_steps",
+                        type=int, default=50)
+    parser.add_argument("--num_steps_to_skip",
+                        type=int, default=None)
+    parser.add_argument("--guidance_scale",
+                        type=float, default=9.0)
     parser.add_argument('--max_traj_len', 
                         default=3, type=int, metavar='MAXTRAJ',
                         help='max length (default: 54)')

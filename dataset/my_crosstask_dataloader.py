@@ -6,6 +6,7 @@ import json
 import os
 import cv2
 from tqdm import tqdm
+from PIL import Image
 
 class CrossTaskDataset(Dataset):
     def __init__(
@@ -83,6 +84,20 @@ class CrossTaskDataset(Dataset):
         with blob.open('rb') as f:
                 data = np.load(f,allow_pickle=True)
         return data.item()
+    def fix_image_size(self, image):
+        # Convert numpy array to PIL Image
+        image = Image.fromarray(image)
+
+        w, h = image.size
+        if w > h:
+            image = image.crop(((w - h) // 2, 0, (w + h) // 2, h))
+        elif h > w:
+            image = image.crop((0, (h - w) // 2, w, (h + w) // 2))
+        image = image.resize((512, 512))
+
+        # Convert PIL Image back to numpy array
+        image = np.array(image)
+        return image
         
 
     def SaveImageStates(self):
@@ -107,6 +122,10 @@ class CrossTaskDataset(Dataset):
                     ret, start_frame = cap.read()
                     cap.set(cv2.CAP_PROP_POS_FRAMES, end_frame_index)
                     ret, end_frame = cap.read()
+                    # make RGB
+                    start_frame=self.fix_image_size(cv2.cvtColor(start_frame, cv2.COLOR_BGR2RGB))
+                    end_frame=self.fix_image_size(cv2.cvtColor(end_frame, cv2.COLOR_BGR2RGB))
+                    
                     if ret:
                         frame_list_start.append(start_frame[None, :])
                         frame_list_end.append(end_frame[None,:])
