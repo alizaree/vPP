@@ -2,7 +2,7 @@ import torch
 import os
 import time
 import numpy as np
-
+import math
 from utils import *
 from metrics import *
 from torch.utils.data import DataLoader
@@ -105,9 +105,12 @@ def run_genhowto(args):
     #wandb_config=vars(args)
     #wandb.init(project='vPP', config=wandb_config)
     
-    pipe = load_genhowto_model(args.weights_path, device=args.device)
+    pipe = load_genhowto_model(args.weights_path, device=device)
     logger.info("the model is loaded.")
     for data in train_loader:
+        #  data[0] : batch*n_act*2(start, end frames)*w*h*3(RGB)
+        # data[1]: list [ac_1,ac_2,ac_3] ac_i[key:description, before, after]=batch*[str] 
+        # data[3]: data[3].shape torch.Size([256]) of task ids
         pipe.scheduler.set_timesteps(args.num_inference_steps)
         
         #set the scheduler of GenHowTo (on per instance bases)
@@ -117,6 +120,24 @@ def run_genhowto(args):
             print(f"Skipping first {args.num_steps_to_skip} DDIM steps, i.e., running DDIM from timestep "
                 f"{pipe.scheduler.timesteps[0]} to {pipe.scheduler.timesteps[-1]}.")
             
+        input=data[0][:,0,0,...]
+        prompt=[data[1][0]["after"][idd][0] for idd in range(args.batch_size)]
+        img_input = [Image.fromarray(( idd.numpy()).astype(np.uint8)) for idd in input]
+        latents = torch.randn((args.batch_size, 4, 64, 64))
+        if args.num_inference_steps is not None:
+            z = pipe.control_image_processor.preprocess(img_input)
+            z = z * pipe.vae.config.scaling_factor
+            t = pipe.scheduler.timesteps[0]
+            alpha_bar = pipe.scheduler.alphas_cumprod[t].item()
+            latents = math.sqrt(alpha_bar) * z + math.sqrt(1. - alpha_bar) * latents.to(z.device)
+            
+        output = pipe(
+        prompt, img_input,
+        guidance_scale=args.guidance_scale,
+        num_inference_steps=args.num_inference_steps,
+        latents=latents,
+        num_images_per_prompt=1,
+        )#.images
         import pdb; pdb.set_trace()
         """
         # latents must be passed explicitly, otherwise the model generates incorrect shape

@@ -2,7 +2,7 @@ CUDA_VISIBLE_DEVICES=0 python main_GenHowTo.py \
     --optimizer 'adam' \
     --lr 0.004 \
     --dropout 0.2 \
-    --batch_size 256 \
+    --batch_size 2 \
     --epochs 500 \
     --max_traj_len 3 \
     --M 2 \
@@ -21,5 +21,4 @@ CUDA_VISIBLE_DEVICES=0 python main_GenHowTo.py \
     --saved_path 'checkpoints' \
     --return_frames \
     --vid_dir "/home/yulei/data/crosstask/crosstask_videos/videos/" \
-    --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states"\
-    --save_image_states
+    --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states"
