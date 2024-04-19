@@ -125,7 +125,7 @@ def run_genhowto(args):
         img_input = [Image.fromarray(( idd.numpy()).astype(np.uint8)) for idd in input]
         latents = torch.randn((args.batch_size, 4, 64, 64))
         if args.num_inference_steps is not None:
-            z = pipe.control_image_processor.preprocess(img_input)
+            z = pipe.control_image_processor.preprocess(img_input) # VAE of input image
             z = z * pipe.vae.config.scaling_factor
             t = pipe.scheduler.timesteps[0]
             alpha_bar = pipe.scheduler.alphas_cumprod[t].item()
