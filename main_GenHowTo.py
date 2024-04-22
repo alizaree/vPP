@@ -12,7 +12,8 @@ import wandb
 from tools.parser import create_parser
 from PIL import Image
 
-from models.GenHowTo.genhowto_utils import load_genhowto_model, DDIMSkipScheduler
+from models.genhowto_model import MyPipe
+
 
 
 
@@ -105,68 +106,14 @@ def run_genhowto(args):
     #wandb_config=vars(args)
     #wandb.init(project='vPP', config=wandb_config)
     
-    pipe = load_genhowto_model(args.weights_path, device=device)
+    pipe = MyPipe(args.weights_path, args, device=device)
     logger.info("the model is loaded.")
+
     for data in train_loader:
-        #  data[0] : batch*n_act*2(start, end frames)*w*h*3(RGB)
-        # data[1]: list [ac_1,ac_2,ac_3] ac_i[key:description, before, after]=list(3*batch*[str] )
-        # data[3]: data[3].shape torch.Size([256]) of task ids
-        pipe.scheduler.set_timesteps(args.num_inference_steps)
-        
-        #set the scheduler of GenHowTo (on per instance bases)
-        if args.num_steps_to_skip is not None:  # possibly do not start from complete noise
-            pipe.scheduler = DDIMSkipScheduler.from_config(pipe.scheduler.config)
-            pipe.scheduler.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
-            print(f"Skipping first {args.num_steps_to_skip} DDIM steps, i.e., running DDIM from timestep "
-                f"{pipe.scheduler.timesteps[0]} to {pipe.scheduler.timesteps[-1]}.")
-        ### get all the embedings for state (text) visual and action:
-        # Reshape tensor to (batch*n_act*2, w, h, 3)
-        reshaped_tensor = data[0].view(-1, *data[0].shape[3:])
-        img_input = [Image.fromarray(( idd.numpy()).astype(np.uint8)) for idd in reshaped_tensor]
-        with torch.no_grad():
-            vae_out = pipe.control_image_processor.preprocess(img_input) # VAE of input image
-            # Reshape processed tensor back to (batch, n_act, 2, n_ch, w_n, h_n)
-            vis_embds = vae_out.view(data[0].shape[0], data[0].shape[1], 2, *vae_out.shape[1:])
-        # now let's get the features of prompts ( state descriptors)
-        
-        state_mode='after'
-        prompt_s=[]
-        for batch_id in range(args.batch_size):
-            prompt_s.append([data[1][ac_id][state_mode][0][batch_id] for ac_id in range(len(data[1]))])
-        # make prompt from a list of n_batch, n_act,str to n_batch
-        prompt_s=[j for i in prompt_s  for j in i ]
-        # Encode the prompt into tokens
-        with torch.no_grad():
-            tokens = pipe.tokenizer(prompt_s, padding=True, return_tensors='pt')
-            # Get the input IDs
-            input_ids = tokens['input_ids'].to(device)
-            # Get the last hidden state from the text encoder
-            last_hidden_states = pipe.text_encoder(input_ids)['last_hidden_state']
-            # Find the position of the <EOS> token in the input_ids
-            eos_positions = (input_ids == pipe.tokenizer.eos_token_id).nonzero()
-            # Extract the embeddings of the <EOS> tokens
-            tstate_embds = last_hidden_states[eos_positions[:, 0], eos_positions[:, 1]].view(args.batch_size, len(data[1]), -1)
-            # eos_embeddings now contains the embeddings of the <EOS> tokens in the prompt
-        
-        state_mode='description'
-        prompt_a=[]
-        for batch_id in range(args.batch_size):
-            prompt_a.append([data[1][ac_id][state_mode][0][batch_id] for ac_id in range(len(data[1]))])
-        # make prompt from a list of n_batch, n_act,str to n_batch
-        prompt_a=[j for i in prompt_a  for j in i ]
-        # Encode the prompt into tokens
-        with torch.no_grad():
-            tokens = pipe.tokenizer(prompt_a, padding=True, return_tensors='pt')
-            # Get the input IDs
-            input_ids = tokens['input_ids'].to(device)
-            # Get the last hidden state from the text encoder
-            last_hidden_states = pipe.text_encoder(input_ids)['last_hidden_state']
-            # Find the position of the <EOS> token in the input_ids
-            eos_positions = (input_ids == pipe.tokenizer.eos_token_id).nonzero()
-            # Extract the embeddings of the <EOS> tokens
-            action_embds = last_hidden_states[eos_positions[:, 0], eos_positions[:, 1]].view(args.batch_size, len(data[1]), -1)
-            # eos_embeddings now contains the embeddings of the <EOS> tokens in the prompt
-        
+        pipe.set_timesteps(args.num_inference_steps)
+        pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
+        vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+            
         import pdb; pdb.set_trace()
         img_input = [Image.fromarray(( idd.numpy()).astype(np.uint8)) for idd in input]
         latents = torch.randn((args.batch_size, 4, 64, 64))
