@@ -20,7 +20,7 @@ def create_parser():
                         default=3, type=int, metavar='MAXTRAJ',
                         help='max length (default: 54)')
     parser.add_argument('--d_model', 
-                        default=512, type=int, metavar='MAXTRAJ',
+                        default=1024, type=int, metavar='MAXTRAJ',
                         help='dim of the model')
     parser.add_argument('--input_dim', 
                         default=1024, type=int, metavar='MAXTRAJ',

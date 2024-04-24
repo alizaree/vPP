@@ -46,7 +46,7 @@ class AutoregressiveTransformer(nn.Module):
 
         # Additional layers can be added if necessary
 
-    def forward(self, visual_input):
+    def forward(self, visual_input, ground_truth_action_embeds=None):
         #n_batch, n_action, 2, w, h, 3
         batch_size = visual_input.shape[0]
         visual_s=visual_input[:, 0,0,...]
@@ -71,4 +71,10 @@ class AutoregressiveTransformer(nn.Module):
             transformer_output = self.transformer(inputs_embeds=vis_in).last_hidden_state[:,-1,:].clone()
             out.append(transformer_output[:,None,:])
         action_embeds=torch.cat(out,dim=1)
+        # Compute MSE loss between predicted action embeddings and ground truth action embeddings
+        if ground_truth_action_embeds!=None:
+            mse_loss = F.mse_loss(action_embeds, ground_truth_action_embeds)
+
+            return action_embeds, mse_loss
         return action_embeds
+            

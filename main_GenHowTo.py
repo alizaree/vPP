@@ -114,8 +114,10 @@ def run_genhowto(args):
         pipe.set_timesteps(args.num_inference_steps)
         pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
         vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
-        out_model= model(vis_embds)
-        import pdb; pdb.set_trace()
+        out_model, loss= model(vis_embds, action_embds)
+        # assign embeds to labels
+        
+        
         img_input = [Image.fromarray(( idd.numpy()).astype(np.uint8)) for idd in input]
         latents = torch.randn((args.batch_size, 4, 64, 64))
         z = pipe.control_image_processor.preprocess(img_input) # VAE of input image
