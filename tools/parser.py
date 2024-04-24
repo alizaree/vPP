@@ -19,6 +19,23 @@ def create_parser():
     parser.add_argument('--max_traj_len', 
                         default=3, type=int, metavar='MAXTRAJ',
                         help='max length (default: 54)')
+    parser.add_argument('--d_model', 
+                        default=512, type=int, metavar='MAXTRAJ',
+                        help='dim of the model')
+    parser.add_argument('--input_dim', 
+                        default=1024, type=int, metavar='MAXTRAJ',
+                        help='dim of the model')
+    parser.add_argument('--vis_input_dim', 
+                        default=64, type=int, metavar='MAXTRAJ',
+                        help='dim of the model')
+    parser.add_argument("--dropout_rate",
+                        type=float, default=0.2)
+    parser.add_argument('--n_layer', 
+                        default=4, type=int, metavar='MAXTRAJ',
+                        help='dim of the model')
+    parser.add_argument('--n_head', 
+                        default=8, type=int, metavar='MAXTRAJ',
+                        help='dim of the model')
     parser.add_argument('--dataset', 
                         default='crosstask_howto100m', type=str, 
                         help='features')

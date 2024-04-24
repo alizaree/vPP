@@ -13,7 +13,7 @@ from tools.parser import create_parser
 from PIL import Image
 
 from models.genhowto_model import MyPipe
-
+from models.model import AutoregressiveTransformer
 
 
 
@@ -33,7 +33,7 @@ def run_genhowto(args):
     validate_interval = 1
     setup_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+    args.device=device
     if args.dataset == 'crosstask':
         logger.info("Loading prompt features...")
         file_path = './data/descriptors_crosstask.json'
@@ -108,12 +108,13 @@ def run_genhowto(args):
     
     pipe = MyPipe(args.weights_path, args, device=device)
     logger.info("the model is loaded.")
-
+    model= AutoregressiveTransformer(**vars(args)).to(device)
+    model.eval()
     for data in train_loader:
         pipe.set_timesteps(args.num_inference_steps)
         pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
         vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
-            
+        out_model= model(vis_embds)
         import pdb; pdb.set_trace()
         img_input = [Image.fromarray(( idd.numpy()).astype(np.uint8)) for idd in input]
         latents = torch.randn((args.batch_size, 4, 64, 64))
