@@ -11,10 +11,11 @@ from models.utils import AverageMeter
 import wandb
 from tools.parser import create_parser
 from PIL import Image
-
+import torch.optim as optim
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from models.genhowto_model import MyPipe
 from models.model import AutoregressiveTransformer
-
+from tqdm import tqdm
 
 
 def run_genhowto(args):
@@ -40,6 +41,7 @@ def run_genhowto(args):
         # Load the JSON file
         with open(file_path, 'r') as f:
             state_prompts = json.load(f)
+        n_actions=sum([len(item) for key,item in state_prompts.items()])
         #state_prompt_features = np.load(f'./data/state_description_features/crosstask_state_prompt_features.npy')
 
         ## parse raw data
@@ -109,56 +111,92 @@ def run_genhowto(args):
     pipe = MyPipe(args.weights_path, args, device=device)
     logger.info("the model is loaded.")
     model= AutoregressiveTransformer(**vars(args)).to(device)
+    
+    
+    optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
+    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=5, factor=0.5, verbose=True)  # Adjust patience and factor as needed
     model.eval()
-    for data in train_loader:
-        pipe.set_timesteps(args.num_inference_steps)
-        pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
-        vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
-        out_model, loss= model(vis_embds, action_embds)
-        # assign embeds to labels
-        
-        
-        img_input = [Image.fromarray(( idd.numpy()).astype(np.uint8)) for idd in input]
-        latents = torch.randn((args.batch_size, 4, 64, 64))
-        z = pipe.control_image_processor.preprocess(img_input) # VAE of input image
-        if args.num_inference_steps is not None:
-            z = pipe.control_image_processor.preprocess(img_input) # VAE of input image
-            z = z * pipe.vae.config.scaling_factor
-            t = pipe.scheduler.timesteps[0]
-            alpha_bar = pipe.scheduler.alphas_cumprod[t].item()
-            latents = math.sqrt(alpha_bar) * z + math.sqrt(1. - alpha_bar) * latents.to(z.device)
+
+    # getting all_action_embeds and state embeds
+    action_embeds_file = "all_action_embeds.pt"
+    tstate_embeds_file = "all_tstate_embeds.pt"
+    Load_from_save=True
+    # Check if loading from save is required
+    if Load_from_save:
+        if os.path.exists(action_embeds_file) and os.path.exists(tstate_embeds_file):
+            logger.info("Loading all_action_embeds and all_tstate_embeds from saved files...")
+            all_action_embeds = torch.load(action_embeds_file)
+            all_tstate_embeds = torch.load(tstate_embeds_file)
+            logger.info("Loaded all_action_embeds and all_tstate_embeds from saved files.")
+        else:
+            logger.warning("No saved files found. Proceeding with estimation.")
+            Load_from_save = False  # Set flag to False for estimation
+
+    # If not loading from saved files or files not found, estimate tensors
+    if not Load_from_save:
+        logger.info("Estimating all the action and state prompt embeddings...")
+        seen_actions = {}
+        all_action_embeds = torch.zeros((n_actions, args.input_dim))  # Assuming n_actions and dim are known
+        all_tstate_embeds = torch.zeros((n_actions, args.input_dim))  # Assuming n_actions and dim are known
+        total_batches = n_actions
+        with tqdm(total=total_batches) as pbar:
+            for data in train_loader:
+                pipe.set_timesteps(args.num_inference_steps)
+                pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
+                _, tstate_embeds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+                for plan_id, plan in enumerate(data[2]):
+                    for action_id, action in enumerate(plan):
+                        action_val = action.item()
+                        if action_val not in seen_actions:
+                            all_action_embeds[action_val, :] =  action_embds[plan_id, action_id, :].clone()
+                            all_tstate_embeds[action_val, :] =  tstate_embeds[plan_id, action_id, :].clone()
+                            seen_actions[action_val] = 1
+                            pbar.update(1)
+                if len(seen_actions) == n_actions:
+                    break
+
+        # Save the tensors
+        logger.info("Saving all_action_embeds and all_tstate_embeds...")
+        torch.save(all_action_embeds, action_embeds_file)
+        torch.save(all_tstate_embeds, tstate_embeds_file)
+        logger.info("Saved all_action_embeds and all_tstate_embeds.")
+
+    logger.info("Got all the action and state prompts embeds.")
+
+    for epoch in range(args.epochs):
+        # Set model to training mode
+        model.train()
+        # Initialize variables for tracking loss
+        epoch_loss = 0.0
+        for data in train_loader:
+            pipe.set_timesteps(args.num_inference_steps)
+            pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
+            vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+            out_model, loss= model(vis_embds, action_embds)
             
-        output = pipe(
-        prompt, img_input,
-        guidance_scale=args.guidance_scale,
-        num_inference_steps=args.num_inference_steps,
-        latents=latents,
-        num_images_per_prompt=1,
-        )#.images
-        import pdb; pdb.set_trace()
-        """
-        # latents must be passed explicitly, otherwise the model generates incorrect shape
-        latents = torch.randn((args.batch_size, 4, 64, 64))
+            # Backpropagation
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            # Accumulate loss for the epoch
+            epoch_loss += loss.item()
+            
+            import pdb; pdb.set_trace()
+        # Average epoch loss
+        avg_epoch_loss = epoch_loss/len(train_loader) 
+        # Log the average loss for the epoch
+        #wandb.log({"Training Loss": avg_epoch_loss}, step=epoch)
 
-        if args.num_inference_steps is not None:
-            z = pipe.control_image_processor.preprocess(image)
-            z = z * pipe.vae.config.scaling_factor
-            t = pipe.scheduler.timesteps[0]
-            alpha_bar = pipe.scheduler.alphas_cumprod[t].item()
-            latents = math.sqrt(alpha_bar) * z + math.sqrt(1. - alpha_bar) * latents.to(z.device)
+        # Adjust learning rate based on validation loss
+        scheduler.step(avg_epoch_loss)
+    
+    # Finish logging
+    #wandb.finish()
 
-        output = pipe(
-            args.prompt, image,
-            guidance_scale=args.guidance_scale,
-            num_inference_steps=args.num_inference_steps,
-            latents=latents,
-            num_images_per_prompt=args.num_images,
-        ).images
-        """
 
 if __name__ == "__main__":
     args = create_parser()
-
+    
     if args.dataset == 'crosstask':
         if args.split == 'base':
             from dataset.my_crosstask_dataloader import CrossTaskDataset as ProcedureDataset
