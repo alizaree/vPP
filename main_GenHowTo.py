@@ -60,18 +60,21 @@ def run_genhowto(args):
         anot_info = parse_annotation(anot_dir, task_info, idices_mapping)
 
         logger.info("Loading training data...")
-        train_dataset = ProcedureDataset(anot_info, args.img_dir, state_prompts, 
+        train_dataset = ProcedureDataset(anot_info, args.img_dir, args.embedding_dir, state_prompts, 
                                         args.train_json, args.max_traj_len, aug_range=args.aug_range, 
                                         mode = "train", M=args.M,
                                         vid_dir=args.vid_dir,
-                                        save_image_states=args.save_image_states)
+                                        save_image_states=args.save_image_states, save_embeddings=args.save_embeddings,
+                                        args=args)
+        import pdb; pdb.set_trace()
         
         logger.info("Loading valid data...")
-        valid_dataset = ProcedureDataset(anot_info, args.img_dir, state_prompts, 
+        valid_dataset = ProcedureDataset(anot_info, args.img_dir, args.embedding_dir, state_prompts, 
                                         args.valid_json, args.max_traj_len, aug_range=args.aug_range, 
                                         mode = "valid", M=args.M,
                                         vid_dir=args.vid_dir,
-                                        save_image_states=args.save_image_states)
+                                        save_image_states=args.save_image_states, save_embeddings=args.save_embeddings, 
+                                        args=args)
         transition_matrix = train_dataset.transition_matrix
         
     
@@ -207,6 +210,7 @@ def run_genhowto(args):
                 pipe.set_timesteps(args.num_inference_steps)
                 pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
                 vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+            import pdb; pdb.set_trace()
             out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
             #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
             # first  change out_model to shape n_batch*n_positions, dim then compare it against all_action_embeds to find the indices.

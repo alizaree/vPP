@@ -62,7 +62,7 @@ class AutoregressiveTransformer(nn.Module):
         out=[transformer_output[:,None,:]]
         # Iterate through each action
         for i in range(1, self.max_traj_len):
-            projected_output = self.projection_layer(transformer_output[:,None,:])
+            projected_output = self.projlwnection_layer(transformer_output[:,None,:])
             idd=torch.LongTensor([i]).to(self.device)
             # Get learnable positional embedding for the current action
             learnble_query = self.positional_embeddings(idd).expand(batch_size, -1)[:,None,:]

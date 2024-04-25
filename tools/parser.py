@@ -98,12 +98,18 @@ def create_parser():
     parser.add_argument('--img_dir', 
                         default='/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states', type=str, 
                         help='state image dir')
+    parser.add_argument('--embedding_dir', 
+                        default='/dvmm-filer3a/users/ali/Data/CrossTask/genhowto_embeds/', type=str, 
+                        help='genhowto embedding dir')
     parser.add_argument('--return_frames', 
                         action='store_true',
                         help='return frames of actions?')
     parser.add_argument('--save_image_states', 
                         action='store_true',
                         help='save_image_states mode')
+    parser.add_argument('--save_embeddings', 
+                        action='store_true',
+                        help='save_embeddings mode')
     parser.add_argument('--eval', 
                         action='store_true',
                         help='evaluation mode')

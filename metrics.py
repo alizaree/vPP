@@ -107,7 +107,7 @@ def mean_category_acc(pred, gt):
     gt  : List [batch * seq]
     """
     # rst = precision_score(gt, pred, average="macro", zero_division=0)
-    rst = (gt == pred).mean() * 100
+    rst = (gt == pred).float().mean() * 100
     return rst
 
 
