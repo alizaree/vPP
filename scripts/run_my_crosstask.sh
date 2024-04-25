@@ -3,7 +3,7 @@ CUDA_VISIBLE_DEVICES=0 python main_GenHowTo.py \
     --lr 0.004 \
     --dropout 0.2 \
     --batch_size 2 \
-    --epochs 500 \
+    --epochs 100 \
     --max_traj_len 3 \
     --M 2 \
     --aug_range 0 \

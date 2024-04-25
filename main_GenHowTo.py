@@ -16,7 +16,14 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from models.genhowto_model import MyPipe
 from models.model import AutoregressiveTransformer
 from tqdm import tqdm
+from datetime import datetime
 
+def FindMetrics(pred, gt):
+    sr = success_rate(pred, gt, False)
+    miou = acc_iou(pred.copy(), gt.copy(), False)
+    #macc = mean_category_acc(rst_mode.flatten().tolist(), gt.flatten().tolist())
+    macc=mean_category_acc(pred.copy().flatten().tolist(), gt.copy().flatten().tolist())
+    return  sr, macc, miou
 
 def run_genhowto(args):
     logger_path = "logs/{}_{}_len{}".format(
@@ -105,15 +112,20 @@ def run_genhowto(args):
 
     logger.info("Training set volumn: {} Testing set volumn: {}".format(len(train_dataset), len(valid_dataset)))
     # Initialize wandb
-    #wandb_config=vars(args)
-    #wandb.init(project='vPP', config=wandb_config)
+    wandb_config=vars(args)
+    wandb.init(project='vPP', config=wandb_config)
     
     pipe = MyPipe(args.weights_path, args, device=device)
     logger.info("the model is loaded.")
     model= AutoregressiveTransformer(**vars(args)).to(device)
     
     
-    optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
+    optimizer = torch.optim.AdamW(
+        [
+            {"params": model.parameters()},
+        ],
+        lr=args.lr
+    )
     scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=5, factor=0.5, verbose=True)  # Adjust patience and factor as needed
     model.eval()
 
@@ -160,38 +172,156 @@ def run_genhowto(args):
         torch.save(all_action_embeds, action_embeds_file)
         torch.save(all_tstate_embeds, tstate_embeds_file)
         logger.info("Saved all_action_embeds and all_tstate_embeds.")
-
+    all_action_embeds=all_action_embeds.to(device)
+    all_tstate_embeds=all_tstate_embeds.to(device)
     logger.info("Got all the action and state prompts embeds.")
+    ################################################## train the model
+    
+    if args.checkpoint_name!='None':
+        #load the check_point
+        checkpoint = torch.load(os.path.join(args.checkpoint_path, args.checkpoint_name))
+        model.load_state_dict(checkpoint['model_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        epoch_start = checkpoint['epoch']
+        eval_min_metric = checkpoint['eval_min_metric']
+        
 
-    for epoch in range(args.epochs):
+    else:
+        epoch_start=0
+        eval_min_metric=np.inf 
+    
+    logger.info("Starting training...")
+    
+    for epoch in range(epoch_start, args.epochs):
         # Set model to training mode
         model.train()
         # Initialize variables for tracking loss
         epoch_loss = 0.0
-        for data in train_loader:
-            pipe.set_timesteps(args.num_inference_steps)
-            pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
-            vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
-            out_model, loss= model(vis_embds, action_embds)
-            
+        all_preds_actions=[]
+        all_gt_actions=[]
+        st_time=time.time()
+        ST_time=st_time
+        for batrch_idd,data in enumerate(train_loader):
+            optimizer.zero_grad()
+            with torch.no_grad():
+                pipe.set_timesteps(args.num_inference_steps)
+                pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
+                vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+            out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
+            #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
+            # first  change out_model to shape n_batch*n_positions, dim then compare it against all_action_embeds to find the indices.
+            predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
+            all_preds_actions.append(predicted_indices)
+            all_gt_actions.append(data[2])
             # Backpropagation
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
             # Accumulate loss for the epoch
             epoch_loss += loss.item()
-            
-            import pdb; pdb.set_trace()
+            if batrch_idd% (len(train_loader)//20) ==0:  # print withing epoch stats 5 times per epoch
+                train_loss_within_epoch=epoch_loss/(batrch_idd+1)
+                avg_time=(time.time()-st_time)/(batrch_idd+1)
+                print("######################")
+                print("# Within Epoch Stats: ","Epoch: ", str(epoch), " # batch_seen: ", str(batrch_idd+1),
+                      " Train Loss: ", str(train_loss_within_epoch), 'time/batch: ', avg_time )
+                print("######################")
+                st_time=time.time()
         # Average epoch loss
-        avg_epoch_loss = epoch_loss/len(train_loader) 
-        # Log the average loss for the epoch
-        #wandb.log({"Training Loss": avg_epoch_loss}, step=epoch)
+        train_epoch_loss = epoch_loss/len(train_loader) 
+        pred_actions= torch.cat(all_preds_actions,dim=0).detach().cpu().numpy() #shape: n_samples, n_position
+        gt_actions= torch.cat(all_gt_actions,dim=0).detach().cpu().numpy() # shape: n_samples, n_position
+        
+        # calculate the metrics:
+        sr,macc,miou=FindMetrics(pred_actions,gt_actions)
+        train_metrics={'epoch': epoch,
+                       'Training Loss': train_epoch_loss,
+                       'train_acc':macc,
+                       'train_miou':miou.mean(),
+                       'train_sr':sr.mean(),
+        }
+        logger.info("****************************************************************************")
+        logger.info('Train Loop Ended. epoch: '+ str(epoch)+ ' train_loss: '+str(train_epoch_loss)+ ' epoch_time: '+ str(time.time()-ST_time ))
+        logger.info('evaluating....')        
+        
+        
+        
+        ###################################################################### evaluate the model
+        model.eval()
+        # Initialize variables for tracking loss
+        epoch_loss = 0.0
+        all_preds_actions=[]
+        all_gt_actions=[]
+        st_time=time.time()
+        ST_time=st_time
+        for data in valid_loader:
+            with torch.no_grad():
+                pipe.set_timesteps(args.num_inference_steps)
+                pipe.set_num_steps_to_skip(args.num_steps_to_skip, args.num_inference_steps)
+                vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+                out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
+                #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
+                # first  change out_model to shape n_batch*n_positions, dim then compare it against all_action_embeds to find the indices.
+                predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
+                all_preds_actions.append(predicted_indices)
+                all_gt_actions.append(data[2])
+                
+                # Accumulate loss for the epoch
+                epoch_loss += loss.item()
+        # Average epoch loss
+        valid_epoch_loss = epoch_loss/len(valid_loader) 
+        pred_actions= torch.cat(all_preds_actions,dim=0) #shape: n_samples, n_position
+        gt_actions= torch.cat(all_gt_actions,dim=0) # shape: n_samples, n_position
+        
+        
+        #To Do: calculate the metrics:
+        # calculate the metrics:
+        sr,macc,miou=FindMetrics(pred_actions,gt_actions)
+        # save and report epoch results and the model
+        # save the best model
+        logger.info('Evaliation done. valid_loss: '+str(valid_epoch_loss)+ " time: "+ str(time.time()-ST_time ))
+        best_metric_name= "loss"
+        if best_metric_name=='loss':
+            metric_to_compare=valid_epoch_loss
+        elif best_metric_name=='sr':
+            raise NotImplementedError
+            metric_to_compare=  -1*sr.mean() #-1* min_sr.mean()
+        else:
+            raise NotImplementedError("loss not implimented fopr this mode. ")
+        
+        scheduler.step(metric_to_compare)
+        if metric_to_compare<=eval_min_metric:
+            logger.info('Best model found on evaluation set. Saving the model.... ')
+            checkpoint_path_best= os.path.join(args.checkpoint_path,'best_'+args.model_name+'_'+ datetime.today().strftime('%Y_%m_%d')+'.pth')
+            eval_min_metric=metric_to_compare
+            torch.save({'epoch': epoch,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'eval_min_metric': eval_min_metric, 
+            'train_loss': train_epoch_loss,
+            'eval_loss':valid_epoch_loss},
+	        checkpoint_path_best)
+            logger.info('done.')
+        
+        eval_metrics={'eval_loss':valid_epoch_loss,
+                      'eval_min_metric':eval_min_metric,
+                      'eval_mean_acc':macc,
+                      'eval_mean_IoU':miou.mean(),
+                      'eval_succ_rate':sr.mean(),
+                       }
+
+        
+        eval_metrics={**eval_metrics}
+        wandb.log({**train_metrics, **eval_metrics})
+        torch.save({**{'model_state_dict': model.state_dict(),'optimizer_state_dict': optimizer.state_dict()},
+                    **train_metrics, **eval_metrics},
+	        os.path.join(args.checkpoint_path,'latest_'+args.model_name+'_'+ datetime.today().strftime('%Y_%m_%d')+'.pth'))
 
         # Adjust learning rate based on validation loss
-        scheduler.step(avg_epoch_loss)
+        scheduler.step(train_epoch_loss)
     
     # Finish logging
-    #wandb.finish()
+    wandb.finish()
 
 
 if __name__ == "__main__":

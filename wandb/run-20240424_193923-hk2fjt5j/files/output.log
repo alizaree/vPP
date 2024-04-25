@@ -1,0 +1,14 @@
+[2024-04-24 19:39:59,895][main_GenHowTo.py][line:119][INFO] the model is loaded.
+[2024-04-24 19:40:01,184][main_GenHowTo.py][line:139][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-24 19:40:01,188][main_GenHowTo.py][line:142][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-24 19:40:01,189][main_GenHowTo.py][line:177][INFO] Got all the action and state prompts embeds.
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 339, in <module>
+    run_genhowto(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 209, in run_genhowto
+    vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/genhowto_model.py", line 62, in extract_embeddings
+    tstate_embds = self.encode_tstate(prompt_s, tokenizer)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/genhowto_model.py", line 35, in encode_tstate
+    input_ids = tokens['input_ids'].to(self.device)
+KeyboardInterrupt

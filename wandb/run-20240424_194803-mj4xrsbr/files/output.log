@@ -1,0 +1,12 @@
+[2024-04-24 19:48:33,997][main_GenHowTo.py][line:119][INFO] the model is loaded.
+[2024-04-24 19:48:35,300][main_GenHowTo.py][line:139][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-24 19:48:35,305][main_GenHowTo.py][line:142][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-24 19:48:35,306][main_GenHowTo.py][line:177][INFO] Got all the action and state prompts embeds.
+[2024-04-24 19:48:35,306][main_GenHowTo.py][line:193][INFO] Starting training...
+######################
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 347, in <module>
+    run_genhowto(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 227, in run_genhowto
+    " Train Loss: ", str(train_loss_within_epoch.item()), 'time/batch: ', avg_time )
+AttributeError: 'float' object has no attribute 'item'

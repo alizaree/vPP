@@ -129,5 +129,11 @@ def create_parser():
     parser.add_argument('--num_sample',
                          default=1500, type=int,
                          help='number of samples of noise-vectors')
+    parser.add_argument('--checkpoint_path', 
+                        default='/dvmm-filer3a/users/ali/Data/CheckPoints/vPP/', type=str, 
+                        help='model checkpoint path')
+    parser.add_argument('--checkpoint_name', 
+                        default='None', type=str, 
+                        help='model checkpoint path')
 
     return parser.parse_args()

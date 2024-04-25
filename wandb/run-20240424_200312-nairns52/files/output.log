@@ -1,0 +1,453 @@
+[2024-04-24 20:03:42,222][main_GenHowTo.py][line:119][INFO] the model is loaded.
+[2024-04-24 20:03:43,511][main_GenHowTo.py][line:139][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-24 20:03:43,516][main_GenHowTo.py][line:142][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-24 20:03:43,517][main_GenHowTo.py][line:177][INFO] Got all the action and state prompts embeds.
+[2024-04-24 20:03:43,518][main_GenHowTo.py][line:193][INFO] Starting training...
+[2024-04-24 20:03:49,205][main_GenHowTo.py][line:211][INFO] time pipe: 3.4319674968719482
+[2024-04-24 20:03:49,232][main_GenHowTo.py][line:219][INFO] model time: 0.02529454231262207
+[2024-04-24 20:03:49,398][main_GenHowTo.py][line:227][INFO] back pro time: 0.16635918617248535
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1  Train Loss:  2.118917465209961 time/batch:  5.880157470703125
+######################
+[2024-04-24 20:03:50,606][main_GenHowTo.py][line:211][INFO] time pipe: 1.1983931064605713
+[2024-04-24 20:03:50,626][main_GenHowTo.py][line:219][INFO] model time: 0.01922297477722168
+[2024-04-24 20:03:50,656][main_GenHowTo.py][line:227][INFO] back pro time: 0.029757022857666016
+[2024-04-24 20:03:51,821][main_GenHowTo.py][line:211][INFO] time pipe: 1.159437656402588
+[2024-04-24 20:03:51,842][main_GenHowTo.py][line:219][INFO] model time: 0.020270824432373047
+[2024-04-24 20:03:51,872][main_GenHowTo.py][line:227][INFO] back pro time: 0.02937936782836914
+[2024-04-24 20:03:53,043][main_GenHowTo.py][line:211][INFO] time pipe: 1.1627490520477295
+[2024-04-24 20:03:53,062][main_GenHowTo.py][line:219][INFO] model time: 0.019047260284423828
+[2024-04-24 20:03:53,091][main_GenHowTo.py][line:227][INFO] back pro time: 0.028958559036254883
+[2024-04-24 20:03:54,264][main_GenHowTo.py][line:211][INFO] time pipe: 1.1606605052947998
+[2024-04-24 20:03:54,284][main_GenHowTo.py][line:219][INFO] model time: 0.019478797912597656
+[2024-04-24 20:03:54,313][main_GenHowTo.py][line:227][INFO] back pro time: 0.0290529727935791
+[2024-04-24 20:03:55,481][main_GenHowTo.py][line:211][INFO] time pipe: 1.1615486145019531
+[2024-04-24 20:03:55,501][main_GenHowTo.py][line:219][INFO] model time: 0.019399166107177734
+[2024-04-24 20:03:55,531][main_GenHowTo.py][line:227][INFO] back pro time: 0.029474258422851562
+[2024-04-24 20:03:56,705][main_GenHowTo.py][line:211][INFO] time pipe: 1.1665723323822021
+[2024-04-24 20:03:56,725][main_GenHowTo.py][line:219][INFO] model time: 0.019670724868774414
+[2024-04-24 20:03:56,755][main_GenHowTo.py][line:227][INFO] back pro time: 0.02942180633544922
+[2024-04-24 20:03:57,921][main_GenHowTo.py][line:211][INFO] time pipe: 1.1577630043029785
+[2024-04-24 20:03:57,941][main_GenHowTo.py][line:219][INFO] model time: 0.019326210021972656
+[2024-04-24 20:03:57,971][main_GenHowTo.py][line:227][INFO] back pro time: 0.02936244010925293
+[2024-04-24 20:03:59,140][main_GenHowTo.py][line:211][INFO] time pipe: 1.16056227684021
+[2024-04-24 20:03:59,159][main_GenHowTo.py][line:219][INFO] model time: 0.019256114959716797
+[2024-04-24 20:03:59,189][main_GenHowTo.py][line:227][INFO] back pro time: 0.029223918914794922
+[2024-04-24 20:04:00,361][main_GenHowTo.py][line:211][INFO] time pipe: 1.163374423980713
+[2024-04-24 20:04:00,381][main_GenHowTo.py][line:219][INFO] model time: 0.01926732063293457
+[2024-04-24 20:04:00,410][main_GenHowTo.py][line:227][INFO] back pro time: 0.02935004234313965
+[2024-04-24 20:04:01,581][main_GenHowTo.py][line:211][INFO] time pipe: 1.162135124206543
+[2024-04-24 20:04:01,600][main_GenHowTo.py][line:219][INFO] model time: 0.019207239151000977
+[2024-04-24 20:04:01,630][main_GenHowTo.py][line:227][INFO] back pro time: 0.02928781509399414
+[2024-04-24 20:04:02,804][main_GenHowTo.py][line:211][INFO] time pipe: 1.1653778553009033
+[2024-04-24 20:04:02,823][main_GenHowTo.py][line:219][INFO] model time: 0.019249916076660156
+[2024-04-24 20:04:02,853][main_GenHowTo.py][line:227][INFO] back pro time: 0.029358625411987305
+[2024-04-24 20:04:04,027][main_GenHowTo.py][line:211][INFO] time pipe: 1.1648869514465332
+[2024-04-24 20:04:04,047][main_GenHowTo.py][line:219][INFO] model time: 0.019649267196655273
+[2024-04-24 20:04:04,077][main_GenHowTo.py][line:227][INFO] back pro time: 0.02929544448852539
+[2024-04-24 20:04:05,252][main_GenHowTo.py][line:211][INFO] time pipe: 1.1652560234069824
+[2024-04-24 20:04:05,272][main_GenHowTo.py][line:219][INFO] model time: 0.019542455673217773
+[2024-04-24 20:04:05,301][main_GenHowTo.py][line:227][INFO] back pro time: 0.029262781143188477
+[2024-04-24 20:04:06,474][main_GenHowTo.py][line:211][INFO] time pipe: 1.1647422313690186
+[2024-04-24 20:04:06,494][main_GenHowTo.py][line:219][INFO] model time: 0.019250869750976562
+[2024-04-24 20:04:06,524][main_GenHowTo.py][line:227][INFO] back pro time: 0.02928018569946289
+[2024-04-24 20:04:07,698][main_GenHowTo.py][line:211][INFO] time pipe: 1.1652274131774902
+[2024-04-24 20:04:07,717][main_GenHowTo.py][line:219][INFO] model time: 0.019364356994628906
+[2024-04-24 20:04:07,747][main_GenHowTo.py][line:227][INFO] back pro time: 0.029174327850341797
+[2024-04-24 20:04:08,919][main_GenHowTo.py][line:211][INFO] time pipe: 1.163956642150879
+[2024-04-24 20:04:08,941][main_GenHowTo.py][line:219][INFO] model time: 0.02090167999267578
+[2024-04-24 20:04:08,971][main_GenHowTo.py][line:227][INFO] back pro time: 0.02959442138671875
+[2024-04-24 20:04:10,145][main_GenHowTo.py][line:211][INFO] time pipe: 1.1653945446014404
+[2024-04-24 20:04:10,165][main_GenHowTo.py][line:219][INFO] model time: 0.01934027671813965
+[2024-04-24 20:04:10,196][main_GenHowTo.py][line:227][INFO] back pro time: 0.030580520629882812
+[2024-04-24 20:04:11,370][main_GenHowTo.py][line:211][INFO] time pipe: 1.1653192043304443
+[2024-04-24 20:04:11,390][main_GenHowTo.py][line:219][INFO] model time: 0.01933431625366211
+[2024-04-24 20:04:11,420][main_GenHowTo.py][line:227][INFO] back pro time: 0.029268264770507812
+[2024-04-24 20:04:12,594][main_GenHowTo.py][line:211][INFO] time pipe: 1.1665570735931396
+[2024-04-24 20:04:12,614][main_GenHowTo.py][line:219][INFO] model time: 0.019456148147583008
+[2024-04-24 20:04:12,644][main_GenHowTo.py][line:227][INFO] back pro time: 0.02914881706237793
+[2024-04-24 20:04:13,821][main_GenHowTo.py][line:211][INFO] time pipe: 1.167909860610962
+[2024-04-24 20:04:13,840][main_GenHowTo.py][line:219][INFO] model time: 0.019377470016479492
+[2024-04-24 20:04:13,870][main_GenHowTo.py][line:227][INFO] back pro time: 0.02909708023071289
+[2024-04-24 20:04:15,044][main_GenHowTo.py][line:211][INFO] time pipe: 1.1660025119781494
+[2024-04-24 20:04:15,065][main_GenHowTo.py][line:219][INFO] model time: 0.020639419555664062
+[2024-04-24 20:04:15,095][main_GenHowTo.py][line:227][INFO] back pro time: 0.029587507247924805
+[2024-04-24 20:04:16,273][main_GenHowTo.py][line:211][INFO] time pipe: 1.168508529663086
+[2024-04-24 20:04:16,292][main_GenHowTo.py][line:219][INFO] model time: 0.019321680068969727
+[2024-04-24 20:04:16,322][main_GenHowTo.py][line:227][INFO] back pro time: 0.029143333435058594
+[2024-04-24 20:04:17,498][main_GenHowTo.py][line:211][INFO] time pipe: 1.1668667793273926
+[2024-04-24 20:04:17,517][main_GenHowTo.py][line:219][INFO] model time: 0.019396305084228516
+[2024-04-24 20:04:17,547][main_GenHowTo.py][line:227][INFO] back pro time: 0.029392004013061523
+[2024-04-24 20:04:18,722][main_GenHowTo.py][line:211][INFO] time pipe: 1.166513204574585
+[2024-04-24 20:04:18,742][main_GenHowTo.py][line:219][INFO] model time: 0.01944422721862793
+[2024-04-24 20:04:18,772][main_GenHowTo.py][line:227][INFO] back pro time: 0.029338836669921875
+[2024-04-24 20:04:19,948][main_GenHowTo.py][line:211][INFO] time pipe: 1.1676816940307617
+[2024-04-24 20:04:19,968][main_GenHowTo.py][line:219][INFO] model time: 0.019479990005493164
+[2024-04-24 20:04:19,998][main_GenHowTo.py][line:227][INFO] back pro time: 0.029515743255615234
+[2024-04-24 20:04:21,172][main_GenHowTo.py][line:211][INFO] time pipe: 1.165330171585083
+[2024-04-24 20:04:21,193][main_GenHowTo.py][line:219][INFO] model time: 0.020500659942626953
+[2024-04-24 20:04:21,223][main_GenHowTo.py][line:227][INFO] back pro time: 0.029297590255737305
+[2024-04-24 20:04:22,397][main_GenHowTo.py][line:211][INFO] time pipe: 1.1656301021575928
+[2024-04-24 20:04:22,417][main_GenHowTo.py][line:219][INFO] model time: 0.019333600997924805
+[2024-04-24 20:04:22,447][main_GenHowTo.py][line:227][INFO] back pro time: 0.029109716415405273
+[2024-04-24 20:04:23,626][main_GenHowTo.py][line:211][INFO] time pipe: 1.1698758602142334
+[2024-04-24 20:04:23,645][main_GenHowTo.py][line:219][INFO] model time: 0.019309520721435547
+[2024-04-24 20:04:23,675][main_GenHowTo.py][line:227][INFO] back pro time: 0.029050588607788086
+[2024-04-24 20:04:24,853][main_GenHowTo.py][line:211][INFO] time pipe: 1.1699788570404053
+[2024-04-24 20:04:24,873][main_GenHowTo.py][line:219][INFO] model time: 0.019483089447021484
+[2024-04-24 20:04:24,903][main_GenHowTo.py][line:227][INFO] back pro time: 0.02974987030029297
+[2024-04-24 20:04:26,082][main_GenHowTo.py][line:211][INFO] time pipe: 1.1699903011322021
+[2024-04-24 20:04:26,102][main_GenHowTo.py][line:219][INFO] model time: 0.019472360610961914
+[2024-04-24 20:04:26,132][main_GenHowTo.py][line:227][INFO] back pro time: 0.029621362686157227
+[2024-04-24 20:04:27,308][main_GenHowTo.py][line:211][INFO] time pipe: 1.1668736934661865
+[2024-04-24 20:04:27,329][main_GenHowTo.py][line:219][INFO] model time: 0.02031874656677246
+[2024-04-24 20:04:27,359][main_GenHowTo.py][line:227][INFO] back pro time: 0.029610872268676758
+[2024-04-24 20:04:28,535][main_GenHowTo.py][line:211][INFO] time pipe: 1.1667423248291016
+[2024-04-24 20:04:28,554][main_GenHowTo.py][line:219][INFO] model time: 0.01941967010498047
+[2024-04-24 20:04:28,584][main_GenHowTo.py][line:227][INFO] back pro time: 0.029498815536499023
+[2024-04-24 20:04:29,766][main_GenHowTo.py][line:211][INFO] time pipe: 1.1735122203826904
+[2024-04-24 20:04:29,786][main_GenHowTo.py][line:219][INFO] model time: 0.01966118812561035
+[2024-04-24 20:04:29,819][main_GenHowTo.py][line:227][INFO] back pro time: 0.032393693923950195
+[2024-04-24 20:04:30,997][main_GenHowTo.py][line:211][INFO] time pipe: 1.1694023609161377
+[2024-04-24 20:04:31,017][main_GenHowTo.py][line:219][INFO] model time: 0.01995229721069336
+[2024-04-24 20:04:31,048][main_GenHowTo.py][line:227][INFO] back pro time: 0.030528545379638672
+[2024-04-24 20:04:32,227][main_GenHowTo.py][line:211][INFO] time pipe: 1.1691827774047852
+[2024-04-24 20:04:32,246][main_GenHowTo.py][line:219][INFO] model time: 0.019338607788085938
+[2024-04-24 20:04:32,276][main_GenHowTo.py][line:227][INFO] back pro time: 0.02927541732788086
+[2024-04-24 20:04:33,464][main_GenHowTo.py][line:211][INFO] time pipe: 1.1786928176879883
+[2024-04-24 20:04:33,484][main_GenHowTo.py][line:219][INFO] model time: 0.019351482391357422
+[2024-04-24 20:04:33,514][main_GenHowTo.py][line:227][INFO] back pro time: 0.02949690818786621
+[2024-04-24 20:04:34,694][main_GenHowTo.py][line:211][INFO] time pipe: 1.171820878982544
+[2024-04-24 20:04:34,714][main_GenHowTo.py][line:219][INFO] model time: 0.020149707794189453
+[2024-04-24 20:04:34,744][main_GenHowTo.py][line:227][INFO] back pro time: 0.029445648193359375
+[2024-04-24 20:04:35,923][main_GenHowTo.py][line:211][INFO] time pipe: 1.1707768440246582
+[2024-04-24 20:04:35,943][main_GenHowTo.py][line:219][INFO] model time: 0.019402742385864258
+[2024-04-24 20:04:35,973][main_GenHowTo.py][line:227][INFO] back pro time: 0.0294187068939209
+[2024-04-24 20:04:37,149][main_GenHowTo.py][line:211][INFO] time pipe: 1.1674373149871826
+[2024-04-24 20:04:37,169][main_GenHowTo.py][line:219][INFO] model time: 0.01929473876953125
+[2024-04-24 20:04:37,198][main_GenHowTo.py][line:227][INFO] back pro time: 0.02924036979675293
+[2024-04-24 20:04:38,380][main_GenHowTo.py][line:211][INFO] time pipe: 1.1725494861602783
+[2024-04-24 20:04:38,399][main_GenHowTo.py][line:219][INFO] model time: 0.019357681274414062
+[2024-04-24 20:04:38,429][main_GenHowTo.py][line:227][INFO] back pro time: 0.029303789138793945
+[2024-04-24 20:04:39,611][main_GenHowTo.py][line:211][INFO] time pipe: 1.172827959060669
+[2024-04-24 20:04:39,630][main_GenHowTo.py][line:219][INFO] model time: 0.01948404312133789
+[2024-04-24 20:04:39,660][main_GenHowTo.py][line:227][INFO] back pro time: 0.029329776763916016
+[2024-04-24 20:04:40,839][main_GenHowTo.py][line:211][INFO] time pipe: 1.1706113815307617
+[2024-04-24 20:04:40,859][main_GenHowTo.py][line:219][INFO] model time: 0.01967620849609375
+[2024-04-24 20:04:40,889][main_GenHowTo.py][line:227][INFO] back pro time: 0.02954888343811035
+[2024-04-24 20:04:42,075][main_GenHowTo.py][line:211][INFO] time pipe: 1.177774429321289
+[2024-04-24 20:04:42,095][main_GenHowTo.py][line:219][INFO] model time: 0.019455671310424805
+[2024-04-24 20:04:42,125][main_GenHowTo.py][line:227][INFO] back pro time: 0.02934741973876953
+[2024-04-24 20:04:43,306][main_GenHowTo.py][line:211][INFO] time pipe: 1.1716482639312744
+[2024-04-24 20:04:43,326][main_GenHowTo.py][line:219][INFO] model time: 0.01970672607421875
+[2024-04-24 20:04:43,356][main_GenHowTo.py][line:227][INFO] back pro time: 0.029510498046875
+[2024-04-24 20:04:44,534][main_GenHowTo.py][line:211][INFO] time pipe: 1.1699748039245605
+[2024-04-24 20:04:44,554][main_GenHowTo.py][line:219][INFO] model time: 0.019483566284179688
+[2024-04-24 20:04:44,590][main_GenHowTo.py][line:227][INFO] back pro time: 0.0355682373046875
+[2024-04-24 20:04:45,772][main_GenHowTo.py][line:211][INFO] time pipe: 1.1733131408691406
+[2024-04-24 20:04:45,792][main_GenHowTo.py][line:219][INFO] model time: 0.01966071128845215
+[2024-04-24 20:04:45,822][main_GenHowTo.py][line:227][INFO] back pro time: 0.02945232391357422
+[2024-04-24 20:04:47,010][main_GenHowTo.py][line:211][INFO] time pipe: 1.1794726848602295
+[2024-04-24 20:04:47,030][main_GenHowTo.py][line:219][INFO] model time: 0.01945209503173828
+[2024-04-24 20:04:47,059][main_GenHowTo.py][line:227][INFO] back pro time: 0.02952289581298828
+[2024-04-24 20:04:48,242][main_GenHowTo.py][line:211][INFO] time pipe: 1.17421293258667
+[2024-04-24 20:04:48,262][main_GenHowTo.py][line:219][INFO] model time: 0.019437074661254883
+[2024-04-24 20:04:48,292][main_GenHowTo.py][line:227][INFO] back pro time: 0.029418468475341797
+[2024-04-24 20:04:49,481][main_GenHowTo.py][line:211][INFO] time pipe: 1.181166172027588
+[2024-04-24 20:04:49,507][main_GenHowTo.py][line:219][INFO] model time: 0.025259017944335938
+[2024-04-24 20:04:49,538][main_GenHowTo.py][line:227][INFO] back pro time: 0.030350208282470703
+[2024-04-24 20:04:50,724][main_GenHowTo.py][line:211][INFO] time pipe: 1.1781210899353027
+[2024-04-24 20:04:50,744][main_GenHowTo.py][line:219][INFO] model time: 0.019364356994628906
+[2024-04-24 20:04:50,774][main_GenHowTo.py][line:227][INFO] back pro time: 0.029371261596679688
+[2024-04-24 20:04:51,964][main_GenHowTo.py][line:211][INFO] time pipe: 1.1814258098602295
+[2024-04-24 20:04:51,984][main_GenHowTo.py][line:219][INFO] model time: 0.019383907318115234
+[2024-04-24 20:04:52,013][main_GenHowTo.py][line:227][INFO] back pro time: 0.02940964698791504
+[2024-04-24 20:04:53,203][main_GenHowTo.py][line:211][INFO] time pipe: 1.1809978485107422
+[2024-04-24 20:04:53,223][main_GenHowTo.py][line:219][INFO] model time: 0.01963043212890625
+[2024-04-24 20:04:53,253][main_GenHowTo.py][line:227][INFO] back pro time: 0.029419660568237305
+[2024-04-24 20:04:54,438][main_GenHowTo.py][line:211][INFO] time pipe: 1.1765122413635254
+[2024-04-24 20:04:54,457][main_GenHowTo.py][line:219][INFO] model time: 0.019339323043823242
+[2024-04-24 20:04:54,487][main_GenHowTo.py][line:227][INFO] back pro time: 0.029343366622924805
+[2024-04-24 20:04:55,672][main_GenHowTo.py][line:211][INFO] time pipe: 1.1767330169677734
+[2024-04-24 20:04:55,692][main_GenHowTo.py][line:219][INFO] model time: 0.019420146942138672
+[2024-04-24 20:04:55,721][main_GenHowTo.py][line:227][INFO] back pro time: 0.02947688102722168
+[2024-04-24 20:04:56,905][main_GenHowTo.py][line:211][INFO] time pipe: 1.1761279106140137
+[2024-04-24 20:04:56,930][main_GenHowTo.py][line:219][INFO] model time: 0.024532556533813477
+[2024-04-24 20:04:56,960][main_GenHowTo.py][line:227][INFO] back pro time: 0.02935171127319336
+[2024-04-24 20:04:58,144][main_GenHowTo.py][line:211][INFO] time pipe: 1.1756329536437988
+[2024-04-24 20:04:58,164][main_GenHowTo.py][line:219][INFO] model time: 0.01949143409729004
+[2024-04-24 20:04:58,194][main_GenHowTo.py][line:227][INFO] back pro time: 0.029455900192260742
+[2024-04-24 20:04:59,385][main_GenHowTo.py][line:211][INFO] time pipe: 1.1832447052001953
+[2024-04-24 20:04:59,405][main_GenHowTo.py][line:219][INFO] model time: 0.019596338272094727
+[2024-04-24 20:04:59,435][main_GenHowTo.py][line:227][INFO] back pro time: 0.029498577117919922
+[2024-04-24 20:05:00,622][main_GenHowTo.py][line:211][INFO] time pipe: 1.1792349815368652
+[2024-04-24 20:05:00,642][main_GenHowTo.py][line:219][INFO] model time: 0.019433259963989258
+[2024-04-24 20:05:00,672][main_GenHowTo.py][line:227][INFO] back pro time: 0.029395103454589844
+[2024-04-24 20:05:01,859][main_GenHowTo.py][line:211][INFO] time pipe: 1.178687334060669
+[2024-04-24 20:05:01,879][main_GenHowTo.py][line:219][INFO] model time: 0.01970672607421875
+[2024-04-24 20:05:01,908][main_GenHowTo.py][line:227][INFO] back pro time: 0.029332637786865234
+[2024-04-24 20:05:03,099][main_GenHowTo.py][line:211][INFO] time pipe: 1.1825380325317383
+[2024-04-24 20:05:03,119][main_GenHowTo.py][line:219][INFO] model time: 0.019399166107177734
+[2024-04-24 20:05:03,149][main_GenHowTo.py][line:227][INFO] back pro time: 0.029317855834960938
+[2024-04-24 20:05:04,335][main_GenHowTo.py][line:211][INFO] time pipe: 1.1786327362060547
+[2024-04-24 20:05:04,355][main_GenHowTo.py][line:219][INFO] model time: 0.019335031509399414
+[2024-04-24 20:05:04,385][main_GenHowTo.py][line:227][INFO] back pro time: 0.029258251190185547
+[2024-04-24 20:05:05,574][main_GenHowTo.py][line:211][INFO] time pipe: 1.1816027164459229
+[2024-04-24 20:05:05,595][main_GenHowTo.py][line:219][INFO] model time: 0.01981639862060547
+[2024-04-24 20:05:05,625][main_GenHowTo.py][line:227][INFO] back pro time: 0.029836416244506836
+[2024-04-24 20:05:06,819][main_GenHowTo.py][line:211][INFO] time pipe: 1.1792614459991455
+[2024-04-24 20:05:06,839][main_GenHowTo.py][line:219][INFO] model time: 0.01941514015197754
+[2024-04-24 20:05:06,869][main_GenHowTo.py][line:227][INFO] back pro time: 0.029352664947509766
+[2024-04-24 20:05:08,065][main_GenHowTo.py][line:211][INFO] time pipe: 1.1884279251098633
+[2024-04-24 20:05:08,085][main_GenHowTo.py][line:219][INFO] model time: 0.01929473876953125
+[2024-04-24 20:05:08,115][main_GenHowTo.py][line:227][INFO] back pro time: 0.02914285659790039
+[2024-04-24 20:05:09,307][main_GenHowTo.py][line:211][INFO] time pipe: 1.1840007305145264
+[2024-04-24 20:05:09,327][main_GenHowTo.py][line:219][INFO] model time: 0.0194244384765625
+[2024-04-24 20:05:09,356][main_GenHowTo.py][line:227][INFO] back pro time: 0.029355764389038086
+[2024-04-24 20:05:10,545][main_GenHowTo.py][line:211][INFO] time pipe: 1.1805031299591064
+[2024-04-24 20:05:10,565][main_GenHowTo.py][line:219][INFO] model time: 0.019365310668945312
+[2024-04-24 20:05:10,595][main_GenHowTo.py][line:227][INFO] back pro time: 0.029220104217529297
+[2024-04-24 20:05:11,783][main_GenHowTo.py][line:211][INFO] time pipe: 1.180159091949463
+[2024-04-24 20:05:11,802][main_GenHowTo.py][line:219][INFO] model time: 0.01946854591369629
+[2024-04-24 20:05:11,832][main_GenHowTo.py][line:227][INFO] back pro time: 0.029178142547607422
+[2024-04-24 20:05:13,021][main_GenHowTo.py][line:211][INFO] time pipe: 1.180044174194336
+[2024-04-24 20:05:13,040][main_GenHowTo.py][line:219][INFO] model time: 0.01949024200439453
+[2024-04-24 20:05:13,070][main_GenHowTo.py][line:227][INFO] back pro time: 0.02908039093017578
+[2024-04-24 20:05:14,259][main_GenHowTo.py][line:211][INFO] time pipe: 1.1805496215820312
+[2024-04-24 20:05:14,279][main_GenHowTo.py][line:219][INFO] model time: 0.0196685791015625
+[2024-04-24 20:05:14,309][main_GenHowTo.py][line:227][INFO] back pro time: 0.029210567474365234
+[2024-04-24 20:05:15,497][main_GenHowTo.py][line:211][INFO] time pipe: 1.1797633171081543
+[2024-04-24 20:05:15,517][main_GenHowTo.py][line:219][INFO] model time: 0.019585132598876953
+[2024-04-24 20:05:15,547][main_GenHowTo.py][line:227][INFO] back pro time: 0.02931952476501465
+[2024-04-24 20:05:16,737][main_GenHowTo.py][line:211][INFO] time pipe: 1.1820242404937744
+[2024-04-24 20:05:16,757][main_GenHowTo.py][line:219][INFO] model time: 0.019407987594604492
+[2024-04-24 20:05:16,787][main_GenHowTo.py][line:227][INFO] back pro time: 0.029283523559570312
+[2024-04-24 20:05:17,979][main_GenHowTo.py][line:211][INFO] time pipe: 1.1835083961486816
+[2024-04-24 20:05:17,999][main_GenHowTo.py][line:219][INFO] model time: 0.019362449645996094
+[2024-04-24 20:05:18,028][main_GenHowTo.py][line:227][INFO] back pro time: 0.029082298278808594
+[2024-04-24 20:05:19,215][main_GenHowTo.py][line:211][INFO] time pipe: 1.1786658763885498
+[2024-04-24 20:05:19,235][main_GenHowTo.py][line:219][INFO] model time: 0.01956343650817871
+[2024-04-24 20:05:19,265][main_GenHowTo.py][line:227][INFO] back pro time: 0.029227018356323242
+[2024-04-24 20:05:20,453][main_GenHowTo.py][line:211][INFO] time pipe: 1.179765224456787
+[2024-04-24 20:05:20,472][main_GenHowTo.py][line:219][INFO] model time: 0.01941680908203125
+[2024-04-24 20:05:20,502][main_GenHowTo.py][line:227][INFO] back pro time: 0.029224634170532227
+[2024-04-24 20:05:21,697][main_GenHowTo.py][line:211][INFO] time pipe: 1.1859850883483887
+[2024-04-24 20:05:21,717][main_GenHowTo.py][line:219][INFO] model time: 0.019680261611938477
+[2024-04-24 20:05:21,747][main_GenHowTo.py][line:227][INFO] back pro time: 0.029503583908081055
+[2024-04-24 20:05:22,939][main_GenHowTo.py][line:211][INFO] time pipe: 1.1838905811309814
+[2024-04-24 20:05:22,959][main_GenHowTo.py][line:219][INFO] model time: 0.019819021224975586
+[2024-04-24 20:05:22,990][main_GenHowTo.py][line:227][INFO] back pro time: 0.02987813949584961
+[2024-04-24 20:05:24,182][main_GenHowTo.py][line:211][INFO] time pipe: 1.1837661266326904
+[2024-04-24 20:05:24,203][main_GenHowTo.py][line:219][INFO] model time: 0.020588397979736328
+[2024-04-24 20:05:24,233][main_GenHowTo.py][line:227][INFO] back pro time: 0.029302597045898438
+[2024-04-24 20:05:25,431][main_GenHowTo.py][line:211][INFO] time pipe: 1.1891207695007324
+[2024-04-24 20:05:25,451][main_GenHowTo.py][line:219][INFO] model time: 0.019433259963989258
+[2024-04-24 20:05:25,481][main_GenHowTo.py][line:227][INFO] back pro time: 0.029740333557128906
+[2024-04-24 20:05:26,679][main_GenHowTo.py][line:211][INFO] time pipe: 1.1907074451446533
+[2024-04-24 20:05:26,699][main_GenHowTo.py][line:219][INFO] model time: 0.019530296325683594
+[2024-04-24 20:05:26,729][main_GenHowTo.py][line:227][INFO] back pro time: 0.029224395751953125
+[2024-04-24 20:05:27,917][main_GenHowTo.py][line:211][INFO] time pipe: 1.1803481578826904
+[2024-04-24 20:05:27,937][main_GenHowTo.py][line:219][INFO] model time: 0.019299745559692383
+[2024-04-24 20:05:27,967][main_GenHowTo.py][line:227][INFO] back pro time: 0.029253482818603516
+[2024-04-24 20:05:29,158][main_GenHowTo.py][line:211][INFO] time pipe: 1.1837337017059326
+[2024-04-24 20:05:29,178][main_GenHowTo.py][line:219][INFO] model time: 0.019303321838378906
+[2024-04-24 20:05:29,208][main_GenHowTo.py][line:227][INFO] back pro time: 0.02925729751586914
+[2024-04-24 20:05:30,397][main_GenHowTo.py][line:211][INFO] time pipe: 1.18157958984375
+[2024-04-24 20:05:30,417][main_GenHowTo.py][line:219][INFO] model time: 0.01966404914855957
+[2024-04-24 20:05:30,447][main_GenHowTo.py][line:227][INFO] back pro time: 0.02940988540649414
+[2024-04-24 20:05:31,639][main_GenHowTo.py][line:211][INFO] time pipe: 1.1840040683746338
+[2024-04-24 20:05:31,659][main_GenHowTo.py][line:219][INFO] model time: 0.019399404525756836
+[2024-04-24 20:05:31,688][main_GenHowTo.py][line:227][INFO] back pro time: 0.029370546340942383
+[2024-04-24 20:05:32,878][main_GenHowTo.py][line:211][INFO] time pipe: 1.181305170059204
+[2024-04-24 20:05:32,898][main_GenHowTo.py][line:219][INFO] model time: 0.019574403762817383
+[2024-04-24 20:05:32,928][main_GenHowTo.py][line:227][INFO] back pro time: 0.029334306716918945
+[2024-04-24 20:05:34,124][main_GenHowTo.py][line:211][INFO] time pipe: 1.187793493270874
+[2024-04-24 20:05:34,144][main_GenHowTo.py][line:219][INFO] model time: 0.01947188377380371
+[2024-04-24 20:05:34,174][main_GenHowTo.py][line:227][INFO] back pro time: 0.029451847076416016
+[2024-04-24 20:05:35,365][main_GenHowTo.py][line:211][INFO] time pipe: 1.1823768615722656
+[2024-04-24 20:05:35,390][main_GenHowTo.py][line:219][INFO] model time: 0.024674654006958008
+[2024-04-24 20:05:35,419][main_GenHowTo.py][line:227][INFO] back pro time: 0.029357433319091797
+[2024-04-24 20:05:36,608][main_GenHowTo.py][line:211][INFO] time pipe: 1.1798913478851318
+[2024-04-24 20:05:36,627][main_GenHowTo.py][line:219][INFO] model time: 0.019305706024169922
+[2024-04-24 20:05:36,657][main_GenHowTo.py][line:227][INFO] back pro time: 0.02944326400756836
+[2024-04-24 20:05:37,859][main_GenHowTo.py][line:211][INFO] time pipe: 1.1940317153930664
+[2024-04-24 20:05:37,879][main_GenHowTo.py][line:219][INFO] model time: 0.019465923309326172
+[2024-04-24 20:05:37,909][main_GenHowTo.py][line:227][INFO] back pro time: 0.02973031997680664
+[2024-04-24 20:05:39,101][main_GenHowTo.py][line:211][INFO] time pipe: 1.1834642887115479
+[2024-04-24 20:05:39,121][main_GenHowTo.py][line:219][INFO] model time: 0.0195465087890625
+[2024-04-24 20:05:39,151][main_GenHowTo.py][line:227][INFO] back pro time: 0.02964019775390625
+[2024-04-24 20:05:40,351][main_GenHowTo.py][line:211][INFO] time pipe: 1.1914422512054443
+[2024-04-24 20:05:40,371][main_GenHowTo.py][line:219][INFO] model time: 0.019793033599853516
+[2024-04-24 20:05:40,402][main_GenHowTo.py][line:227][INFO] back pro time: 0.03013920783996582
+[2024-04-24 20:05:41,600][main_GenHowTo.py][line:211][INFO] time pipe: 1.1892166137695312
+[2024-04-24 20:05:41,620][main_GenHowTo.py][line:219][INFO] model time: 0.01926708221435547
+[2024-04-24 20:05:41,649][main_GenHowTo.py][line:227][INFO] back pro time: 0.0295257568359375
+[2024-04-24 20:05:42,851][main_GenHowTo.py][line:211][INFO] time pipe: 1.1936399936676025
+[2024-04-24 20:05:42,871][main_GenHowTo.py][line:219][INFO] model time: 0.019320964813232422
+[2024-04-24 20:05:42,901][main_GenHowTo.py][line:227][INFO] back pro time: 0.029610395431518555
+[2024-04-24 20:05:44,095][main_GenHowTo.py][line:211][INFO] time pipe: 1.1850464344024658
+[2024-04-24 20:05:44,114][main_GenHowTo.py][line:219][INFO] model time: 0.019474029541015625
+[2024-04-24 20:05:44,144][main_GenHowTo.py][line:227][INFO] back pro time: 0.02936697006225586
+[2024-04-24 20:05:45,336][main_GenHowTo.py][line:211][INFO] time pipe: 1.1842389106750488
+[2024-04-24 20:05:45,356][main_GenHowTo.py][line:219][INFO] model time: 0.01930403709411621
+[2024-04-24 20:05:45,386][main_GenHowTo.py][line:227][INFO] back pro time: 0.030251264572143555
+[2024-04-24 20:05:46,578][main_GenHowTo.py][line:211][INFO] time pipe: 1.1841034889221191
+[2024-04-24 20:05:46,598][main_GenHowTo.py][line:219][INFO] model time: 0.01924443244934082
+[2024-04-24 20:05:46,628][main_GenHowTo.py][line:227][INFO] back pro time: 0.029418468475341797
+[2024-04-24 20:05:47,828][main_GenHowTo.py][line:211][INFO] time pipe: 1.1921696662902832
+[2024-04-24 20:05:47,849][main_GenHowTo.py][line:219][INFO] model time: 0.019742965698242188
+[2024-04-24 20:05:47,878][main_GenHowTo.py][line:227][INFO] back pro time: 0.02947235107421875
+[2024-04-24 20:05:49,071][main_GenHowTo.py][line:211][INFO] time pipe: 1.1847279071807861
+[2024-04-24 20:05:49,091][main_GenHowTo.py][line:219][INFO] model time: 0.019498109817504883
+[2024-04-24 20:05:49,121][main_GenHowTo.py][line:227][INFO] back pro time: 0.029486417770385742
+[2024-04-24 20:05:50,319][main_GenHowTo.py][line:211][INFO] time pipe: 1.1899030208587646
+[2024-04-24 20:05:50,339][main_GenHowTo.py][line:219][INFO] model time: 0.019558429718017578
+[2024-04-24 20:05:50,369][main_GenHowTo.py][line:227][INFO] back pro time: 0.029438495635986328
+[2024-04-24 20:05:51,563][main_GenHowTo.py][line:211][INFO] time pipe: 1.1861841678619385
+[2024-04-24 20:05:51,582][main_GenHowTo.py][line:219][INFO] model time: 0.01942133903503418
+[2024-04-24 20:05:51,612][main_GenHowTo.py][line:227][INFO] back pro time: 0.029469013214111328
+[2024-04-24 20:05:52,808][main_GenHowTo.py][line:211][INFO] time pipe: 1.1874730587005615
+[2024-04-24 20:05:52,828][main_GenHowTo.py][line:219][INFO] model time: 0.019568920135498047
+[2024-04-24 20:05:52,858][main_GenHowTo.py][line:227][INFO] back pro time: 0.0296173095703125
+[2024-04-24 20:05:54,049][main_GenHowTo.py][line:211][INFO] time pipe: 1.1821651458740234
+[2024-04-24 20:05:54,068][main_GenHowTo.py][line:219][INFO] model time: 0.019309043884277344
+[2024-04-24 20:05:54,098][main_GenHowTo.py][line:227][INFO] back pro time: 0.029340744018554688
+[2024-04-24 20:05:55,297][main_GenHowTo.py][line:211][INFO] time pipe: 1.191094160079956
+[2024-04-24 20:05:55,317][main_GenHowTo.py][line:219][INFO] model time: 0.019304990768432617
+[2024-04-24 20:05:55,347][main_GenHowTo.py][line:227][INFO] back pro time: 0.02936577796936035
+[2024-04-24 20:05:56,551][main_GenHowTo.py][line:211][INFO] time pipe: 1.1955149173736572
+[2024-04-24 20:05:56,571][main_GenHowTo.py][line:219][INFO] model time: 0.019617795944213867
+[2024-04-24 20:05:56,601][main_GenHowTo.py][line:227][INFO] back pro time: 0.029894351959228516
+[2024-04-24 20:05:57,796][main_GenHowTo.py][line:211][INFO] time pipe: 1.1861376762390137
+[2024-04-24 20:05:57,816][main_GenHowTo.py][line:219][INFO] model time: 0.019745588302612305
+[2024-04-24 20:05:57,847][main_GenHowTo.py][line:227][INFO] back pro time: 0.03023529052734375
+[2024-04-24 20:05:59,045][main_GenHowTo.py][line:211][INFO] time pipe: 1.1897764205932617
+[2024-04-24 20:05:59,065][main_GenHowTo.py][line:219][INFO] model time: 0.0194549560546875
+[2024-04-24 20:05:59,095][main_GenHowTo.py][line:227][INFO] back pro time: 0.029544591903686523
+[2024-04-24 20:06:00,291][main_GenHowTo.py][line:211][INFO] time pipe: 1.188488483428955
+[2024-04-24 20:06:00,311][main_GenHowTo.py][line:219][INFO] model time: 0.0193331241607666
+[2024-04-24 20:06:00,340][main_GenHowTo.py][line:227][INFO] back pro time: 0.029292583465576172
+[2024-04-24 20:06:01,533][main_GenHowTo.py][line:211][INFO] time pipe: 1.1844062805175781
+[2024-04-24 20:06:01,553][main_GenHowTo.py][line:219][INFO] model time: 0.019534826278686523
+[2024-04-24 20:06:01,582][main_GenHowTo.py][line:227][INFO] back pro time: 0.029055356979370117
+[2024-04-24 20:06:02,774][main_GenHowTo.py][line:211][INFO] time pipe: 1.1837258338928223
+[2024-04-24 20:06:02,794][main_GenHowTo.py][line:219][INFO] model time: 0.019434690475463867
+[2024-04-24 20:06:02,823][main_GenHowTo.py][line:227][INFO] back pro time: 0.029082059860229492
+[2024-04-24 20:06:04,020][main_GenHowTo.py][line:211][INFO] time pipe: 1.1882457733154297
+[2024-04-24 20:06:04,040][main_GenHowTo.py][line:219][INFO] model time: 0.019347190856933594
+[2024-04-24 20:06:04,069][main_GenHowTo.py][line:227][INFO] back pro time: 0.029052257537841797
+[2024-04-24 20:06:05,270][main_GenHowTo.py][line:211][INFO] time pipe: 1.1923038959503174
+[2024-04-24 20:06:05,290][main_GenHowTo.py][line:219][INFO] model time: 0.019764184951782227
+[2024-04-24 20:06:05,320][main_GenHowTo.py][line:227][INFO] back pro time: 0.029161453247070312
+[2024-04-24 20:06:06,513][main_GenHowTo.py][line:211][INFO] time pipe: 1.183521032333374
+[2024-04-24 20:06:06,532][main_GenHowTo.py][line:219][INFO] model time: 0.019470691680908203
+[2024-04-24 20:06:06,562][main_GenHowTo.py][line:227][INFO] back pro time: 0.02904224395751953
+[2024-04-24 20:06:07,761][main_GenHowTo.py][line:211][INFO] time pipe: 1.1903295516967773
+[2024-04-24 20:06:07,781][main_GenHowTo.py][line:219][INFO] model time: 0.01967144012451172
+[2024-04-24 20:06:07,811][main_GenHowTo.py][line:227][INFO] back pro time: 0.029239416122436523
+[2024-04-24 20:06:09,008][main_GenHowTo.py][line:211][INFO] time pipe: 1.1892945766448975
+[2024-04-24 20:06:09,028][main_GenHowTo.py][line:219][INFO] model time: 0.01961350440979004
+[2024-04-24 20:06:09,058][main_GenHowTo.py][line:227][INFO] back pro time: 0.029328346252441406
+[2024-04-24 20:06:10,255][main_GenHowTo.py][line:211][INFO] time pipe: 1.1881372928619385
+[2024-04-24 20:06:10,275][main_GenHowTo.py][line:219][INFO] model time: 0.019641399383544922
+[2024-04-24 20:06:10,305][main_GenHowTo.py][line:227][INFO] back pro time: 0.02927851676940918
+[2024-04-24 20:06:11,502][main_GenHowTo.py][line:211][INFO] time pipe: 1.1885535717010498
+[2024-04-24 20:06:11,521][main_GenHowTo.py][line:219][INFO] model time: 0.019356727600097656
+[2024-04-24 20:06:11,551][main_GenHowTo.py][line:227][INFO] back pro time: 0.029269695281982422
+[2024-04-24 20:06:12,742][main_GenHowTo.py][line:211][INFO] time pipe: 1.1825308799743652
+[2024-04-24 20:06:12,767][main_GenHowTo.py][line:219][INFO] model time: 0.024658918380737305
+[2024-04-24 20:06:12,797][main_GenHowTo.py][line:227][INFO] back pro time: 0.029302120208740234
+[2024-04-24 20:06:13,989][main_GenHowTo.py][line:211][INFO] time pipe: 1.1847126483917236
+[2024-04-24 20:06:14,009][main_GenHowTo.py][line:219][INFO] model time: 0.01985478401184082
+[2024-04-24 20:06:14,040][main_GenHowTo.py][line:227][INFO] back pro time: 0.029867887496948242
+[2024-04-24 20:06:15,238][main_GenHowTo.py][line:211][INFO] time pipe: 1.1892824172973633
+[2024-04-24 20:06:15,257][main_GenHowTo.py][line:219][INFO] model time: 0.019513368606567383
+[2024-04-24 20:06:15,287][main_GenHowTo.py][line:227][INFO] back pro time: 0.02944040298461914
+[2024-04-24 20:06:16,487][main_GenHowTo.py][line:211][INFO] time pipe: 1.1918330192565918
+[2024-04-24 20:06:16,507][main_GenHowTo.py][line:219][INFO] model time: 0.019397735595703125
+[2024-04-24 20:06:16,537][main_GenHowTo.py][line:227][INFO] back pro time: 0.02930450439453125
+[2024-04-24 20:06:17,737][main_GenHowTo.py][line:211][INFO] time pipe: 1.1927592754364014
+[2024-04-24 20:06:17,757][main_GenHowTo.py][line:219][INFO] model time: 0.019652366638183594
+[2024-04-24 20:06:17,787][main_GenHowTo.py][line:227][INFO] back pro time: 0.029272794723510742
+[2024-04-24 20:06:18,985][main_GenHowTo.py][line:211][INFO] time pipe: 1.1899328231811523
+[2024-04-24 20:06:19,005][main_GenHowTo.py][line:219][INFO] model time: 0.019526958465576172
+[2024-04-24 20:06:19,035][main_GenHowTo.py][line:227][INFO] back pro time: 0.029210805892944336
+[2024-04-24 20:06:20,230][main_GenHowTo.py][line:211][INFO] time pipe: 1.1876521110534668
+[2024-04-24 20:06:20,250][main_GenHowTo.py][line:219][INFO] model time: 0.019319534301757812
+[2024-04-24 20:06:20,279][main_GenHowTo.py][line:227][INFO] back pro time: 0.029144287109375
+[2024-04-24 20:06:21,473][main_GenHowTo.py][line:211][INFO] time pipe: 1.1856720447540283
+[2024-04-24 20:06:21,493][main_GenHowTo.py][line:219][INFO] model time: 0.01926589012145996
+[2024-04-24 20:06:21,523][main_GenHowTo.py][line:227][INFO] back pro time: 0.02937459945678711
+[2024-04-24 20:06:22,718][main_GenHowTo.py][line:211][INFO] time pipe: 1.1871380805969238
+[2024-04-24 20:06:22,738][main_GenHowTo.py][line:219][INFO] model time: 0.019855976104736328
+[2024-04-24 20:06:22,768][main_GenHowTo.py][line:227][INFO] back pro time: 0.029228687286376953
+[2024-04-24 20:06:23,961][main_GenHowTo.py][line:211][INFO] time pipe: 1.184448480606079
+[2024-04-24 20:06:23,980][main_GenHowTo.py][line:219][INFO] model time: 0.019454002380371094
+[2024-04-24 20:06:24,010][main_GenHowTo.py][line:227][INFO] back pro time: 0.029240131378173828
+[2024-04-24 20:06:25,205][main_GenHowTo.py][line:211][INFO] time pipe: 1.1868133544921875
+[2024-04-24 20:06:25,225][main_GenHowTo.py][line:219][INFO] model time: 0.019756078720092773
+[2024-04-24 20:06:25,255][main_GenHowTo.py][line:227][INFO] back pro time: 0.02920842170715332
+[2024-04-24 20:06:26,450][main_GenHowTo.py][line:211][INFO] time pipe: 1.1870830059051514
+[2024-04-24 20:06:26,470][main_GenHowTo.py][line:219][INFO] model time: 0.019435644149780273
+[2024-04-24 20:06:26,500][main_GenHowTo.py][line:227][INFO] back pro time: 0.029645442962646484
+[2024-04-24 20:06:27,699][main_GenHowTo.py][line:211][INFO] time pipe: 1.191472053527832
+[2024-04-24 20:06:27,719][main_GenHowTo.py][line:219][INFO] model time: 0.01984882354736328
+[2024-04-24 20:06:27,748][main_GenHowTo.py][line:227][INFO] back pro time: 0.02856302261352539
+[2024-04-24 20:06:28,943][main_GenHowTo.py][line:211][INFO] time pipe: 1.185912847518921
+[2024-04-24 20:06:28,962][main_GenHowTo.py][line:219][INFO] model time: 0.01928424835205078
+[2024-04-24 20:06:28,999][main_GenHowTo.py][line:227][INFO] back pro time: 0.03646278381347656
+[2024-04-24 20:06:30,191][main_GenHowTo.py][line:211][INFO] time pipe: 1.184079885482788
+[2024-04-24 20:06:30,211][main_GenHowTo.py][line:219][INFO] model time: 0.019499540328979492
+[2024-04-24 20:06:30,248][main_GenHowTo.py][line:227][INFO] back pro time: 0.03633761405944824
+[2024-04-24 20:06:31,443][main_GenHowTo.py][line:211][INFO] time pipe: 1.1875114440917969
+[2024-04-24 20:06:31,464][main_GenHowTo.py][line:219][INFO] model time: 0.019804000854492188
+[2024-04-24 20:06:31,499][main_GenHowTo.py][line:227][INFO] back pro time: 0.03423309326171875
+[2024-04-24 20:06:32,696][main_GenHowTo.py][line:211][INFO] time pipe: 1.1874682903289795
+[2024-04-24 20:06:32,715][main_GenHowTo.py][line:219][INFO] model time: 0.019531726837158203
+[2024-04-24 20:06:32,745][main_GenHowTo.py][line:227][INFO] back pro time: 0.029356718063354492
+[2024-04-24 20:06:33,945][main_GenHowTo.py][line:211][INFO] time pipe: 1.1918177604675293
+[2024-04-24 20:06:33,965][main_GenHowTo.py][line:219][INFO] model time: 0.019483089447021484
+[2024-04-24 20:06:33,995][main_GenHowTo.py][line:227][INFO] back pro time: 0.02951335906982422
+[2024-04-24 20:06:35,193][main_GenHowTo.py][line:211][INFO] time pipe: 1.1900901794433594
+[2024-04-24 20:06:35,212][main_GenHowTo.py][line:219][INFO] model time: 0.019570589065551758
+[2024-04-24 20:06:35,242][main_GenHowTo.py][line:227][INFO] back pro time: 0.029236793518066406
+[2024-04-24 20:06:36,436][main_GenHowTo.py][line:211][INFO] time pipe: 1.186187744140625
+[2024-04-24 20:06:36,456][main_GenHowTo.py][line:219][INFO] model time: 0.019371986389160156
+[2024-04-24 20:06:36,486][main_GenHowTo.py][line:227][INFO] back pro time: 0.02931499481201172
+[2024-04-24 20:06:37,682][main_GenHowTo.py][line:211][INFO] time pipe: 1.1878025531768799
+[2024-04-24 20:06:37,701][main_GenHowTo.py][line:219][INFO] model time: 0.019293546676635742
+[2024-04-24 20:06:37,731][main_GenHowTo.py][line:227][INFO] back pro time: 0.029273033142089844
+[2024-04-24 20:06:38,927][main_GenHowTo.py][line:211][INFO] time pipe: 1.1877772808074951
+[2024-04-24 20:06:38,947][main_GenHowTo.py][line:219][INFO] model time: 0.0194399356842041
+[2024-04-24 20:06:38,977][main_GenHowTo.py][line:227][INFO] back pro time: 0.029429197311401367
+[2024-04-24 20:06:40,176][main_GenHowTo.py][line:211][INFO] time pipe: 1.1913132667541504
+[2024-04-24 20:06:40,196][main_GenHowTo.py][line:219][INFO] model time: 0.019709348678588867
+[2024-04-24 20:06:40,226][main_GenHowTo.py][line:227][INFO] back pro time: 0.02940201759338379
+[2024-04-24 20:06:41,425][main_GenHowTo.py][line:211][INFO] time pipe: 1.1911542415618896
+[2024-04-24 20:06:41,446][main_GenHowTo.py][line:219][INFO] model time: 0.01968216896057129
+[2024-04-24 20:06:41,475][main_GenHowTo.py][line:227][INFO] back pro time: 0.029492616653442383
+[2024-04-24 20:06:42,669][main_GenHowTo.py][line:211][INFO] time pipe: 1.1847543716430664
+[2024-04-24 20:06:42,688][main_GenHowTo.py][line:219][INFO] model time: 0.019563674926757812
+[2024-04-24 20:06:42,718][main_GenHowTo.py][line:227][INFO] back pro time: 0.029450416564941406
+[2024-04-24 20:06:43,915][main_GenHowTo.py][line:211][INFO] time pipe: 1.188690185546875
+[2024-04-24 20:06:43,935][main_GenHowTo.py][line:219][INFO] model time: 0.019524574279785156
+[2024-04-24 20:06:43,965][main_GenHowTo.py][line:227][INFO] back pro time: 0.029429912567138672
+[2024-04-24 20:06:45,160][main_GenHowTo.py][line:211][INFO] time pipe: 1.1863479614257812
+[2024-04-24 20:06:45,180][main_GenHowTo.py][line:219][INFO] model time: 0.01967597007751465
+[2024-04-24 20:06:45,210][main_GenHowTo.py][line:227][INFO] back pro time: 0.029437780380249023
+[2024-04-24 20:06:46,416][main_GenHowTo.py][line:211][INFO] time pipe: 1.1971721649169922
+[2024-04-24 20:06:46,435][main_GenHowTo.py][line:219][INFO] model time: 0.019417524337768555
+[2024-04-24 20:06:46,466][main_GenHowTo.py][line:227][INFO] back pro time: 0.030304908752441406
+[2024-04-24 20:06:47,665][main_GenHowTo.py][line:211][INFO] time pipe: 1.1913774013519287
+[2024-04-24 20:06:47,686][main_GenHowTo.py][line:219][INFO] model time: 0.019664287567138672
+[2024-04-24 20:06:47,716][main_GenHowTo.py][line:227][INFO] back pro time: 0.029652118682861328
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 353, in <module>
+    run_genhowto(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 210, in run_genhowto
+    vis_embds, tstate_embds, action_embds = pipe.extract_embeddings(data, pipe.model.tokenizer)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/genhowto_model.py", line 62, in extract_embeddings
+    tstate_embds = self.encode_tstate(prompt_s, tokenizer)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/genhowto_model.py", line 35, in encode_tstate
+    input_ids = tokens['input_ids'].to(self.device)
+KeyboardInterrupt
