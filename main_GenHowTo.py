@@ -59,13 +59,13 @@ def run_genhowto(args):
         anot_dir = os.path.join(args.root_dir, "annotations")
         anot_info = parse_annotation(anot_dir, task_info, idices_mapping)
 
-        '''logger.info("Loading training data...")
+        logger.info("Loading training data...")
         train_dataset = ProcedureDataset(anot_info, args.img_dir, args.embedding_dir, state_prompts, 
                                         args.train_json, args.max_traj_len, aug_range=args.aug_range, 
                                         mode = "train", M=args.M,
                                         vid_dir=args.vid_dir,
                                         save_image_states=args.save_image_states, save_embeddings=args.save_embeddings,
-                                        args=args)'''
+                                        args=args)
         
         logger.info("Loading valid data...")
         valid_dataset = ProcedureDataset(anot_info, args.img_dir, args.embedding_dir, state_prompts, 
