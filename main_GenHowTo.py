@@ -59,14 +59,13 @@ def run_genhowto(args):
         anot_dir = os.path.join(args.root_dir, "annotations")
         anot_info = parse_annotation(anot_dir, task_info, idices_mapping)
 
-        logger.info("Loading training data...")
+        '''logger.info("Loading training data...")
         train_dataset = ProcedureDataset(anot_info, args.img_dir, args.embedding_dir, state_prompts, 
                                         args.train_json, args.max_traj_len, aug_range=args.aug_range, 
                                         mode = "train", M=args.M,
                                         vid_dir=args.vid_dir,
                                         save_image_states=args.save_image_states, save_embeddings=args.save_embeddings,
-                                        args=args)
-        import pdb; pdb.set_trace()
+                                        args=args)'''
         
         logger.info("Loading valid data...")
         valid_dataset = ProcedureDataset(anot_info, args.img_dir, args.embedding_dir, state_prompts, 
@@ -109,7 +108,7 @@ def run_genhowto(args):
                                         args.valid_json, args.max_traj_len, num_action = 48,
                                         aug_range=args.aug_range, mode = "valid", M=args.M)
         transition_matrix = train_dataset.transition_matrix
-
+    import pdb; pdb.set_trace()
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=4)
     valid_loader = DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=4)
 

@@ -210,8 +210,6 @@ class CrossTaskDataset(Dataset):
                 torch.save(vis_embds, os.path.join(self.embedding_dir,video_id+'_visual_embeddings.pt'))
                 torch.save(tstate_embds, os.path.join(self.embedding_dir,video_id+'_text_state_embeddings.pt'))
                 torch.save(action_embds, os.path.join(self.embedding_dir,video_id+'_action_embeddings.pt'))
-                print("saved new stuff. ")
-                old_vid_id=video_id
             except:
                 #import pdb; pdb.set_trace()
                 continue
