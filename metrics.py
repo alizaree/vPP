@@ -92,7 +92,7 @@ def success_rate(pred, gt, aggregate=True):
     Metric Procedure:
     "All" prediction steps has to match with gt steps
     """
-    rst = np.all(np.equal(pred, gt), axis=(1))
+    rst = np.all(1*(gt==pred),axis=1)
 
     if aggregate:
         return np.mean(rst) * 100
@@ -107,7 +107,8 @@ def mean_category_acc(pred, gt):
     gt  : List [batch * seq]
     """
     # rst = precision_score(gt, pred, average="macro", zero_division=0)
-    rst = (gt == pred).float().mean() * 100
+    #rst = np.mean((1*(gt == pred))) * 100
+    rst=np.mean(np.mean(1*(pred==gt),axis=1))
     return rst
 
 
@@ -126,7 +127,7 @@ def acc_iou(pred, gt, aggregate=True):
         intersection = (pred & gt).sum((1))
         union = (pred | gt).sum((1))
         
-    return (intersection + epsn) / (union + epsn) * 100
+    return (intersection + epsn) / (union + epsn)
 
 
 def reduce_metric(met_single):

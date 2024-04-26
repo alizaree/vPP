@@ -1,0 +1,68 @@
+[2024-04-25 22:02:58,064][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-25 22:02:59,343][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-25 22:02:59,347][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-25 22:02:59,349][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-25 22:02:59,349][main_GenHowTo.py][line:195][INFO] Starting training...
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1  Train Loss:  2.118917465209961 time/batch:  4.587308645248413
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  298  Train Loss:  0.665013465205295 time/batch:  0.053300206293195686
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  595  Train Loss:  0.6530658239076117 time/batch:  0.027427926985155636
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  892  Train Loss:  0.6500373482704163 time/batch:  0.018207880413585713
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1189  Train Loss:  0.6468913842139874 time/batch:  0.013697517730289393
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1486  Train Loss:  0.642534940311758 time/batch:  0.011018953124414704
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1783  Train Loss:  0.6387061839750893 time/batch:  0.009282382364963055
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2080  Train Loss:  0.6360560434942062 time/batch:  0.007947817788674282
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2377  Train Loss:  0.6343523885178677 time/batch:  0.006905877695496864
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2674  Train Loss:  0.6324196646885811 time/batch:  0.006173148472628311
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2971  Train Loss:  0.6310343090952626 time/batch:  0.005590433546366093
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  3268  Train Loss:  0.6297251166937693 time/batch:  0.00509017268184349
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  3565  Train Loss:  0.6286946913386796 time/batch:  0.004649437828117467
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  3862  Train Loss:  0.6267859504390788 time/batch:  0.004281914586047939
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  4159  Train Loss:  0.6265067138560663 time/batch:  0.003998214162637133
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  4456  Train Loss:  0.6259082237549487 time/batch:  0.003932136768070543
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  4753  Train Loss:  0.6249192479771362 time/batch:  0.003724763048791193
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  5050  Train Loss:  0.6240123481915729 time/batch:  0.003170105254296029
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  5347  Train Loss:  0.6231272758301873 time/batch:  0.002946064185489778
+######################
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 350, in <module>
+    run_genhowto(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 224, in run_genhowto
+    epoch_loss += loss.item()
+KeyboardInterrupt

@@ -302,4 +302,4 @@ class CrossTaskDataset(Dataset):
         vis_embeds= self.data[idx]["vis_embeds"]
         tstate_embeds= self.data[idx]["tstate_embeds"]
         action_embeds= self.data[idx]["action_embeds"]
-        return vis_embeds, tstate_embeds,action_embeds, torch.as_tensor(frames, dtype=torch.float32), prompts, torch.as_tensor(actions, dtype=torch.long), torch.as_tensor(tasks, dtype=torch.long)
+        return torch.as_tensor(vis_embeds, dtype=torch.float32), torch.as_tensor(tstate_embeds, dtype=torch.float32), torch.as_tensor(action_embeds, dtype=torch.float32), torch.as_tensor(frames, dtype=torch.float32), prompts, torch.as_tensor(actions, dtype=torch.long), torch.as_tensor(tasks, dtype=torch.long)

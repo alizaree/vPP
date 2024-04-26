@@ -70,6 +70,12 @@ def create_parser():
     parser.add_argument('--weight_decay', '--wd', 
                         default=0.0001, type=float,
                         metavar='W', help='weight decay (default: 1e-4)')
+    parser.add_argument('--scheduler_p',
+                        default=5, type=int,
+                        help='schedular paitiance')
+    parser.add_argument('--scheduler_f',
+                        default=0.3, type=float,
+                        help='schedular factor decay')
     parser.add_argument('--M',
                         default=1, type=int,
                         metavar='W', help='augmentation factor (default: 1)')

@@ -1,0 +1,52 @@
+[2024-04-26 00:10:21,390][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 00:10:22,678][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 00:10:22,683][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 00:10:22,684][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 00:10:22,684][main_GenHowTo.py][line:195][INFO] Starting training...
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1  Train Loss:  2.118917465209961 time/batch:  4.572860956192017
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1189  Train Loss:  0.6468913842139874 time/batch:  0.05380286119684038
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2377  Train Loss:  0.6343523885178677 time/batch:  0.027413312757922963
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  3565  Train Loss:  0.6286946913386796 time/batch:  0.018379588815975324
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  4753  Train Loss:  0.6249192479771362 time/batch:  0.013842265831152565
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  5941  Train Loss:  0.621238595030561 time/batch:  0.010893192662070684
+######################
+[2024-04-26 00:15:53,427][main_GenHowTo.py][line:246][INFO] ****************************************************************************
+[2024-04-26 00:15:53,427][main_GenHowTo.py][line:247][INFO] Train Loop Ended. epoch: 0 train_loss: 0.6212107553822309 epoch_time: 330.7428503036499
+[2024-04-26 00:15:53,428][main_GenHowTo.py][line:248][INFO] evaluating....
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 350, in <module>
+    run_genhowto(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 265, in run_genhowto
+    out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/model.py", line 55, in forward
+    vis_s = self.state_encoder(visual_s)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 460, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 456, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+RuntimeError: Input type (torch.FloatTensor) and weight type (torch.cuda.FloatTensor) should be the same or input should be a MKLDNN tensor and weight is a dense tensor

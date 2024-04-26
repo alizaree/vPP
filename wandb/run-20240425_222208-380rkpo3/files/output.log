@@ -1,0 +1,33 @@
+[2024-04-25 22:22:39,446][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-25 22:22:40,747][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-25 22:22:40,751][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-25 22:22:40,752][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-25 22:22:40,752][main_GenHowTo.py][line:195][INFO] Starting training...
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1  Train Loss:  2.118917465209961 time/batch:  4.629986047744751
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1189  Train Loss:  0.6468913842139874 time/batch:  0.05233281013642769
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2377  Train Loss:  0.6343523885178677 time/batch:  0.026138145782188253
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  3565  Train Loss:  0.6286946913386796 time/batch:  0.017485876404386418
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  4753  Train Loss:  0.6249192479771362 time/batch:  0.013296414244282805
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  5941  Train Loss:  0.621238595030561 time/batch:  0.010897619277615074
+######################
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 350, in <module>
+    run_genhowto(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 239, in run_genhowto
+    sr,macc,miou=FindMetrics(pred_actions,gt_actions)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 25, in FindMetrics
+    macc=mean_category_acc(pred.copy().flatten().tolist(), gt.copy().flatten().tolist())
+  File "/dvmm-filer3a/users/ali/Code/vPP/metrics.py", line 110, in mean_category_acc
+    rst = (1*(gt == pred)).mean() * 100
+AttributeError: 'int' object has no attribute 'mean'

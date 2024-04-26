@@ -1,0 +1,31 @@
+[2024-04-25 21:02:33,672][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-25 21:02:34,933][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-25 21:02:34,936][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-25 21:02:34,938][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-25 21:02:34,938][main_GenHowTo.py][line:195][INFO] Starting training...
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 350, in <module>
+    run_genhowto(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 213, in run_genhowto
+    out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/model.py", line 55, in forward
+    vis_s = self.state_encoder(visual_s)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 460, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 456, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+RuntimeError: Input type (torch.FloatTensor) and weight type (torch.cuda.FloatTensor) should be the same or input should be a MKLDNN tensor and weight is a dense tensor

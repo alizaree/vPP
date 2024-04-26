@@ -1,0 +1,303 @@
+[2024-04-26 12:42:41,748][main_GenHowTo.py][line:122][INFO] the model is loaded.
+[2024-04-26 12:42:43,042][main_GenHowTo.py][line:142][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 12:42:43,047][main_GenHowTo.py][line:145][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 12:42:43,048][main_GenHowTo.py][line:180][INFO] Got all the action and state prompts embeds.
+[2024-04-26 12:42:43,048][main_GenHowTo.py][line:196][INFO] Starting training...
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1  Train Loss:  2.118917465209961 time/batch:  4.591904640197754
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1189  Train Loss:  0.6468913842139874 time/batch:  0.05195414588870473
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2377  Train Loss:  0.6343523885178677 time/batch:  0.026446526522991485
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  3565  Train Loss:  0.6286946913386796 time/batch:  0.0175563240452535
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  4753  Train Loss:  0.6249192479771362 time/batch:  0.013228151940205914
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  5941  Train Loss:  0.621238595030561 time/batch:  0.01055604298695473
+######################
+> /dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py(27)FindMetrics()
+-> return  sr, macc, miou
+*** IndentationError: expected an indented block after function definition on line 1
+(11884, 3)
+(11884, 3)
+array([False, False, False, ..., False, False, False])
+0.0003365870077415012
+0.0
+array([[ 82, 112, 103],
+       [ 82,  53, 103],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [126, 126, 126],
+       [ 15, 126,  70],
+       [ 70,  70,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  52],
+       [ 15,  15,  15],
+       [ 15,  52,  52],
+       [ 15,  15,  15],
+       [ 52,  31,  15],
+       [ 15,  52,  15],
+       [ 15,  15,  15],
+       [ 15,  32,  32],
+       [ 15,  32,  32],
+       [ 15,  70,  32],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  70],
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 70,  15,  70],
+       [ 15,  15,  15],
+       [ 70,  70,  70],
+       [ 15,  15,  70],
+       [ 15,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 15,  70,  15],
+       [ 70,  70,  70],
+       [ 70,  70,  70],
+       [ 15,  15,  15],
+       [ 15,  70,  15],
+       [ 15,  70,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15]])
+array([[ 95, 126, 126],
+       [126, 127, 126],
+       [127, 126,  94],
+       [118,  14,  52],
+       [113, 113, 114],
+       [ 68,  72,  71],
+       [ 24,  24,  98],
+       [ 28,  28,  28],
+       [ 25,  21,  98],
+       [ 28,  29, 109],
+       [ 82,  58,  60],
+       [ 89,  83,  88],
+       [ 67,  32,  34],
+       [ 66,  63,  61],
+       [  1, 108,   0],
+       [ 40,  41,  39],
+       [ 61,  63,  62],
+       [ 41,  39,   8],
+       [ 54,  55,  56],
+       [ 32,  32,  35],
+       [ 35,  67,  38],
+       [  4,  19,   4],
+       [ 34,  67,  32],
+       [104, 102, 103],
+       [ 46,  48,  47],
+       [  5,   4,  20],
+       [103, 106, 101],
+       [101, 129, 104],
+       [  7,  10,  11],
+       [ 17,  15,  16],
+       [ 16,  16,  17],
+       [ 98,  23,  24],
+       [ 68,  71,  70],
+       [ 28,  28, 109],
+       [ 63,  61,  62],
+       [ 96, 124,  94],
+       [ 39,   8,   7],
+       [  4,   5,   4],
+       [ 65,  62,  66],
+       [ 70,  71,  70],
+       [ 92,  78,  79],
+       [130, 105, 102],
+       [  6,  20,   5],
+       [106, 107, 107],
+       [106, 107, 107],
+       [ 52,  14,  51],
+       [ 98,  98,  26],
+       [  4,   4,  18],
+       [ 30,  30, 110],
+       [ 40,   8,   8],
+       [100, 100, 101],
+       [ 11,  12,   7],
+       [  4,   3,   4],
+       [ 70,  72,  70],
+       [ 65,  62,  66],
+       [ 25,  98,  24],
+       [ 11,  12,  13],
+       [ 74, 119,  77],
+       [116, 117, 120],
+       [ 19,   6,  20],
+       [  4,   6,  20],
+       [ 70,  81,  71],
+       [ 10,  11,  13],
+       [ 41,   8,   8],
+       [ 67,  34,  32],
+       [ 15,  16,  17],
+       [ 97, 108,   0],
+       [ 62,  65,  62],
+       [ 21,  25,  98],
+       [ 51,  15,  16],
+       [ 19,   4,   4],
+       [  9,   7,  10],
+       [  8,   7,   9],
+       [  8,   9,   7],
+       [ 57,  54,  58],
+       [ 94, 124,  94],
+       [123, 108,   0],
+       [ 73,  74,  75],
+       [  4,   4,  19],
+       [ 80, 125,  80],
+       [ 25,  22,  23],
+       [  4,   6,   4],
+       [ 34,  32,  35],
+       [ 19,   6,   4],
+       [ 15,  16,  17],
+       [ 54,  56,  56],
+       [ 75,  75,  73],
+       [120, 116, 117],
+       [  8,   9,   7],
+       [ 51,  52,  51],
+       [104, 104, 106],
+       [121, 128, 124],
+       [ 51,  52,  51],
+       [106, 107, 107],
+       [  9,  11,  12],
+       [ 19,   5,   6],
+       [124, 121,  95],
+       [ 40,  41,  39],
+       [ 79,  80,  80],
+       [ 47,  45,  49]])
+array([[False, False, False],
+       [False, False, False],
+       [False,  True, False],
+       ...,
+       [False, False, False],
+       [False, False, False],
+       [False, False, False]])
+(11884, 3)
+*** NameError: name 'acc' is not defined
+*** NameError: name 'acc' is not defined
+array([0, 0, 1, ..., 0, 0, 0])
+(11884,)
+array([0.        , 0.        , 0.33333333, ..., 0.        , 0.        ,
+       0.        ])
+0.020812296645349487
+0.0
+0.0
+0.020812296645349487
+*** SyntaxError: invalid syntax
+array([[False, False, False],
+       [False, False, False],
+       [False,  True, False],
+       ...,
+       [False, False, False],
+       [False, False, False],
+       [False, False, False]])
+False
+array([False, False, False, ..., False, False, False])
+(11884,)
+*** TypeError: _all_dispatcher() got an unexpected keyword argument 'daxis'
+(11884,)
+array([ True,  True,  True, ...,  True,  True,  True])
+False
+array([False,  True, False, False])
+*** SyntaxError: '(' was never closed
+array([False, False, False, ..., False, False, False])
+*** NameError: name 'rst' is not defined
+0.0003365870077415012
+0.0003365870077415012
+array([[ 82, 112, 103],
+       [ 82,  53, 103],
+       [126, 126, 126],
+       ...,
+       [ 15,  15,  15],
+       [ 15,  15,  15],
+       [ 15,  15,  15]])
+array([85.05747131, 62.36842115, 91.29287601, ...,  5.29100579,
+       14.18439777,  9.66542785])
+19.948172166007453
+*** TypeError: 'numpy.float64' object is not callable
+array([[ 82, 112, 102],
+       [ 82,  53, 102],
+       [126, 126,  94],
+       ...,
+       [  3,   4,   3],
+       [  2,  14,   4],
+       [  6,   6,  14]])
+array([296, 237, 346, ...,  10,  20,  26])
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 351, in <module>
+    train(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 240, in train
+    sr,macc,miou=FindMetrics(pred_actions,gt_actions)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 27, in FindMetrics
+    return  1*sr, macc, miou
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 27, in FindMetrics
+    return  1*sr, macc, miou
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
