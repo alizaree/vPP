@@ -1,0 +1,12 @@
+[2024-04-26 13:34:37,266][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 13:34:38,549][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 13:34:38,553][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 13:34:38,555][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 13:34:38,555][main_GenHowTo.py][line:195][INFO] Starting training...
+[2024-04-26 13:34:43,276][main_GenHowTo.py][line:228][INFO] ######################
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 348, in <module>
+    train(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 229, in train
+    logger.info("# Within Epoch Stats: "+"Epoch: "+ str(epoch)+ "# batch_seen: "+ str(batrch_idd+1)+
+TypeError: can only concatenate str (not "float") to str

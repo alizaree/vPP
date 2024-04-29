@@ -208,13 +208,15 @@ def train(args):
             vis_embds=data[0].to(device)
             tstate_embds=data[1].to(device)
             action_embds=data[2].to(device)
-            
+            action_indices=data[5].to(device)
 
-            out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
+            out_model, loss, logits= model(vis_embds, ground_truth_action_indices= action_indices,
+                                   ground_truth_action_embeds= action_embds, loss='ce') # out_model is of shape n_batch, n_positions,dim
             #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
             # first  change out_model to shape n_batch*n_positions, dim then compare it against all_action_embeds to find the indices.
-            predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
-            all_preds_actions.append(predicted_indices)
+            #predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
+            #all_preds_actions.append(predicted_indices)
+            all_preds_actions.append(logits)
             all_gt_actions.append(data[5])
             # Backpropagation
             optimizer.zero_grad()
@@ -222,13 +224,13 @@ def train(args):
             optimizer.step()
             # Accumulate loss for the epoch
             epoch_loss += loss.item()
-            if batrch_idd% (len(train_loader)//5) ==0:  # print withing epoch stats 5 times per epoch
+            if batrch_idd% (len(train_loader)//5) ==0:  # logger.info withing epoch stats 5 times per epoch
                 train_loss_within_epoch=epoch_loss/(batrch_idd+1)
                 avg_time=(time.time()-st_time)/(batrch_idd+1)
-                print("######################")
-                print("# Within Epoch Stats: ","Epoch: ", str(epoch), " # batch_seen: ", str(batrch_idd+1),
-                      " Train Loss: ", str(train_loss_within_epoch), 'time/batch: ', avg_time )
-                print("######################")
+                logger.info("######################")
+                logger.info("# Within Epoch Stats: "+"Epoch: "+ str(epoch)+ "# batch_seen: "+ str(batrch_idd+1)+
+                            "Train Loss: "+ str(train_loss_within_epoch)+ 'time/batch: '+ str(avg_time) )
+                logger.info("######################")
                 st_time=time.time()
         # Average epoch loss
         train_epoch_loss = epoch_loss/len(train_loader) 
@@ -262,11 +264,12 @@ def train(args):
                 vis_embds=data[0].to(device)
                 tstate_embds=data[1].to(device)
                 action_embds=data[2].to(device)
-                out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
-                #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
-                # first  change out_model to shape n_batch*n_positions, dim then compare it against all_action_embeds to find the indices.
-                predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
-                all_preds_actions.append(predicted_indices)
+                action_indices=data[5].to(device)
+                out_model, loss, logits= model(vis_embds, ground_truth_action_indices= action_indices,
+                                   ground_truth_action_embeds= action_embds, loss='ce') # out_model is of shape n_batch, n_positions,dim
+                #predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
+                #all_preds_actions.append(predicted_indices)
+                all_preds_actions.append(logits)#predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
                 all_gt_actions.append(data[5])
                 
                 # Accumulate loss for the epoch

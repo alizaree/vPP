@@ -1,6 +1,6 @@
 CUDA_VISIBLE_DEVICES=0 python main_GenHowTo.py \
     --optimizer 'adam' \
-    --lr 0.0004 \
+    --lr 0.001 \
     --dropout 0.2 \
     --batch_size 2 \
     --epochs 100 \
@@ -10,8 +10,10 @@ CUDA_VISIBLE_DEVICES=0 python main_GenHowTo.py \
     --step_size 40 \
     --lr_decay 0.65 \
     --scheduler_p 5 \
-    --scheduler_f 0.3 \
+    --scheduler_f 0.5 \
     --model_name 'crosstask' \
+    --n_layer 4 \
+    --n_head 4 \
     --dataset 'crosstask' \
     --num_action 133 \
     --num_tasks 18 \

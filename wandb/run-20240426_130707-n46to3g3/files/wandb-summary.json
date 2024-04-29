@@ -1,1 +1,1 @@
-{}
+{"epoch": 1, "Training Loss": 0.6111786106506689, "train_acc": 0.021008639066532032, "train_miou": 0.2004649964010681, "train_sr": 0.0003365870077415012, "eval_loss": 0.5986443270336498, "eval_min_metric": 0.5986443270336498, "eval_mean_acc": 0.014640789921688801, "eval_mean_IoU": 0.16820283858449958, "eval_succ_rate": 0.0, "_timestamp": 1714151978.714891, "_runtime": 751.0710768699646, "_step": 1, "_wandb": {"runtime": 922}}

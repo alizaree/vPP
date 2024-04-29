@@ -1,0 +1,114 @@
+[2024-04-26 16:17:18,256][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 16:17:19,260][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 16:17:19,265][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 16:17:19,266][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 16:17:19,266][main_GenHowTo.py][line:195][INFO] Starting training...
+[2024-04-26 16:17:24,174][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:17:24,175][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 1Train Loss: 2.1478824615478516time/batch: 4.907449245452881
+[2024-04-26 16:17:24,176][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:18:18,333][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:18:18,334][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 1189Train Loss: 0.6589967171568345time/batch: 0.045548419174374
+[2024-04-26 16:18:18,334][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:19:13,299][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:19:13,300][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 2377Train Loss: 0.6449816760316736time/batch: 0.02312372801030038
+[2024-04-26 16:19:13,301][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:20:07,720][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:20:07,721][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 3565Train Loss: 0.6400776234699667time/batch: 0.015264820149703916
+[2024-04-26 16:20:07,721][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:21:04,594][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:21:04,594][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 4753Train Loss: 0.6367771634610607time/batch: 0.01196557487810433
+[2024-04-26 16:21:04,595][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:22:00,096][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:22:00,097][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 5941Train Loss: 0.6330964666908988time/batch: 0.009342012973651202
+[2024-04-26 16:22:00,097][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:22:01,216][main_GenHowTo.py][line:246][INFO] ****************************************************************************
+[2024-04-26 16:22:01,216][main_GenHowTo.py][line:247][INFO] Train Loop Ended. epoch: 0 train_loss: 0.6330940144024325 epoch_time: 281.9495646953583
+[2024-04-26 16:22:01,221][main_GenHowTo.py][line:248][INFO] evaluating....
+[2024-04-26 16:22:24,430][main_GenHowTo.py][line:285][INFO] Evaliation done. valid_loss: 0.6156138247135833 time: 23.15054750442505
+[2024-04-26 16:22:24,431][main_GenHowTo.py][line:298][INFO] Best model found on evaluation set. Saving the model....
+[2024-04-26 16:22:29,649][main_GenHowTo.py][line:308][INFO] done.
+[2024-04-26 16:22:38,248][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:22:38,249][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 1# batch_seen: 1Train Loss: 0.6689796447753906time/batch: 3.386704206466675
+[2024-04-26 16:22:38,250][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:23:31,237][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:23:31,238][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 1# batch_seen: 1189Train Loss: 0.6161489781709756time/batch: 0.04456430869106488
+[2024-04-26 16:23:31,238][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:24:23,791][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:24:23,792][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 1# batch_seen: 2377Train Loss: 0.6140005161995942time/batch: 0.022108879919858555
+[2024-04-26 16:24:23,792][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:25:16,199][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:25:16,199][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 1# batch_seen: 3565Train Loss: 0.6110362189598538time/batch: 0.014700172860358239
+[2024-04-26 16:25:16,200][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:26:14,322][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:26:14,323][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 1# batch_seen: 4753Train Loss: 0.6094143167435935time/batch: 0.012228596970429552
+[2024-04-26 16:26:14,324][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:27:11,394][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:27:11,395][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 1# batch_seen: 5941Train Loss: 0.6087219592166898time/batch: 0.009606179555364178
+[2024-04-26 16:27:11,395][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:27:12,483][main_GenHowTo.py][line:246][INFO] ****************************************************************************
+[2024-04-26 16:27:12,483][main_GenHowTo.py][line:247][INFO] Train Loop Ended. epoch: 1 train_loss: 0.6087076471725404 epoch_time: 277.62173080444336
+[2024-04-26 16:27:12,484][main_GenHowTo.py][line:248][INFO] evaluating....
+[2024-04-26 16:27:36,363][main_GenHowTo.py][line:285][INFO] Evaliation done. valid_loss: 0.6024802402042393 time: 23.810625314712524
+[2024-04-26 16:27:36,364][main_GenHowTo.py][line:298][INFO] Best model found on evaluation set. Saving the model....
+[2024-04-26 16:27:41,400][main_GenHowTo.py][line:308][INFO] done.
+[2024-04-26 16:27:49,819][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:27:49,820][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 2# batch_seen: 1Train Loss: 0.5324939489364624time/batch: 3.3750815391540527
+[2024-04-26 16:27:49,821][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:28:40,910][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:28:40,911][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 2# batch_seen: 1189Train Loss: 0.5997685356938207time/batch: 0.042968012085474266
+[2024-04-26 16:28:40,911][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:29:31,716][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:29:31,717][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 2# batch_seen: 2377Train Loss: 0.6004240950542084time/batch: 0.02137363323104146
+[2024-04-26 16:29:31,717][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:30:22,665][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:30:22,665][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 2# batch_seen: 3565Train Loss: 0.5979218752989428time/batch: 0.014290972745769655
+[2024-04-26 16:30:22,666][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:31:14,024][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:31:14,024][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 2# batch_seen: 4753Train Loss: 0.5992450416401615time/batch: 0.010805356886269995
+[2024-04-26 16:31:14,026][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:32:05,432][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:32:05,433][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 2# batch_seen: 5941Train Loss: 0.6000205969001845time/batch: 0.008652748393001149
+[2024-04-26 16:32:05,433][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:32:06,715][main_GenHowTo.py][line:246][INFO] ****************************************************************************
+[2024-04-26 16:32:06,715][main_GenHowTo.py][line:247][INFO] Train Loop Ended. epoch: 2 train_loss: 0.5999892005030453 epoch_time: 260.2713758945465
+[2024-04-26 16:32:06,716][main_GenHowTo.py][line:248][INFO] evaluating....
+[2024-04-26 16:32:30,860][main_GenHowTo.py][line:285][INFO] Evaliation done. valid_loss: 0.6071583556507898 time: 24.08803701400757
+[2024-04-26 16:32:39,605][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:32:39,606][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 3# batch_seen: 1Train Loss: 0.4878684878349304time/batch: 3.649115800857544
+[2024-04-26 16:32:39,606][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:33:30,739][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:33:30,740][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 3# batch_seen: 1189Train Loss: 0.6027551516953188time/batch: 0.043004783489204834
+[2024-04-26 16:33:30,740][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:34:21,808][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:34:21,808][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 3# batch_seen: 2377Train Loss: 0.5987506565874146time/batch: 0.02148389003835509
+[2024-04-26 16:34:21,808][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:35:12,818][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:35:12,819][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 3# batch_seen: 3565Train Loss: 0.5982021222609457time/batch: 0.014308512394759297
+[2024-04-26 16:35:12,820][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:36:04,136][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:36:04,137][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 3# batch_seen: 4753Train Loss: 0.5994119359936284time/batch: 0.010796616510318602
+[2024-04-26 16:36:04,137][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:36:55,270][main_GenHowTo.py][line:228][INFO] ######################
+[2024-04-26 16:36:55,271][main_GenHowTo.py][line:229][INFO] # Within Epoch Stats: Epoch: 3# batch_seen: 5941Train Loss: 0.599662123490335time/batch: 0.008606768119939146
+[2024-04-26 16:36:55,271][main_GenHowTo.py][line:231][INFO] ######################
+[2024-04-26 16:36:56,507][main_GenHowTo.py][line:246][INFO] ****************************************************************************
+[2024-04-26 16:36:56,508][main_GenHowTo.py][line:247][INFO] Train Loop Ended. epoch: 3 train_loss: 0.5996508855474232 epoch_time: 260.55220770835876
+[2024-04-26 16:36:56,508][main_GenHowTo.py][line:248][INFO] evaluating....
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 348, in <module>
+    train(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 265, in train
+    out_model, loss= model(vis_embds, action_embds) # out_model is of shape n_batch, n_positions,dim
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/model.py", line 65, in forward
+    projected_output = self.projection_layer(transformer_output[:,None,:])
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 116, in forward
+    return F.linear(input, self.weight, self.bias)
+KeyboardInterrupt

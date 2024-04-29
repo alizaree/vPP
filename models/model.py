@@ -45,8 +45,13 @@ class AutoregressiveTransformer(nn.Module):
         )
 
         # Additional layers can be added if necessary
+        # Classifier for action prediction
+        self.action_classifier = nn.Linear(d_model, num_action)
 
-    def forward(self, visual_input, ground_truth_action_embeds=None):
+        # Loss function
+        self.loss_fn = nn.CrossEntropyLoss()
+
+    def forward(self, visual_input, ground_truth_action_indices=None, ground_truth_action_embeds=None, loss='mse'):
         #n_batch, n_action, 2, w, h, 3
         batch_size = visual_input.shape[0]
         visual_s=visual_input[:, 0,0,...]
@@ -72,9 +77,26 @@ class AutoregressiveTransformer(nn.Module):
             out.append(transformer_output[:,None,:])
         action_embeds=torch.cat(out,dim=1)
         # Compute MSE loss between predicted action embeddings and ground truth action embeddings
-        if ground_truth_action_embeds!=None:
+        if ground_truth_action_embeds!=None and loss=='mse':
+            #to do: calculate the loss
             mse_loss = F.mse_loss(action_embeds, ground_truth_action_embeds)
 
             return action_embeds, mse_loss
-        return action_embeds
+        elif loss=='ce' and ground_truth_action_indices!=None:
+            # Predict action indices
+            action_logits = self.action_classifier(action_embeds)
+
+            # Reshape ground truth for loss calculation
+            ground_truth_action_indices = ground_truth_action_indices.view(-1)
+
+            # Calculate loss
+            loss = self.loss_fn(action_logits.view(-1, action_logits.size(-1)), ground_truth_action_indices)
+            probabilities = F.softmax(action_logits, dim=1)
+
+            # Get the predicted class index for each sample
+            predicted_classes = torch.argmax(probabilities, dim=-1)
+            return action_embeds, loss, predicted_classes
+        else:
+            
+            return action_embeds
             

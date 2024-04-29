@@ -1,0 +1,20 @@
+[2024-04-26 18:16:03,395][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 18:16:04,374][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 18:16:04,378][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 18:16:04,380][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 18:16:04,397][main_GenHowTo.py][line:195][INFO] Starting training...
+> /dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py(220)train()
+-> all_preds_actions.append(logits)
+torch.Size([2, 133])
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 352, in <module>
+    train(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 220, in train
+    all_preds_actions.append(logits)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 220, in train
+    all_preds_actions.append(logits)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit

@@ -1,0 +1,47 @@
+[2024-04-26 18:19:41,165][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 18:19:42,132][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 18:19:42,136][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 18:19:42,137][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 18:19:42,138][main_GenHowTo.py][line:195][INFO] Starting training...
+> /dvmm-filer3a/users/ali/Code/vPP/models/model.py(99)forward()
+-> return action_embeds, loss, predicted_classes
+torch.Size([2, 133])
+tensor([[1, 1, 0, 1, 2, 1, 1, 0, 1, 2, 1, 2, 2, 2, 1, 0, 2, 2, 2, 0, 1, 0, 2, 2,
+         2, 2, 0, 1, 2, 2, 0, 2, 0, 0, 0, 0, 1, 0, 1, 2, 0, 2, 2, 2, 1, 2, 0, 0,
+         1, 2, 2, 0, 0, 2, 2, 2, 0, 1, 0, 2, 2, 0, 2, 2, 0, 1, 0, 1, 0, 2, 0, 1,
+         0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 2, 2, 1, 1, 0, 0, 1, 0, 1, 0, 1, 2,
+         0, 0, 2, 1, 0, 0, 0, 2, 2, 1, 2, 1, 1, 0, 0, 2, 2, 2, 2, 2, 1, 0, 1, 1,
+         0, 0, 1, 1, 1, 2, 2, 0, 1, 2, 0, 2, 1],
+        [1, 2, 2, 1, 0, 1, 0, 0, 0, 2, 1, 2, 2, 2, 1, 0, 1, 2, 0, 0, 1, 1, 0, 2,
+         0, 0, 1, 1, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 2, 1, 0, 1, 2, 2, 0, 0, 0,
+         0, 0, 2, 0, 2, 2, 2, 2, 0, 1, 2, 1, 1, 2, 2, 0, 0, 1, 1, 1, 2, 2, 0, 1,
+         1, 2, 1, 0, 2, 0, 0, 0, 1, 1, 2, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 2, 2,
+         1, 0, 2, 1, 0, 0, 2, 2, 0, 1, 2, 2, 1, 0, 0, 2, 2, 0, 2, 0, 0, 1, 1, 1,
+         0, 1, 1, 1, 1, 0, 2, 2, 1, 2, 0, 0, 1]], device='cuda:0')
+tensor([1, 1, 0, 1, 2, 1, 1, 0, 1, 2, 1, 2, 2, 2, 1, 0, 2, 2, 2, 0, 1, 0, 2, 2,
+        2, 2, 0, 1, 2, 2, 0, 2, 0, 0, 0, 0, 1, 0, 1, 2, 0, 2, 2, 2, 1, 2, 0, 0,
+        1, 2, 2, 0, 0, 2, 2, 2, 0, 1, 0, 2, 2, 0, 2, 2, 0, 1, 0, 1, 0, 2, 0, 1,
+        0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 2, 2, 1, 1, 0, 0, 1, 0, 1, 0, 1, 2,
+        0, 0, 2, 1, 0, 0, 0, 2, 2, 1, 2, 1, 1, 0, 0, 2, 2, 2, 2, 2, 1, 0, 1, 1,
+        0, 0, 1, 1, 1, 2, 2, 0, 1, 2, 0, 2, 1], device='cuda:0')
+torch.Size([2, 3, 133])
+tensor([[ 46,  86, 111],
+        [ 56,  27,  53]], device='cuda:0')
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 352, in <module>
+    train(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 213, in train
+    out_model, loss, logits= model(vis_embds, ground_truth_action_indices= action_indices,
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/model.py", line 99, in forward
+    return action_embeds, loss, predicted_classes
+  File "/dvmm-filer3a/users/ali/Code/vPP/models/model.py", line 99, in forward
+    return action_embeds, loss, predicted_classes
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit

@@ -1,0 +1,179 @@
+wandb_version: 1
+
+M:
+  desc: null
+  value: 2
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.10
+    framework: huggingface
+    huggingface_version: 4.27.4
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.10.9
+    start_time: 1714169085.393417
+    t:
+      1:
+      - 1
+      - 11
+      - 41
+      - 49
+      - 55
+      - 71
+      2:
+      - 1
+      - 11
+      - 41
+      - 49
+      - 55
+      - 71
+      3:
+      - 16
+      - 23
+      4: 3.10.9
+      5: 0.13.10
+      6: 4.27.4
+      8:
+      - 5
+aug_range:
+  desc: null
+  value: 0
+batch_size:
+  desc: null
+  value: 2
+checkpoint_name:
+  desc: null
+  value: None
+checkpoint_path:
+  desc: null
+  value: /dvmm-filer3a/users/ali/Data/CheckPoints/vPP/
+d_model:
+  desc: null
+  value: 1024
+dataset:
+  desc: null
+  value: crosstask
+device:
+  desc: null
+  value: cuda
+dropout:
+  desc: null
+  value: 0.2
+dropout_rate:
+  desc: null
+  value: 0.2
+embedding_dir:
+  desc: null
+  value: /dvmm-filer3a/users/ali/Data/CrossTask/genhowto_embeds/
+epochs:
+  desc: null
+  value: 100
+eval:
+  desc: null
+  value: false
+features_dir:
+  desc: null
+  value: /home/yulei/data/crosstask/processed_data/
+guidance_scale:
+  desc: null
+  value: 9.0
+img_dir:
+  desc: null
+  value: /dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states
+input_dim:
+  desc: null
+  value: 1024
+last_epoch:
+  desc: null
+  value: -1
+lr:
+  desc: null
+  value: 0.001
+lr_decay:
+  desc: null
+  value: 0.65
+max_traj_len:
+  desc: null
+  value: 3
+model_name:
+  desc: null
+  value: crosstask
+n_head:
+  desc: null
+  value: 4
+n_layer:
+  desc: null
+  value: 3
+no_state_task:
+  desc: null
+  value: false
+num_action:
+  desc: null
+  value: 133
+num_inference_steps:
+  desc: null
+  value: 50
+num_sample:
+  desc: null
+  value: 1500
+num_steps_to_skip:
+  desc: null
+  value: null
+num_tasks:
+  desc: null
+  value: 18
+optimizer:
+  desc: null
+  value: adam
+return_frames:
+  desc: null
+  value: true
+root_dir:
+  desc: null
+  value: dataset/crosstask/crosstask_release
+save_embeddings:
+  desc: null
+  value: false
+save_image_states:
+  desc: null
+  value: false
+saved_path:
+  desc: null
+  value: checkpoints
+scheduler_f:
+  desc: null
+  value: 0.5
+scheduler_p:
+  desc: null
+  value: 5
+seed:
+  desc: null
+  value: 3407
+split:
+  desc: null
+  value: base
+step_size:
+  desc: null
+  value: 40
+train_json:
+  desc: null
+  value: dataset/crosstask/cross_task_data_False.json
+uncertain:
+  desc: null
+  value: false
+valid_json:
+  desc: null
+  value: dataset/crosstask/cross_task_data_True.json
+vid_dir:
+  desc: null
+  value: /home/yulei/data/crosstask/crosstask_videos/videos/
+vis_input_dim:
+  desc: null
+  value: 64
+weight_decay:
+  desc: null
+  value: 0.0001
+weights_path:
+  desc: null
+  value: ./models/GenHowTo/weights/GenHowTo-STATES-96h-v1

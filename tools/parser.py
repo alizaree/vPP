@@ -34,7 +34,7 @@ def create_parser():
                         default=4, type=int, metavar='MAXTRAJ',
                         help='dim of the model')
     parser.add_argument('--n_head', 
-                        default=8, type=int, metavar='MAXTRAJ',
+                        default=4, type=int, metavar='MAXTRAJ',
                         help='dim of the model')
     parser.add_argument('--dataset', 
                         default='crosstask_howto100m', type=str, 

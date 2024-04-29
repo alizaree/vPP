@@ -1,0 +1,72 @@
+[2024-04-26 13:07:40,402][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 13:07:41,745][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 13:07:41,750][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 13:07:41,751][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 13:07:41,751][main_GenHowTo.py][line:195][INFO] Starting training...
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1  Train Loss:  2.118917465209961 time/batch:  4.698026895523071
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  1189  Train Loss:  0.6754805156671269 time/batch:  0.054240156964557924
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  2377  Train Loss:  0.6507000607580611 time/batch:  0.027751772454871218
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  3565  Train Loss:  0.6413389019845745 time/batch:  0.01793033565077173
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  4753  Train Loss:  0.635731061684215 time/batch:  0.013186574458774957
+######################
+######################
+# Within Epoch Stats:  Epoch:  0  # batch_seen:  5941  Train Loss:  0.6307709730297523 time/batch:  0.010570211776517653
+######################
+[2024-04-26 13:13:07,406][main_GenHowTo.py][line:246][INFO] ****************************************************************************
+[2024-04-26 13:13:07,407][main_GenHowTo.py][line:247][INFO] Train Loop Ended. epoch: 0 train_loss: 0.6307427568423231 epoch_time: 325.65418338775635
+[2024-04-26 13:13:07,407][main_GenHowTo.py][line:248][INFO] evaluating....
+[2024-04-26 13:13:33,898][main_GenHowTo.py][line:285][INFO] Evaliation done. valid_loss: 0.6122280287121606 time: 26.431793928146362
+[2024-04-26 13:13:33,899][main_GenHowTo.py][line:298][INFO] Best model found on evaluation set. Saving the model....
+[2024-04-26 13:13:40,531][main_GenHowTo.py][line:308][INFO] done.
+######################
+# Within Epoch Stats:  Epoch:  1  # batch_seen:  1  Train Loss:  0.4847413897514343 time/batch:  3.266742706298828
+######################
+######################
+# Within Epoch Stats:  Epoch:  1  # batch_seen:  1189  Train Loss:  0.6132861198598943 time/batch:  0.05284146745230993
+######################
+######################
+# Within Epoch Stats:  Epoch:  1  # batch_seen:  2377  Train Loss:  0.6102752246222779 time/batch:  0.026288635147987016
+######################
+######################
+# Within Epoch Stats:  Epoch:  1  # batch_seen:  3565  Train Loss:  0.6114945785277021 time/batch:  0.01747890194201369
+######################
+######################
+# Within Epoch Stats:  Epoch:  1  # batch_seen:  4753  Train Loss:  0.6112842997976937 time/batch:  0.01321922360834964
+######################
+######################
+# Within Epoch Stats:  Epoch:  1  # batch_seen:  5941  Train Loss:  0.6111973474983253 time/batch:  0.010602964935148632
+######################
+[2024-04-26 13:19:05,173][main_GenHowTo.py][line:246][INFO] ****************************************************************************
+[2024-04-26 13:19:05,174][main_GenHowTo.py][line:247][INFO] Train Loop Ended. epoch: 1 train_loss: 0.6111786106506689 epoch_time: 317.999228477478
+[2024-04-26 13:19:05,174][main_GenHowTo.py][line:248][INFO] evaluating....
+[2024-04-26 13:19:32,091][main_GenHowTo.py][line:285][INFO] Evaliation done. valid_loss: 0.5986443270336498 time: 26.860930681228638
+[2024-04-26 13:19:32,092][main_GenHowTo.py][line:298][INFO] Best model found on evaluation set. Saving the model....
+[2024-04-26 13:19:38,714][main_GenHowTo.py][line:308][INFO] done.
+######################
+# Within Epoch Stats:  Epoch:  2  # batch_seen:  1  Train Loss:  0.6828343272209167 time/batch:  3.4092304706573486
+######################
+######################
+# Within Epoch Stats:  Epoch:  2  # batch_seen:  1189  Train Loss:  0.6075100843348956 time/batch:  0.05305277769860347
+######################
+######################
+# Within Epoch Stats:  Epoch:  2  # batch_seen:  2377  Train Loss:  0.6096994007867477 time/batch:  0.026322081152210228
+######################
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 348, in <module>
+    train(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 221, in train
+    loss.backward()
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/_tensor.py", line 522, in backward
+    torch.autograd.backward(
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/torch/autograd/__init__.py", line 266, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

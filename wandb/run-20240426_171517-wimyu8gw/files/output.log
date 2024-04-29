@@ -1,0 +1,32 @@
+[2024-04-26 17:15:47,981][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 17:15:48,953][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 17:15:48,957][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 17:15:48,958][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 17:15:48,958][main_GenHowTo.py][line:195][INFO] Starting training...
+[2024-04-26 17:15:53,716][main_GenHowTo.py][line:229][INFO] ######################
+[2024-04-26 17:15:53,717][main_GenHowTo.py][line:230][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 1Train Loss: 5.086921691894531time/batch: 4.757005453109741
+[2024-04-26 17:15:53,717][main_GenHowTo.py][line:232][INFO] ######################
+[2024-04-26 17:16:47,545][main_GenHowTo.py][line:229][INFO] ######################
+[2024-04-26 17:16:47,545][main_GenHowTo.py][line:230][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 1189Train Loss: 4.9839938946187345time/batch: 0.04527107640612115
+[2024-04-26 17:16:47,546][main_GenHowTo.py][line:232][INFO] ######################
+[2024-04-26 17:17:42,048][main_GenHowTo.py][line:229][INFO] ######################
+[2024-04-26 17:17:42,049][main_GenHowTo.py][line:230][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 2377Train Loss: 4.847528132662133time/batch: 0.02292907122658941
+[2024-04-26 17:17:42,049][main_GenHowTo.py][line:232][INFO] ######################
+[2024-04-26 17:18:36,955][main_GenHowTo.py][line:229][INFO] ######################
+[2024-04-26 17:18:36,956][main_GenHowTo.py][line:230][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 3565Train Loss: 4.792950428886467time/batch: 0.015401153577828642
+[2024-04-26 17:18:36,956][main_GenHowTo.py][line:232][INFO] ######################
+[2024-04-26 17:19:32,875][main_GenHowTo.py][line:229][INFO] ######################
+[2024-04-26 17:19:32,876][main_GenHowTo.py][line:230][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 4753Train Loss: 4.759425771931159time/batch: 0.011764969746489136
+[2024-04-26 17:19:32,877][main_GenHowTo.py][line:232][INFO] ######################
+[2024-04-26 17:20:27,917][main_GenHowTo.py][line:229][INFO] ######################
+[2024-04-26 17:20:27,917][main_GenHowTo.py][line:230][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 5941Train Loss: 4.736881178690717time/batch: 0.009264398154897775
+[2024-04-26 17:20:27,918][main_GenHowTo.py][line:232][INFO] ######################
+[2024-04-26 17:20:29,020][main_GenHowTo.py][line:247][INFO] ****************************************************************************
+[2024-04-26 17:20:29,020][main_GenHowTo.py][line:248][INFO] Train Loop Ended. epoch: 0 train_loss: 4.736797405348527 epoch_time: 280.0614478588104
+[2024-04-26 17:20:29,021][main_GenHowTo.py][line:249][INFO] evaluating....
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 349, in <module>
+    train(args)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 269, in train
+    predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
+RuntimeError: shape '[3, 1024]' is invalid for input of size 3

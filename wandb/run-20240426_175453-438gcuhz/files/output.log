@@ -1,0 +1,37 @@
+[2024-04-26 17:55:23,545][main_GenHowTo.py][line:121][INFO] the model is loaded.
+[2024-04-26 17:55:24,509][main_GenHowTo.py][line:141][INFO] Loading all_action_embeds and all_tstate_embeds from saved files...
+[2024-04-26 17:55:24,513][main_GenHowTo.py][line:144][INFO] Loaded all_action_embeds and all_tstate_embeds from saved files.
+[2024-04-26 17:55:24,514][main_GenHowTo.py][line:179][INFO] Got all the action and state prompts embeds.
+[2024-04-26 17:55:24,514][main_GenHowTo.py][line:195][INFO] Starting training...
+[2024-04-26 17:55:29,224][main_GenHowTo.py][line:230][INFO] ######################
+[2024-04-26 17:55:29,225][main_GenHowTo.py][line:231][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 1Train Loss: 5.086921691894531time/batch: 4.7096943855285645
+[2024-04-26 17:55:29,226][main_GenHowTo.py][line:233][INFO] ######################
+[2024-04-26 17:56:26,067][main_GenHowTo.py][line:230][INFO] ######################
+[2024-04-26 17:56:26,068][main_GenHowTo.py][line:231][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 1189Train Loss: 4.9839938946187345time/batch: 0.04780596018439085
+[2024-04-26 17:56:26,068][main_GenHowTo.py][line:233][INFO] ######################
+[2024-04-26 17:57:21,727][main_GenHowTo.py][line:230][INFO] ######################
+[2024-04-26 17:57:21,727][main_GenHowTo.py][line:231][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 2377Train Loss: 4.847528132662133time/batch: 0.023415386250503534
+[2024-04-26 17:57:21,728][main_GenHowTo.py][line:233][INFO] ######################
+[2024-04-26 17:58:17,644][main_GenHowTo.py][line:230][INFO] ######################
+[2024-04-26 17:58:17,645][main_GenHowTo.py][line:231][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 3565Train Loss: 4.792950428886467time/batch: 0.015684751842332922
+[2024-04-26 17:58:17,645][main_GenHowTo.py][line:233][INFO] ######################
+[2024-04-26 17:59:14,910][main_GenHowTo.py][line:230][INFO] ######################
+[2024-04-26 17:59:14,911][main_GenHowTo.py][line:231][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 4753Train Loss: 4.759425771931159time/batch: 0.012048030235680584
+[2024-04-26 17:59:14,911][main_GenHowTo.py][line:233][INFO] ######################
+[2024-04-26 18:00:09,095][main_GenHowTo.py][line:230][INFO] ######################
+[2024-04-26 18:00:09,095][main_GenHowTo.py][line:231][INFO] # Within Epoch Stats: Epoch: 0# batch_seen: 5941Train Loss: 4.736881178690717time/batch: 0.009120244687704341
+[2024-04-26 18:00:09,096][main_GenHowTo.py][line:233][INFO] ######################
+Traceback (most recent call last):
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 354, in <module>
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 241, in train
+    sr,macc,miou=FindMetrics(pred_actions,gt_actions)
+  File "/dvmm-filer3a/users/ali/Code/vPP/main_GenHowTo.py", line 22, in FindMetrics
+    sr = success_rate(pred, gt, False)
+  File "/dvmm-filer3a/users/ali/Code/vPP/metrics.py", line 95, in success_rate
+    rst = np.all(1*(gt==pred),axis=1)
+  File "<__array_function__ internals>", line 180, in all
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/numpy/core/fromnumeric.py", line 2489, in all
+    return _wrapreduction(a, np.logical_and, 'all', axis, None, out,
+  File "/dvmm-filer2/users/ali/anaconda3/envs/envPP/lib/python3.10/site-packages/numpy/core/fromnumeric.py", line 86, in _wrapreduction
+    return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+numpy.AxisError: axis 1 is out of bounds for array of dimension 0

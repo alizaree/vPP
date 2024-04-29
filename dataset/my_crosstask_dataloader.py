@@ -276,7 +276,7 @@ class CrossTaskDataset(Dataset):
                     all_v_embeds.append(v_embd)
                     all_tstate_embeds.append(tstate_embd)
                     all_action_embeds.append(action_embd)
-
+                import pdb; pdb.set_trace()
                 task_id = cur_video_anot["task_id"]
 
                 ## permutation of frames, action ids and prompts
