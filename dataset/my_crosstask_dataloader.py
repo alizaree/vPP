@@ -272,24 +272,22 @@ class CrossTaskDataset(Dataset):
                     tstate_embd= tstate_embds_loaded[0,i+j,...]
                     action_embd= action_embds_loaded[0,i+j,...]
                     
-                    all_frames.append([np.stack((s_frame, e_frame))])
+                    all_frames.append(np.stack((s_frame, e_frame)))
                     all_v_embeds.append(v_embd)
                     all_tstate_embeds.append(tstate_embd)
                     all_action_embeds.append(action_embd)
-                import pdb; pdb.set_trace()
                 task_id = cur_video_anot["task_id"]
 
                 ## permutation of frames, action ids and prompts
-                frames_per = itertools.product(*all_frames)
+                #frames_per = itertools.product(*all_frames)
 
-                self.data.extend([{"frames": np.stack(f),
+                self.data.extend([{"frames": np.stack(all_frames),
                                    "actions": np.array(all_action_ids),
                                    "tasks": np.array(task_id),
                                    "prompts":  all_prompts,
                                    "vis_embeds": torch.stack(all_v_embeds),
                                    "tstate_embeds": torch.stack(all_tstate_embeds),
-                                   "action_embeds": torch.stack(all_action_embeds)}
-                                  for f in frames_per])
+                                   "action_embeds": torch.stack(all_action_embeds)}])
             
     def __len__(self):
         return len(self.data)
