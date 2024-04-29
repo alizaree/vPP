@@ -5,3 +5,4 @@ data/niv_features
 data/coin_features
 logs/
 models/GenHowTo/weights/
+wandb/
