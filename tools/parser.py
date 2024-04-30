@@ -20,7 +20,7 @@ def create_parser():
                         default=3, type=int, metavar='MAXTRAJ',
                         help='max length (default: 54)')
     parser.add_argument('--d_model', 
-                        default=1024, type=int, metavar='MAXTRAJ',
+                        default=512, type=int, metavar='MAXTRAJ',
                         help='dim of the model')
     parser.add_argument('--input_dim', 
                         default=1024, type=int, metavar='MAXTRAJ',
@@ -56,7 +56,7 @@ def create_parser():
                         default=0.1, type=float,
                         help='dropout rate')
     parser.add_argument('--optimizer', 
-                        default='adam', type=str, 
+                        default='adamW', type=str, 
                         help='optimizer (default: sgd)')
     parser.add_argument('--lr', '--learning-rate', 
                         default=0.01, type=float, metavar='LR', 
@@ -107,6 +107,21 @@ def create_parser():
     parser.add_argument('--embedding_dir', 
                         default='/dvmm-filer3a/users/ali/Data/CrossTask/genhowto_embeds/', type=str, 
                         help='genhowto embedding dir')
+    parser.add_argument('--cap_dir', 
+                        default='/dvmm-filer3a/users/ali/Data/CrossTask/frame_caps/', type=str, 
+                        help='generated captions for frames dir')
+    parser.add_argument('--cap_model', 
+                        default='InstructBlip', type=str, 
+                        help='genhowto embedding dir')
+    parser.add_argument('--cap_model_checkpoint', 
+                        default="Salesforce/blip2-opt-2.7b", type=str,  #
+                        help='genhowto embedding dir')
+    parser.add_argument('--cap_model_key_path', 
+                        default="../Google_Key.txt", type=str, 
+                        help='gemeni path to key')
+    parser.add_argument('--input_state_return_domain', 
+                        default="text", type=str, 
+                        help='domain to return the state of frames in')
     parser.add_argument('--return_frames', 
                         action='store_true',
                         help='return frames of actions?')

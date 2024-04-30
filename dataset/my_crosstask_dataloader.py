@@ -7,7 +7,11 @@ import os
 import cv2
 from tqdm import tqdm
 from PIL import Image
+import PIL.PngImagePlugin
 from models.genhowto_model import MyPipe
+from transformers import AutoProcessor, Blip2ForConditionalGeneration,  InstructBlipProcessor, InstructBlipForConditionalGeneration
+import google.generativeai as genai
+from google.cloud import storage
 
 class CrossTaskDataset(Dataset):
     def __init__(
@@ -69,12 +73,36 @@ class CrossTaskDataset(Dataset):
         self.data = []
         if save_image_states:
             self.SaveImageStates()
+        self.state_mean=-0.1706
+        self.state_std=1.0679
+        self.action_mean=-0.1696
+        self.action_std=1.0706
+        self.mean_vis=0.6082
+        self.std_vis=5.4927
         if save_embeddings:
             self.pipe= MyPipe(args.weights_path, args, device=args.device)
+            if self.args.input_state_return_domain=='text':
+                if args.cap_model=="BLIP2":
+                    self.cap_processor = AutoProcessor.from_pretrained(args.cap_model_checkpoint)
+                    self.cap_model = Blip2ForConditionalGeneration.from_pretrained(args.cap_model_checkpoint, torch_dtype=torch.float16).to(args.device)
+                elif args.cap_model=="Gemeni":
+                    with open(args.cap_model_key_path, 'r') as file:
+                        content = file.read()
+                    GOOGLE_API_KEY=content
+                    genai.configure(api_key=GOOGLE_API_KEY)
+                    self.cap_model = genai.GenerativeModel('gemini-pro-vision')
+                elif args.cap_model=="InstructBlip":
+                    self.cap_model=InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b")
+                    self.cap_processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
+            else:
+                assert self.args.input_state_return_domain=='vision', "input_state_return_domain must be in either 'text' or 'vision'."                
+
             self.save_embeds()
         self.load_data()
         if self.mode == "train":
             self.transition_matrix = self.cal_transition(self.transition_matrix)
+        
+        
 
     def cal_transition(self, matrix):
         ''' Cauculate transition matrix
@@ -177,7 +205,35 @@ class CrossTaskDataset(Dataset):
                 frame_data= np.load(os.path.join(self.img_dir, "{}.npy".format(video_id)), allow_pickle=True).item()
                 start_frames = frame_data["start_frames"]
                 end_frames = frame_data["end_frames"]
-                Frames=np.concatenate((start_frames[:,None,...], end_frames[:,None,...]),axis=1)
+                if self.args.input_state_return_domain=='text':
+                    if self.args.cap_model=="Gemeni":
+                        prompt=f"Describe the image, related to the task of \"{task}\",in one sentence."
+                        #get the start state descriptions
+                        img_input = [Image.fromarray(idd,'RGB') for idd in start_frames]
+                        response_start = [self.cap_model.generate_content([prompt, img]).text for img in img_input]
+                        #get the end state descriptions
+                        img_input = [Image.fromarray(idd,'RGB') for idd in end_frames]
+                        response_end = [self.cap_model.generate_content([prompt, img]).text for img in img_input]
+                    elif self.args.cap_model=="InstructBlip":
+                        prompt=[ f"Describe the image, related to the task of \"{task}\",in one sentence." for _ in range(len(start_frames))]
+                        inputs = self.cap_processor(start_frames, text=prompt, return_tensors="pt").to(self.args.device, torch.float16)
+                        outputs = self.cap_model.generate(
+                            **inputs,
+                            do_sample=False,
+                            num_beams=5,
+                            max_length=256,
+                            min_length=1,
+                            top_p=0.9,
+                            repetition_penalty=1.5,
+                            length_penalty=1.0,
+                            temperature=1,
+                        )
+                        generated_text = self.cap_processor.batch_decode(outputs, skip_special_tokens=True)
+                        import pdb; pdb.set_trace()
+                        
+                    Frames=list(zip(response_start,response_end ))
+                else:
+                    Frames=np.concatenate((start_frames[:,None,...], end_frames[:,None,...]),axis=1)
                 Prompts=[]
                 for cur_video_anot in video_anot:
                     Prompts.append(self.prompt_json[cur_video_anot["task"]][cur_video_anot["action"]])
@@ -192,11 +248,11 @@ class CrossTaskDataset(Dataset):
                 for i in range(num_chunks):
                     start_idx = i * m
                     end_idx = min((i + 1) * m, len(Frames))
-                    chunk_data = (torch.tensor(Frames[start_idx:end_idx]), Prompts[start_idx:end_idx])
+                    chunk_data = (torch.tensor(Frames[start_idx:end_idx]), Prompts[start_idx:end_idx]) if self.args.input_state_return_domain=='vision' else (Frames[start_idx:end_idx], Prompts[start_idx:end_idx])
                     with torch.no_grad():
                         self.pipe.set_timesteps(self.args.num_inference_steps)
                         self.pipe.set_num_steps_to_skip(self.args.num_steps_to_skip, self.args.num_inference_steps)
-                        vis_embds_chunk, tstate_embds_chunk, action_embds_chunk = self.pipe.extract_embeddings_inDL(chunk_data, self.pipe.model.tokenizer)
+                        vis_embds_chunk, tstate_embds_chunk, action_embds_chunk = self.pipe.extract_embeddings_inDL(chunk_data, self.pipe.model.tokenizer, input_mode=self.args.input_state_return_domain)
                     vis_embds.append(vis_embds_chunk.detach().cpu())
                     tstate_embds.append(tstate_embds_chunk.detach().cpu())
                     action_embds.append(action_embds_chunk.detach().cpu())
@@ -207,11 +263,16 @@ class CrossTaskDataset(Dataset):
                 tstate_embds=torch.cat(tstate_embds,dim=1)
                 action_embds=torch.cat(action_embds,dim=1)
                 # Save embeddings using torch.save()
-                torch.save(vis_embds, os.path.join(self.embedding_dir,video_id+'_visual_embeddings.pt'))
+                torch.save(vis_embds, os.path.join(self.embedding_dir,video_id+'_frame_'+self.args.input_state_return_domain+'_embeddings.pt'))
                 torch.save(tstate_embds, os.path.join(self.embedding_dir,video_id+'_text_state_embeddings.pt'))
                 torch.save(action_embds, os.path.join(self.embedding_dir,video_id+'_action_embeddings.pt'))
+                # Write each item of Frames into the text file
+                if self.args.input_state_return_domain=="text":
+                    with open(os.path.join(self.args.cap_dir,video_id+'_frame_captions.txt'), 'w') as file:
+                        for frame in Frames:
+                            file.write(f"{frame[0]} {frame[1]}\n")
             except:
-                #import pdb; pdb.set_trace()
+                import pdb; pdb.set_trace()
                 continue
         
             
@@ -232,6 +293,10 @@ class CrossTaskDataset(Dataset):
                 vis_embds_loaded = torch.load(os.path.join(self.embedding_dir,video_id+'_visual_embeddings.pt')) # n_actions, 2, 4,64,64
                 tstate_embds_loaded = torch.load(os.path.join(self.embedding_dir,video_id+'_text_state_embeddings.pt')) # 1, n_actions, dim
                 action_embds_loaded = torch.load(os.path.join(self.embedding_dir,video_id+'_action_embeddings.pt')) # 1, n_actions, dim
+                # fix the mean
+                vis_embds_loaded=(vis_embds_loaded-self.mean_vis)/self.std_vis
+                tstate_embds_loaded= (tstate_embds_loaded- self.state_mean)/self.state_std
+                action_embds_loaded= (action_embds_loaded-self.action_mean)/self.action_std
                 
             except:
                 continue

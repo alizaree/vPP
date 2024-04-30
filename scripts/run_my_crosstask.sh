@@ -1,15 +1,15 @@
-CUDA_VISIBLE_DEVICES=0 python main_GenHowTo.py \
-    --lr 0.001 \
+CUDA_VISIBLE_DEVICES=1 python main_GenHowTo.py \
+    --lr 0.0001 \
     --dropout 0.2 \
-    --batch_size 128 \
+    --batch_size 32 \
     --epochs 100 \
     --max_traj_len 3 \
     --M 2 \
     --aug_range 0 \
     --step_size 40 \
     --lr_decay 0.65 \
-    --scheduler_p 5 \
-    --scheduler_f 0.5 \
+    --scheduler_p 3 \
+    --scheduler_f 0.3333 \
     --model_name 'crosstask' \
     --n_layer 8 \
     --n_head 4 \
@@ -24,4 +24,5 @@ CUDA_VISIBLE_DEVICES=0 python main_GenHowTo.py \
     --saved_path 'checkpoints' \
     --return_frames \
     --vid_dir "/home/yulei/data/crosstask/crosstask_videos/videos/" \
-    --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states"
+    --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states" \
+    --save_embeddings

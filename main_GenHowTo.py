@@ -1,3 +1,4 @@
+from pickletools import optimize
 import torch
 import os
 import time
@@ -117,17 +118,19 @@ def train(args):
     wandb_config=vars(args)
     wandb.init(project='vPP', config=wandb_config)
     
-    pipe = MyPipe(args.weights_path, args, device=device)
+    #pipe = MyPipe(args.weights_path, args, device=device)
     logger.info("the model is loaded.")
     model= AutoregressiveTransformer(**vars(args)).to(device)
     
-    
-    optimizer = torch.optim.AdamW(
-        [
-            {"params": model.parameters()},
-        ],
-        lr=args.lr
-    )
+    if args.optimizer=="adamW": 
+        optimizer = torch.optim.AdamW(
+            [
+                {"params": model.parameters()},
+            ],
+            lr=args.lr
+        )
+    else:
+        raise NotImplementedError
     scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=args.scheduler_p, factor=args.scheduler_f, verbose=True)  # Adjust patience and factor as needed
     model.eval()
 
@@ -158,7 +161,7 @@ def train(args):
                 vis_embds=data[0]
                 tstate_embds=data[1]
                 action_embds=data[2]
-                for plan_id, plan in enumerate(data[2]):
+                for plan_id, plan in enumerate(data[5]):
                     for action_id, action in enumerate(plan):
                         action_val = action.item()
                         if action_val not in seen_actions:
@@ -210,13 +213,13 @@ def train(args):
             action_embds=data[2].to(device)
             action_indices=data[5].to(device)
 
-            out_model, loss, logits= model(vis_embds, ground_truth_action_indices= action_indices,
+            out_model, loss, indices= model(vis_embds, ground_truth_action_indices= action_indices,
                                    ground_truth_action_embeds= action_embds, loss='ce') # out_model is of shape n_batch, n_positions,dim
             #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
             # first  change out_model to shape n_batch*n_positions, dim then compare it against all_action_embeds to find the indices.
             #predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
             #all_preds_actions.append(predicted_indices)
-            all_preds_actions.append(logits)
+            all_preds_actions.append(indices)
             all_gt_actions.append(data[5])
             # Backpropagation
             optimizer.zero_grad()
@@ -236,7 +239,7 @@ def train(args):
         train_epoch_loss = epoch_loss/len(train_loader) 
         pred_actions= torch.cat(all_preds_actions,dim=0).detach().cpu().numpy() #shape: n_samples, n_position
         gt_actions= torch.cat(all_gt_actions,dim=0).detach().cpu().numpy() # shape: n_samples, n_position
-        
+        #import pdb; pdb.set_trace()
         # calculate the metrics:
         sr,macc,miou=FindMetrics(pred_actions,gt_actions)
         train_metrics={'epoch': epoch,
