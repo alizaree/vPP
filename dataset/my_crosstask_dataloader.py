@@ -12,6 +12,7 @@ from models.genhowto_model import MyPipe
 from transformers import AutoProcessor, Blip2ForConditionalGeneration,  InstructBlipProcessor, InstructBlipForConditionalGeneration
 import google.generativeai as genai
 from google.cloud import storage
+import asyncio
 
 class CrossTaskDataset(Dataset):
     def __init__(
@@ -79,31 +80,28 @@ class CrossTaskDataset(Dataset):
         self.action_std=1.0706
         self.mean_vis=0.6082
         self.std_vis=5.4927
+        if args.save_captions:
+            if args.cap_model=="BLIP2":
+                self.cap_processor = AutoProcessor.from_pretrained(args.cap_model_checkpoint)
+                self.cap_model = Blip2ForConditionalGeneration.from_pretrained(args.cap_model_checkpoint, torch_dtype=torch.float16).to(args.device)
+            elif args.cap_model=="Gemeni":
+                with open(args.cap_model_key_path, 'r') as file:
+                    content = file.read()
+                GOOGLE_API_KEY=content
+                genai.configure(api_key=GOOGLE_API_KEY)
+                self.cap_model = genai.GenerativeModel('gemini-pro-vision')
+            elif args.cap_model=="InstructBlip":
+                self.cap_model=InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b").to(args.device)
+                self.cap_processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")    
+            self.save_captions()  
         if save_embeddings:
             self.pipe= MyPipe(args.weights_path, args, device=args.device)
-            if self.args.input_state_return_domain=='text':
-                if args.cap_model=="BLIP2":
-                    self.cap_processor = AutoProcessor.from_pretrained(args.cap_model_checkpoint)
-                    self.cap_model = Blip2ForConditionalGeneration.from_pretrained(args.cap_model_checkpoint, torch_dtype=torch.float16).to(args.device)
-                elif args.cap_model=="Gemeni":
-                    with open(args.cap_model_key_path, 'r') as file:
-                        content = file.read()
-                    GOOGLE_API_KEY=content
-                    genai.configure(api_key=GOOGLE_API_KEY)
-                    self.cap_model = genai.GenerativeModel('gemini-pro-vision')
-                elif args.cap_model=="InstructBlip":
-                    self.cap_model=InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b")
-                    self.cap_processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
-            else:
-                assert self.args.input_state_return_domain=='vision', "input_state_return_domain must be in either 'text' or 'vision'."                
+            self.save_embeds()       
 
-            self.save_embeds()
         self.load_data()
         if self.mode == "train":
             self.transition_matrix = self.cal_transition(self.transition_matrix)
-        
-        
-
+            
     def cal_transition(self, matrix):
         ''' Cauculate transition matrix
 
@@ -115,6 +113,19 @@ class CrossTaskDataset(Dataset):
         '''
         transition = matrix / np.sum(matrix, axis = 1, keepdims = True)
         return transition
+    
+    async def process_images(self, prompt, image_list):
+        tasks = [self.process_image(prompt, img) for img in image_list]
+        results = await asyncio.gather(*tasks)
+        return results
+    
+    async def process_image(self, prompt, img):
+        try:
+            r = await self.cap_model.generate_content_async([prompt, img])
+            return r.text
+        except Exception as e:
+            return f"Error processing image: {str(e)}"
+    
     def load_npy_gcloud(self, file_name):
         
         blob = self.bucket_img.blob(file_name)
@@ -135,8 +146,7 @@ class CrossTaskDataset(Dataset):
         # Convert PIL Image back to numpy array
         image = np.array(image)
         return image
-        
-
+    
     def SaveImageStates(self):
         with open(self.video_list, "r") as f:
             video_info_dict = json.load(f)
@@ -183,6 +193,71 @@ class CrossTaskDataset(Dataset):
                 cap.release()
                 continue
             
+    def save_captions(self,):
+        with open(self.video_list, "r") as f:
+            video_info_dict = json.load(f)
+        
+        for video_info in tqdm(video_info_dict, desc="Processing video embeddings"):
+            video_id = video_info["id"]["vid"]
+            video_anot = self.anot_info[video_id]
+            task_id = video_anot[0]["task_id"]
+            task = video_anot[0]["task"]
+            save_path=os.path.join(self.args.cap_dir,video_id+'_frame_captions.txt')
+            
+            
+            try:
+                # Check if the embeddings already exist
+                if (os.path.exists(save_path)):
+                    continue
+               
+                #frame_data=self.load_npy_gcloud("{}.npy".format(video_id))
+                frame_data= np.load(os.path.join(self.img_dir, "{}.npy".format(video_id)), allow_pickle=True).item()
+                start_frames = frame_data["start_frames"]
+                end_frames = frame_data["end_frames"]
+                if self.args.cap_model=="Gemeni":
+                    prompt=f"Describe the content of image, related to the task of \"{task}\", in one sentence."
+                    #get the start state descriptions
+                    img_input_s= [Image.fromarray(idd,'RGB') for idd in start_frames]
+                    img_input_e = [Image.fromarray(idd,'RGB') for idd in end_frames]
+                    try:
+                        response_start=[self.cap_model.generate_content([prompt, img]).text for img in img_input_s]
+                        response_end=[self.cap_model.generate_content([prompt, img]).text for img in img_input_e]
+                    except:
+                        import pdb; pdb.set_trace()
+                    #try:
+                    #    loop = asyncio.get_event_loop()
+                    #    response_start = loop.run_until_complete(self.process_images(prompt, img_input_s))
+                    #    loop = asyncio.get_event_loop()
+                    #    response_end = loop.run_until_complete(self.process_images(prompt, img_input_e))
+                    #except:
+                    #    import pdb; pdb.set_trace()
+                elif self.args.cap_model=="InstructBlip":
+                    prompt=f"Describe the content of image, related to the task of \"{task}\", in one sentence."
+                    prompts=[prompt for _ in range(start_frames.shape[0])]
+                    inputs = self.cap_processor(start_frames, text=prompts, return_tensors="pt").to(self.args.device, torch.float16)
+                    outputs = self.cap_model.generate(
+                            **inputs,
+                            do_sample=False,
+                            num_beams=5,
+                            max_length=256,
+                            min_length=1,
+                            top_p=0.9,
+                            repetition_penalty=1.5,
+                            length_penalty=1.0,
+                            temperature=1,
+                        )
+                    generated_text = self.cap_processor.batch_decode(outputs, skip_special_tokens=True)
+                    raise NotImplementedError
+                else:
+                    raise NotImplementedError
+                        
+                Frames=list(zip(response_start,response_end ))
+                with open(save_path, 'w') as file:
+                        for frame in Frames:
+                            file.write(f"{frame[0]} {frame[1]}\n")
+            except:
+                continue
+        
     def save_embeds(self,):
         with open(self.video_list, "r") as f:
             video_info_dict = json.load(f)
@@ -198,7 +273,7 @@ class CrossTaskDataset(Dataset):
                 # Check if the embeddings already exist
                 if (os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_visual_embeddings.pt")) and
                     os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_text_state_embeddings.pt")) and
-                    os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_action_embeddings.pt"))):
+                    os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_action_embeddings.pt")) and False):
                     continue
                
                 #frame_data=self.load_npy_gcloud("{}.npy".format(video_id))
@@ -207,10 +282,12 @@ class CrossTaskDataset(Dataset):
                 end_frames = frame_data["end_frames"]
                 if self.args.input_state_return_domain=='text':
                     if self.args.cap_model=="Gemeni":
-                        prompt=f"Describe the image, related to the task of \"{task}\",in one sentence."
+                        prompt=f"Describe the content of image, related to the task of \"{task}\", in one sentence."
                         #get the start state descriptions
                         img_input = [Image.fromarray(idd,'RGB') for idd in start_frames]
+                        prompts=[prompt for _ in range(len(img_input))]
                         response_start = [self.cap_model.generate_content([prompt, img]).text for img in img_input]
+                        import pdb; pdb.set_trace()
                         #get the end state descriptions
                         img_input = [Image.fromarray(idd,'RGB') for idd in end_frames]
                         response_end = [self.cap_model.generate_content([prompt, img]).text for img in img_input]

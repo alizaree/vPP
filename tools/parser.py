@@ -111,7 +111,7 @@ def create_parser():
                         default='/dvmm-filer3a/users/ali/Data/CrossTask/frame_caps/', type=str, 
                         help='generated captions for frames dir')
     parser.add_argument('--cap_model', 
-                        default='InstructBlip', type=str, 
+                        default='Gemeni', type=str, 
                         help='genhowto embedding dir')
     parser.add_argument('--cap_model_checkpoint', 
                         default="Salesforce/blip2-opt-2.7b", type=str,  #
@@ -128,6 +128,9 @@ def create_parser():
     parser.add_argument('--save_image_states', 
                         action='store_true',
                         help='save_image_states mode')
+    parser.add_argument('--save_captions', 
+                        action='store_true',
+                        help='save visual state captions mode')
     parser.add_argument('--save_embeddings', 
                         action='store_true',
                         help='save_embeddings mode')

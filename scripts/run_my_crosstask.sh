@@ -25,4 +25,6 @@ CUDA_VISIBLE_DEVICES=1 python main_GenHowTo.py \
     --return_frames \
     --vid_dir "/home/yulei/data/crosstask/crosstask_videos/videos/" \
     --img_dir "/dvmm-filer3a/users/ali/Data/CrossTask/crosstask_frame_states" \
-    --save_embeddings
+    --save_embeddings \
+    --cap_model "Gemeni" \
+    --save_captions
