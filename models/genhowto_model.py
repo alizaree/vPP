@@ -38,7 +38,7 @@ class MyPipe:
             last_hidden_states = self.model.text_encoder(input_ids)['last_hidden_state']
             eos_positions = (input_ids == tokenizer.eos_token_id).nonzero()
             tstate_embds = last_hidden_states[eos_positions[:, 0], eos_positions[:, 1]].view(
-                batch_size, len(prompt_s)//batch_size, -1)
+                batch_size, 1, -1)
         return tstate_embds
 
     def encode_actions(self, prompt_a, tokenizer, batch_size=None):
@@ -51,20 +51,8 @@ class MyPipe:
             last_hidden_states = self.model.text_encoder(input_ids)['last_hidden_state']
             eos_positions = (input_ids == tokenizer.eos_token_id).nonzero()
             action_embds = last_hidden_states[eos_positions[:, 0], eos_positions[:, 1]].view(
-                batch_size, len(prompt_a)//batch_size, -1)
+                batch_size, 1, -1)
         return action_embds
-    
-    def encode_frames_text_domain(self, frame_prompts, tokenizer):
-        # frame prompt is a list of len of 2*n_actions and ordered by [s_state1, e_state1, s_state2, e_state2, etc.]
-
-        with torch.no_grad():
-            tokens = tokenizer(frame_prompts, padding=True, return_tensors='pt')
-            input_ids = tokens['input_ids'].to(self.device)
-            last_hidden_states = self.model.text_encoder(input_ids)['last_hidden_state']
-            eos_positions = (input_ids == tokenizer.eos_token_id).nonzero()
-            frame_embeds = last_hidden_states[eos_positions[:, 0], eos_positions[:, 1]].view(
-                len(frame_prompts)//2, 2, -1)
-        return frame_embeds
 
     def extract_embeddings(self, data, tokenizer):
         # Extract visual embeddings
@@ -86,25 +74,22 @@ class MyPipe:
 
         return vis_embds, tstate_embds, action_embds
     
-    def extract_embeddings_inDL(self, data, tokenizer, input_mode='vision'): # the class to extract embedding directly in DataLoader class
+    def extract_embeddings_inDL(self, data, tokenizer): # the class to extract embedding directly in DataLoader class
         # Extract visual embeddings
-        if input_mode=='vision':
-            reshaped_tensor = data[0].view(-1, *data[0].shape[2:])
-            vae_out = self.preprocess_images(reshaped_tensor)
-            vis_embds = vae_out.view(data[0].shape[0], 2, *vae_out.shape[1:])
-        else:
-            assert input_mode=='text', "wronge input mode."
-            f_prompts = [j for i in data[0] for j in i]
-            vis_embds = self.encode_frames_text_domain(f_prompts,tokenizer )
+        
+        reshaped_tensor = data[0].view(-1, *data[0].shape[2:])
+        vae_out = self.preprocess_images(reshaped_tensor)
+        vis_embds = vae_out.view(data[0].shape[0], 2, *vae_out.shape[1:])
+        
             
 
         # Extract text embeddings for states
         state_mode = 'after'
         prompt_s = [data[1][ac_id][state_mode][0] for ac_id in range(len(data[1]))]
-        tstate_embds = self.encode_tstate(prompt_s, tokenizer, batch_size=1)
+        tstate_embds = self.encode_tstate(prompt_s, tokenizer, batch_size=len(prompt_s))
 
         # Extract text embeddings for actions
         state_mode = 'description'
         prompt_a = [data[1][ac_id][state_mode] for ac_id in range(len(data[1]))]
-        action_embds = self.encode_actions(prompt_a, tokenizer, batch_size=1)
+        action_embds = self.encode_actions(prompt_a, tokenizer, batch_size=len(prompt_a))
         return vis_embds, tstate_embds, action_embds

@@ -13,6 +13,7 @@ from transformers import AutoProcessor, Blip2ForConditionalGeneration,  Instruct
 import google.generativeai as genai
 from google.cloud import storage
 import asyncio
+from transformers import CLIPProcessor, CLIPModel
 
 class CrossTaskDataset(Dataset):
     def __init__(
@@ -71,15 +72,15 @@ class CrossTaskDataset(Dataset):
                           "Make French Strawberry Cake": 87706, 
                           "Make Pancakes": 91515}
 
+        self.norm_stat=False
+        if args.normalize_features:
+            print("Embeddings will be normalized.")
+            self.assign_stat()
+        
         self.data = []
         if save_image_states:
             self.SaveImageStates()
-        self.state_mean=-0.1706
-        self.state_std=1.0679
-        self.action_mean=-0.1696
-        self.action_std=1.0706
-        self.mean_vis=0.6082
-        self.std_vis=5.4927
+
         if args.save_captions:
             if args.cap_model=="BLIP2":
                 self.cap_processor = AutoProcessor.from_pretrained(args.cap_model_checkpoint)
@@ -93,14 +94,31 @@ class CrossTaskDataset(Dataset):
             elif args.cap_model=="InstructBlip":
                 self.cap_model=InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b").to(args.device)
                 self.cap_processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")    
-            self.save_captions()  
+            self.save_captions()
+        
         if save_embeddings:
-            self.pipe= MyPipe(args.weights_path, args, device=args.device)
-            self.save_embeds()       
-
+            if self.args.feature_extractor=="GenHowTo":
+                self.pipe= MyPipe(args.weights_path, args, device=args.device)
+            elif self.args.feature_extractor=="CLIP":
+                # Load the CLIP model
+                self.clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(args.device)
+                # Load the CLIP processor
+                self.clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+            else:
+                raise NotImplementedError
+            self.save_embeds()
+        
         self.load_data()
         if self.mode == "train":
             self.transition_matrix = self.cal_transition(self.transition_matrix)
+    def assign_stat(self,):
+        self.norm_stat=True
+        self.state_mean=0.0134 #-0.1706
+        self.state_std=0.4442 #1.0679
+        self.action_mean=0.0128 #-0.1696
+        self.action_std=0.4225 #1.0706
+        self.mean_vis=-0.0098 # 0.6082
+        self.std_vis=0.4686 #5.4927
             
     def cal_transition(self, matrix):
         ''' Cauculate transition matrix
@@ -193,6 +211,42 @@ class CrossTaskDataset(Dataset):
                 cap.release()
                 continue
             
+    def preprocess_images_CLIP(self, images):
+        # Preprocess image using CLIP processor
+        inputs = self.clip_processor(images=images, return_tensors="pt").to(self.args.device)
+        # Extract image features
+        with torch.no_grad():
+            image_features= self.clip_model.get_image_features(**inputs)
+            
+        return image_features
+
+    def encode_tstate_CLIP(self, prompts):
+        text_features = []
+        for prompt in prompts:
+            # Preprocess text using CLIP processor
+            inputs = self.clip_processor(text=prompt, return_tensors="pt", padding=True).to(self.args.device)
+            # Extract text features
+            with torch.no_grad():
+                text_features.append(self.clip_model.get_text_features(**inputs))
+        return torch.stack(text_features)
+            
+    def extract_embeddings_CLIP(self, data):
+        # Extract visual embeddings
+        reshaped_tensor = data[0].view(-1, *data[0].shape[2:])
+        vis_embds = self.preprocess_images_CLIP(reshaped_tensor)
+        vis_embds = vis_embds.view(data[0].shape[0], data[0].shape[1], *vis_embds.shape[1:])
+
+        # Extract text embeddings for states
+        state_mode = 'after'
+        prompt_s = [data[1][ac_id][state_mode][0] for ac_id in range(len(data[1]))]
+        tstate_embds = self.encode_tstate_CLIP(prompt_s)
+
+        # Extract text embeddings for actions
+        state_mode = 'description'
+        prompt_a = [data[1][ac_id][state_mode] for ac_id in range(len(data[1]))]
+        action_embds = self.encode_tstate_CLIP(prompt_a)
+        return vis_embds, tstate_embds, action_embds
+            
     def save_captions(self,):
         with open(self.video_list, "r") as f:
             video_info_dict = json.load(f)
@@ -219,16 +273,24 @@ class CrossTaskDataset(Dataset):
                     #get the start state descriptions
                     img_input_s= [Image.fromarray(idd,'RGB') for idd in start_frames]
                     img_input_e = [Image.fromarray(idd,'RGB') for idd in end_frames]
-                    try:
-                        response_start=[self.cap_model.generate_content([prompt, img]).text for img in img_input_s]
-                        response_end=[self.cap_model.generate_content([prompt, img]).text for img in img_input_e]
-                    except:
-                        import pdb; pdb.set_trace()
+                    substring='Error processing image'
+                    flag_rerun=True
+                    while flag_rerun:
+                        try:
+                            response_start=[self.cap_model.generate_content([prompt, img]).text for img in img_input_s]
+                            response_end=[self.cap_model.generate_content([prompt, img]).text for img in img_input_e]
+                            flag_rerun= any(substring in item for item in response_start) or any(substring in item for item in response_end)
+                        except:
+                            flag_rerun=True
                     #try:
-                    #    loop = asyncio.get_event_loop()
-                    #    response_start = loop.run_until_complete(self.process_images(prompt, img_input_s))
-                    #    loop = asyncio.get_event_loop()
-                    #    response_end = loop.run_until_complete(self.process_images(prompt, img_input_e))
+                    #    substring='Error processing image'
+                    #    flag_rerun=True
+                    #    while flag_rerun:
+                    #        loop = asyncio.get_event_loop()
+                    #        response_start = loop.run_until_complete(self.process_images(prompt, img_input_s))
+                    #        loop = asyncio.get_event_loop()
+                    #        response_end = loop.run_until_complete(self.process_images(prompt, img_input_e))
+                    #        flag_rerun= any(substring in item for item in response_start) or any(substring in item for item in response_end)
                     #except:
                     #    import pdb; pdb.set_trace()
                 elif self.args.cap_model=="InstructBlip":
@@ -254,7 +316,7 @@ class CrossTaskDataset(Dataset):
                 Frames=list(zip(response_start,response_end ))
                 with open(save_path, 'w') as file:
                         for frame in Frames:
-                            file.write(f"{frame[0]} {frame[1]}\n")
+                            file.write(f"{frame[0]};_,_,_;{frame[1]}\n")
             except:
                 continue
         
@@ -271,46 +333,16 @@ class CrossTaskDataset(Dataset):
             
             try:
                 # Check if the embeddings already exist
-                if (os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_visual_embeddings.pt")) and
+                if (os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_frame_embeddings.pt")) and
                     os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_text_state_embeddings.pt")) and
-                    os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_action_embeddings.pt")) and False):
+                    os.path.exists(os.path.join(self.embedding_dir, f"{video_id}_action_embeddings.pt"))):
                     continue
                
                 #frame_data=self.load_npy_gcloud("{}.npy".format(video_id))
                 frame_data= np.load(os.path.join(self.img_dir, "{}.npy".format(video_id)), allow_pickle=True).item()
                 start_frames = frame_data["start_frames"]
                 end_frames = frame_data["end_frames"]
-                if self.args.input_state_return_domain=='text':
-                    if self.args.cap_model=="Gemeni":
-                        prompt=f"Describe the content of image, related to the task of \"{task}\", in one sentence."
-                        #get the start state descriptions
-                        img_input = [Image.fromarray(idd,'RGB') for idd in start_frames]
-                        prompts=[prompt for _ in range(len(img_input))]
-                        response_start = [self.cap_model.generate_content([prompt, img]).text for img in img_input]
-                        import pdb; pdb.set_trace()
-                        #get the end state descriptions
-                        img_input = [Image.fromarray(idd,'RGB') for idd in end_frames]
-                        response_end = [self.cap_model.generate_content([prompt, img]).text for img in img_input]
-                    elif self.args.cap_model=="InstructBlip":
-                        prompt=[ f"Describe the image, related to the task of \"{task}\",in one sentence." for _ in range(len(start_frames))]
-                        inputs = self.cap_processor(start_frames, text=prompt, return_tensors="pt").to(self.args.device, torch.float16)
-                        outputs = self.cap_model.generate(
-                            **inputs,
-                            do_sample=False,
-                            num_beams=5,
-                            max_length=256,
-                            min_length=1,
-                            top_p=0.9,
-                            repetition_penalty=1.5,
-                            length_penalty=1.0,
-                            temperature=1,
-                        )
-                        generated_text = self.cap_processor.batch_decode(outputs, skip_special_tokens=True)
-                        import pdb; pdb.set_trace()
-                        
-                    Frames=list(zip(response_start,response_end ))
-                else:
-                    Frames=np.concatenate((start_frames[:,None,...], end_frames[:,None,...]),axis=1)
+                Frames=np.concatenate((start_frames[:,None,...], end_frames[:,None,...]),axis=1)
                 Prompts=[]
                 for cur_video_anot in video_anot:
                     Prompts.append(self.prompt_json[cur_video_anot["task"]][cur_video_anot["action"]])
@@ -325,11 +357,15 @@ class CrossTaskDataset(Dataset):
                 for i in range(num_chunks):
                     start_idx = i * m
                     end_idx = min((i + 1) * m, len(Frames))
-                    chunk_data = (torch.tensor(Frames[start_idx:end_idx]), Prompts[start_idx:end_idx]) if self.args.input_state_return_domain=='vision' else (Frames[start_idx:end_idx], Prompts[start_idx:end_idx])
+                    chunk_data = (torch.tensor(Frames[start_idx:end_idx]), Prompts[start_idx:end_idx])
                     with torch.no_grad():
-                        self.pipe.set_timesteps(self.args.num_inference_steps)
-                        self.pipe.set_num_steps_to_skip(self.args.num_steps_to_skip, self.args.num_inference_steps)
-                        vis_embds_chunk, tstate_embds_chunk, action_embds_chunk = self.pipe.extract_embeddings_inDL(chunk_data, self.pipe.model.tokenizer, input_mode=self.args.input_state_return_domain)
+                        if self.args.feature_extractor=="GenHowTo":
+                            self.pipe.set_timesteps(self.args.num_inference_steps)
+                            self.pipe.set_num_steps_to_skip(self.args.num_steps_to_skip, self.args.num_inference_steps)
+                            vis_embds_chunk, tstate_embds_chunk, action_embds_chunk = self.pipe.extract_embeddings_inDL(chunk_data, self.pipe.model.tokenizer)
+                        elif self.args.feature_extractor=="CLIP":
+                            vis_embds_chunk, tstate_embds_chunk, action_embds_chunk = self.extract_embeddings_CLIP(chunk_data)
+                            
                     vis_embds.append(vis_embds_chunk.detach().cpu())
                     tstate_embds.append(tstate_embds_chunk.detach().cpu())
                     action_embds.append(action_embds_chunk.detach().cpu())
@@ -337,19 +373,14 @@ class CrossTaskDataset(Dataset):
                     del tstate_embds_chunk
                     del action_embds_chunk
                 vis_embds=torch.cat(vis_embds, dim=0)
-                tstate_embds=torch.cat(tstate_embds,dim=1)
-                action_embds=torch.cat(action_embds,dim=1)
+                tstate_embds=torch.cat(tstate_embds,dim=0)
+                action_embds=torch.cat(action_embds,dim=0)
                 # Save embeddings using torch.save()
-                torch.save(vis_embds, os.path.join(self.embedding_dir,video_id+'_frame_'+self.args.input_state_return_domain+'_embeddings.pt'))
+                torch.save(vis_embds, os.path.join(self.embedding_dir,video_id+'_frame_embeddings.pt'))
                 torch.save(tstate_embds, os.path.join(self.embedding_dir,video_id+'_text_state_embeddings.pt'))
                 torch.save(action_embds, os.path.join(self.embedding_dir,video_id+'_action_embeddings.pt'))
-                # Write each item of Frames into the text file
-                if self.args.input_state_return_domain=="text":
-                    with open(os.path.join(self.args.cap_dir,video_id+'_frame_captions.txt'), 'w') as file:
-                        for frame in Frames:
-                            file.write(f"{frame[0]} {frame[1]}\n")
             except:
-                import pdb; pdb.set_trace()
+                #import pdb; pdb.set_trace()
                 continue
         
             
@@ -367,13 +398,14 @@ class CrossTaskDataset(Dataset):
                 frame_data= np.load(os.path.join(self.img_dir, "{}.npy".format(video_id)), allow_pickle=True).item()
                 start_frames = frame_data["start_frames"]
                 end_frames = frame_data["end_frames"]
-                vis_embds_loaded = torch.load(os.path.join(self.embedding_dir,video_id+'_visual_embeddings.pt')) # n_actions, 2, 4,64,64
+                vis_embds_loaded = torch.load(os.path.join(self.embedding_dir,video_id+'_frame_embeddings.pt')) # n_actions, 2, 4,64,64
                 tstate_embds_loaded = torch.load(os.path.join(self.embedding_dir,video_id+'_text_state_embeddings.pt')) # 1, n_actions, dim
                 action_embds_loaded = torch.load(os.path.join(self.embedding_dir,video_id+'_action_embeddings.pt')) # 1, n_actions, dim
-                # fix the mean
-                vis_embds_loaded=(vis_embds_loaded-self.mean_vis)/self.std_vis
-                tstate_embds_loaded= (tstate_embds_loaded- self.state_mean)/self.state_std
-                action_embds_loaded= (action_embds_loaded-self.action_mean)/self.action_std
+                # Normalize if normalization is specified
+                if self.norm_stat:
+                    vis_embds_loaded=(vis_embds_loaded-self.mean_vis)/self.std_vis
+                    tstate_embds_loaded= (tstate_embds_loaded- self.state_mean)/self.state_std
+                    action_embds_loaded= (action_embds_loaded-self.action_mean)/self.action_std
                 
             except:
                 continue
@@ -411,8 +443,8 @@ class CrossTaskDataset(Dataset):
                     s_frame=start_frames[i+j,...]
                     e_frame=end_frames[i+j,...]
                     v_embd= vis_embds_loaded[i+j,...]
-                    tstate_embd= tstate_embds_loaded[0,i+j,...]
-                    action_embd= action_embds_loaded[0,i+j,...]
+                    tstate_embd= tstate_embds_loaded[i+j,...]
+                    action_embd= action_embds_loaded[i+j,...]
                     
                     all_frames.append(np.stack((s_frame, e_frame)))
                     all_v_embeds.append(v_embd)

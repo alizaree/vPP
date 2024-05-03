@@ -4,7 +4,7 @@ from transformers import GPT2Config, GPT2Model
 from torch.nn import functional as F
 
 class AutoregressiveTransformer(nn.Module):
-    def __init__(self, d_model=512, max_traj_len=3, device='cpu', input_dim=1024, num_action=133, vis_input_dim=64, dropout_rate=0.1, n_layer=4, n_head=8, **args):
+    def __init__(self, d_model=512, max_traj_len=3, device='cpu', input_dim=512, num_action=133, vis_input_dim=64, dropout_rate=0.1, n_layer=4, n_head=8, **args):
         super(AutoregressiveTransformer, self).__init__()
 
         self.d_model = d_model
@@ -32,14 +32,32 @@ class AutoregressiveTransformer(nn.Module):
         self.transformer = GPT2Model(self.transformer_configs).to(device)
 
         # Projection layer
-        self.projection_layer = nn.Linear(d_model, d_model)
+        self.projection_layer = nn.Sequential(
+            nn.Linear(d_model, 2*d_model),  #
+            nn.ReLU(),
+            nn.Linear(2*d_model, 2*d_model),  # Output shape: n_batch, d_model
+            nn.ReLU(),
+            nn.Linear(2*d_model, d_model),  #
+            nn.ReLU(),
+            nn.Dropout(dropout_rate)
+        )
 
         # MLP for encoding state
+        #self.state_encoder = nn.Sequential(
+        #    nn.Conv2d(4, 1, kernel_size=3, stride=2, padding=1),  # Change input channels to 4
+        #    nn.ReLU(),
+        #    nn.Flatten(),
+        #    nn.Linear(32 * 32, d_model),  # Output shape: n_batch, d_model
+        #    nn.ReLU(),
+        #    nn.Dropout(dropout_rate)
+        #)
+        
         self.state_encoder = nn.Sequential(
-            nn.Conv2d(4, 1, kernel_size=3, stride=2, padding=1),  # Change input channels to 4
+            nn.Linear(input_dim, 2*d_model),  #
             nn.ReLU(),
-            nn.Flatten(),
-            nn.Linear(32 * 32, d_model),  # Output shape: n_batch, d_model
+            nn.Linear(2*d_model, 2*d_model),  # Output shape: n_batch, d_model
+            nn.ReLU(),
+            nn.Linear(2*d_model, d_model),  #
             nn.ReLU(),
             nn.Dropout(dropout_rate)
         )

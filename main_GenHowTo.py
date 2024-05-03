@@ -212,7 +212,6 @@ def train(args):
             tstate_embds=data[1].to(device)
             action_embds=data[2].to(device)
             action_indices=data[5].to(device)
-
             out_model, loss, indices= model(vis_embds, ground_truth_action_indices= action_indices,
                                    ground_truth_action_embeds= action_embds, loss='ce') # out_model is of shape n_batch, n_positions,dim
             #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
@@ -239,7 +238,6 @@ def train(args):
         train_epoch_loss = epoch_loss/len(train_loader) 
         pred_actions= torch.cat(all_preds_actions,dim=0).detach().cpu().numpy() #shape: n_samples, n_position
         gt_actions= torch.cat(all_gt_actions,dim=0).detach().cpu().numpy() # shape: n_samples, n_position
-        #import pdb; pdb.set_trace()
         # calculate the metrics:
         sr,macc,miou=FindMetrics(pred_actions,gt_actions)
         train_metrics={'epoch': epoch,
