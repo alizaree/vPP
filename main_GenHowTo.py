@@ -20,7 +20,9 @@ from tqdm import tqdm
 from datetime import datetime
 
 def FindMetrics(pred, gt):
-    sr = success_rate(pred, gt, False)
+    pred = pred+1
+    gt = gt+1
+    sr = success_rate(pred.copy(), gt.copy(), False)
     miou = acc_iou(pred.copy(), gt.copy(), False)
     #macc = mean_category_acc(rst_mode.flatten().tolist(), gt.flatten().tolist())
     macc=mean_category_acc(pred.copy(), gt.copy())
@@ -159,8 +161,8 @@ def train(args):
         with tqdm(total=total_batches) as pbar:
             for data in train_loader:
                 vis_embds=data[0]
-                tstate_embds=data[1]
-                action_embds=data[2]
+                tstate_embds=data[1].squeeze()
+                action_embds=data[2].squeeze()
                 for plan_id, plan in enumerate(data[5]):
                     for action_id, action in enumerate(plan):
                         action_val = action.item()
@@ -209,11 +211,11 @@ def train(args):
         for batrch_idd,data in enumerate(train_loader):
             optimizer.zero_grad()
             vis_embds=data[0].to(device)
-            tstate_embds=data[1].to(device)
-            action_embds=data[2].to(device)
+            tstate_embds=data[1].to(device).squeeze()
+            action_embds=data[2].to(device).squeeze()
             action_indices=data[5].to(device)
             out_model, loss, indices= model(vis_embds, ground_truth_action_indices= action_indices,
-                                   ground_truth_action_embeds= action_embds, loss='ce') # out_model is of shape n_batch, n_positions,dim
+                                   ground_truth_action_embeds= action_embds, all_action_embeds=all_action_embeds, loss='mse') # out_model is of shape n_batch, n_positions,dim
             #To Do: Get the predicted indices (should be of shape n_barch, n_positions) of the predicted tensor out_model by matching it to the embeddings in all_action_embeds (n_actions, dim)
             # first  change out_model to shape n_batch*n_positions, dim then compare it against all_action_embeds to find the indices.
             #predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
@@ -263,14 +265,14 @@ def train(args):
         for data in valid_loader:
             with torch.no_grad():
                 vis_embds=data[0].to(device)
-                tstate_embds=data[1].to(device)
-                action_embds=data[2].to(device)
+                tstate_embds=data[1].to(device).squeeze()
+                action_embds=data[2].to(device).squeeze()
                 action_indices=data[5].to(device)
-                out_model, loss, logits= model(vis_embds, ground_truth_action_indices= action_indices,
-                                   ground_truth_action_embeds= action_embds, loss='ce') # out_model is of shape n_batch, n_positions,dim
+                out_model, loss, indices= model.forward_run(vis_embds, ground_truth_action_indices= action_indices,
+                                   ground_truth_action_embeds= action_embds, all_action_embeds=all_action_embeds, loss='mse') # out_model is of shape n_batch, n_positions,dim
                 #predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
                 #all_preds_actions.append(predicted_indices)
-                all_preds_actions.append(logits)#predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
+                all_preds_actions.append(indices)#predicted_indices = torch.argmax(torch.matmul(out_model.view(-1, out_model.size(-1)), all_action_embeds.T), dim=1).view(out_model.size(0), out_model.size(1))
                 all_gt_actions.append(data[5])
                 
                 # Accumulate loss for the epoch

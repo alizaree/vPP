@@ -1,14 +1,14 @@
 CUDA_VISIBLE_DEVICES=1 python main_GenHowTo.py \
-    --lr 0.0001 \
+    --lr 0.001 \
     --dropout 0.2 \
-    --batch_size 256 \
+    --batch_size 64 \
     --epochs 100 \
     --max_traj_len 3 \
     --M 2 \
     --aug_range 0 \
     --step_size 40 \
     --lr_decay 0.65 \
-    --scheduler_p 3 \
+    --scheduler_p 5 \
     --scheduler_f 0.3333 \
     --model_name 'crosstask' \
     --n_layer 8 \
